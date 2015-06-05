@@ -39,10 +39,10 @@ public class EsusCadastroDomiciliar implements Serializable {
    private String ineEquipe;
 
    @Column(name="microarea")
-   private int microarea;
+   private Long microarea;
 
    @Column(name="tp_logradouro")
-   private int tpLogradouro;
+   private Long tpLogradouro;
 
    @Column(name="no_logradouro")
    private String noLogradouro;
@@ -69,7 +69,7 @@ public class EsusCadastroDomiciliar implements Serializable {
    private String dsRgRecusaCad;
 
    @Column(name="st_envio")
-   private int stEnvio;
+   private Long stEnvio;
 
    @Column(name="co_uf")
    private Long coUf;
@@ -130,7 +130,7 @@ public class EsusCadastroDomiciliar implements Serializable {
    private Long quantidadeMoradores;
 
    @Column(name="numero_comodos")
-   private int numeroComodos;
+   private Long numeroComodos;
 
    @Column(name="quantidade_animais")
    private Long quantidadeAnimais;
@@ -186,17 +186,17 @@ public class EsusCadastroDomiciliar implements Serializable {
       this.ineEquipe = ineEquipe;
    }
 
-   public int getMicroarea() { 
+   public Long getMicroarea() { 
       return microarea;
    }
-   public void  setMicroarea(int microarea) { 
+   public void  setMicroarea(Long microarea) { 
       this.microarea = microarea;
    }
 
-   public int getTpLogradouro() { 
+   public Long getTpLogradouro() { 
       return tpLogradouro;
    }
-   public void  setTpLogradouro(int tpLogradouro) { 
+   public void  setTpLogradouro(Long tpLogradouro) { 
       this.tpLogradouro = tpLogradouro;
    }
 
@@ -256,10 +256,10 @@ public class EsusCadastroDomiciliar implements Serializable {
       this.dsRgRecusaCad = dsRgRecusaCad;
    }
 
-   public int getStEnvio() { 
+   public Long getStEnvio() { 
       return stEnvio;
    }
-   public void  setStEnvio(int stEnvio) { 
+   public void  setStEnvio(Long stEnvio) { 
       this.stEnvio = stEnvio;
    }
 
@@ -385,10 +385,10 @@ public class EsusCadastroDomiciliar implements Serializable {
       this.quantidadeMoradores = quantidadeMoradores;
    }
 
-   public int getNumeroComodos() { 
+   public Long getNumeroComodos() { 
       return numeroComodos;
    }
-   public void  setNumeroComodos(int numeroComodos) { 
+   public void  setNumeroComodos(Long numeroComodos) { 
       this.numeroComodos = numeroComodos;
    }
 

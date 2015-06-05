@@ -10,5 +10,19 @@
 		<property name="hibernate.connection.url">jdbc:postgresql://localhost/esaude?autoReconnect=true</property>
 		<property name="hibernate.connection.username">postgres</property>
 		<property name="hibernate.connection.password">postgres</property>
+		<mapping class="esaude.model.EsusCadastroDomiciliar" />
+		<mapping class="esaude.model.EsusAbastecimentodeagua" />
+		<mapping class="esaude.model.EsusCondicaodeposseeusodaterra" />
+		<mapping class="esaude.model.EsusDestinodolixo" />
+		<mapping class="esaude.model.EsusFormadeescoamentodobanheiroousanitario" />
+		<mapping class="esaude.model.EsusLocalizacaodamoradia" />
+		<mapping class="esaude.model.EsusMaterialpredominantenaconstrucao" />
+		<mapping class="esaude.model.EsusSituacaodemoradia" />
+		<mapping class="esaude.model.EsusTipodeacessoaodomicilio" />
+		<mapping class="esaude.model.EsusTipodedomicilio" />
+		<mapping class="esaude.model.EsusTratamentodeaguanodomicilio" /> 
+		
+		
+		
 	</session-factory>
 </hibernate-configuration> 
