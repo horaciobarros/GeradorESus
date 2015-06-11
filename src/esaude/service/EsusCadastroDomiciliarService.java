@@ -7,10 +7,26 @@ import exemplosThrift.InformacoesEnvioExemplo;
 import exemplosThrift.utils.ThriftSerializer;
 import exemplosThrift.utils.ZipWriterExemplo;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+import org.apache.thrift.TBase;
+import org.apache.thrift.TException;
+import org.apache.thrift.TFieldIdEnum;
+import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.transport.TIOStreamTransport;
 
 import br.gov.saude.esus.cds.transport.generated.thrift.cadastrodomiciliar.CadastroDomiciliarThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.common.UnicaLotacaoHeaderThrift;
@@ -26,138 +42,173 @@ public class EsusCadastroDomiciliarService {
 	}
 
 	public void processaArquivo() {
-		InformacoesEnvioDto informacoesEnvioDto = new InformacoesEnvioDto();
-		
-		CadastroDomiciliarThrift thriftCadastroDomiciliar = converterParaThrift(informacoesEnvioDto);
 
-		// Passo 2: serializar o thrift do atendimento;
-		byte[] dadoSerializado = ThriftSerializer.serialize(thriftCadastroDomiciliar);
+		List<DadoTransporteThrift> dados = new ArrayList<DadoTransporteThrift>();
+		for (EsusCadastroDomiciliar cad : dao.findNaoEnviados()) {
+			CadastroDomiciliarThrift thriftCadastroDomiciliar = converterParaThrift(cad);
 
-		// Passo 3: coletar as informações do envio e das instalações;
-		informacoesEnvioDto.setTipoDadoSerializado(7l);
-		informacoesEnvioDto.setDadoSerializado(dadoSerializado);
+			InformacoesEnvioDto informacoesEnvioDto = new InformacoesEnvioDto();
 
-		// Passo 4: preencher o thrift de transporte com as informaçõeso
-		// coletadas;
-		DadoTransporteThrift dadoTransporteThrift = InformacoesEnvioExemplo
-				.getInfoInstalacao(informacoesEnvioDto);
+			byte[] dadoSerializado;
 
+			// Passo 2: serializar o thrift
+			dadoSerializado = ThriftSerializer
+					.serialize(thriftCadastroDomiciliar);
+
+			// Passo 3: coletar as informações do envio
+			informacoesEnvioDto.setTipoDadoSerializado(7l);
+			informacoesEnvioDto.setDadoSerializado(dadoSerializado);
+
+			// Passo 4: preencher o thrift de transporte com as informadosçõeso
+			// coletadas;
+			DadoTransporteThrift dadoTransporteThrift = InformacoesEnvioExemplo
+					.getInfoInstalacao(informacoesEnvioDto);
+			dados.add(dadoTransporteThrift);
+		}
 		// Passo 5: serializar o thrift de transporte e gerar o arquivo zip;
-		ZipWriterExemplo.generateZip(dadoTransporteThrift);
+		empacotaZipCadastroDomiciliar(dados);
 	}
 
 	private CadastroDomiciliarThrift converterParaThrift(
-			InformacoesEnvioDto informacoesEnvioDto) {
-		FichaProcedimentoMasterThrift thriftProcedimentos = new FichaProcedimentoMasterThrift();
+			EsusCadastroDomiciliar cad) {
+		CadastroDomiciliarThrift cadastroDomiciliar = new CadastroDomiciliarThrift();
 
-		String uuidFicha = UUID.randomUUID() + "";
-		thriftProcedimentos.setUuidFicha(uuidFicha); // Utilizar o UUID da
-														// ficha;
-		informacoesEnvioDto.setUuidDadoSerializado(uuidFicha);
+		// String uuidFicha = UUID.randomUUID() + "";
+		// informacoesEnvioDto.setUuidDadoSerializado(uuidFicha);
+		cadastroDomiciliar.setUuid(cad.getId().toString());
+		cadastroDomiciliar.setAnimaisNoDomicilio(null);
+		cadastroDomiciliar.setCondicaoMoradia(null);
+		cadastroDomiciliar.setDadosGerais(null);
+		cadastroDomiciliar.setEnderecoLocalPermanencia(null);
+		cadastroDomiciliar.setFamilias(null);
+		cadastroDomiciliar.setFichaAtualizadaIsSet(true);
+		cadastroDomiciliar.setFichaAtualizada(true);
+		cadastroDomiciliar.setQuantosAnimaisNoDomicilio(null);
+		cadastroDomiciliar.setStAnimaisNoDomicilioIsSet(false);
+		cadastroDomiciliar.setStAnimaisNoDomicilio(false);
+		cadastroDomiciliar
+				.setStatusTermoRecusaCadastroDomiciliarAtencaoBasicaIsSet(false);
+		cadastroDomiciliar
+				.setStatusTermoRecusaCadastroDomiciliarAtencaoBasica(false);
+		cadastroDomiciliar.setTpCdsOrigemIsSet(false);
+		cadastroDomiciliar.setTpCdsOrigem(0);
 
-		thriftProcedimentos.setAtendProcedimentos(this.converterAtendimentos());
-		thriftProcedimentos.setHeaderTransport(this
-				.converterInformacoesAtendimento(informacoesEnvioDto));
-
-		thriftProcedimentos.setNumTotalAfericaoPa(1);
-		thriftProcedimentos.setNumTotalAfericaoTemperatura(1);
-		thriftProcedimentos.setNumTotalColetaMaterialParaExameLaboratorial(1);
-		thriftProcedimentos.setNumTotalCurativoSimples(1);
-		thriftProcedimentos.setNumTotalGlicemiaCapilar(1);
-		thriftProcedimentos.setNumTotalMedicaoAltura(1);
-		thriftProcedimentos.setNumTotalMedicaoPeso(1);
-
-		thriftProcedimentos.setTpCdsOrigem(3);
-
-		return thriftProcedimentos;
+		return cadastroDomiciliar;
 	}
 
-	/**
-	 * Converte as informações gerais do atendimento.
-	 * 
-	 * @param informacoesEnvioDto
-	 */
-	private UnicaLotacaoHeaderThrift converterInformacoesAtendimento(
-			InformacoesEnvioDto informacoesEnvioDto) {
-		UnicaLotacaoHeaderThrift headerThrift = new UnicaLotacaoHeaderThrift();
+	private void empacotaZipCadastroDomiciliar(
+			List<DadoTransporteThrift> dadosTransport) {
 
-		Calendar dataAtendimento = Calendar.getInstance();
-		dataAtendimento.set(2014, 11, 20);
-		headerThrift.setDataAtendimento(dataAtendimento.getTimeInMillis());
-
-		headerThrift.setCboCodigo_2002("223212");
-
-		String cnes = "7381123";
-		headerThrift.setCnes(cnes);
-		informacoesEnvioDto.setCnesDadoSerializado(cnes);
-
-		String codigoIbgeMunicipio = "4205407";
-		headerThrift.setCodigoIbgeMunicipio(codigoIbgeMunicipio);
-		informacoesEnvioDto.setCodIbge(codigoIbgeMunicipio);
-
-		String ine = "0000406465";
-		headerThrift.setIne(ine);
-		informacoesEnvioDto.setIneDadoSerializado(ine);
-
-		headerThrift.setProfissionalCNS("898001160660761");
-
-		return headerThrift;
-	}
-
-	/**
-	 * Realiza a conversão dos dados dos procedimentos realizados durante o
-	 * atendimento.
-	 */
-	private List<FichaProcedimentoChildThrift> converterAtendimentos() {
-		List<FichaProcedimentoChildThrift> listaProcedimentosAtendimento = new ArrayList<>();
-
-		for (Integer numeroAtendimentos = 0; numeroAtendimentos < 2; numeroAtendimentos++) {
-			FichaProcedimentoChildThrift atendimentoProcedimentoThrift = new FichaProcedimentoChildThrift();
-
-			Calendar dataNascimento = Calendar.getInstance();
-			dataNascimento.set(2014, 11, 20);
-			atendimentoProcedimentoThrift.setDtNascimento(dataNascimento
-					.getTimeInMillis());
-
-			atendimentoProcedimentoThrift.setLocalAtendimento(1);
-			atendimentoProcedimentoThrift.setNumCartaoSus("898001161218973");
-			atendimentoProcedimentoThrift.setNumProntuario("43143");
-			atendimentoProcedimentoThrift.setSexo(1);
-			atendimentoProcedimentoThrift.setTurno(1);
-
-			atendimentoProcedimentoThrift.setOutrosSiaProcedimentos(this
-					.converterProcedimentosSia());
-			atendimentoProcedimentoThrift.setProcedimentos(this
-					.converterProcedimentos());
-
-			listaProcedimentosAtendimento.add(atendimentoProcedimentoThrift);
+		final File f = new File("c:\\temp\\cidadaos_exemplo.zip");
+		ZipOutputStream out = null;
+		try {
+			out = new ZipOutputStream(new FileOutputStream(f));
+		} catch (FileNotFoundException e2) {
+			e2.printStackTrace();
 		}
-
-		return listaProcedimentosAtendimento;
+		if (out != null) {
+			for (DadoTransporteThrift dado : dadosTransport) {
+				byte[] data;
+				try {
+					String entryName = ZipWriterExemplo.resolveZipEntry(dado);
+					out.putNextEntry(new ZipEntry(entryName));
+					data = ThriftSerializer.serialize(dado);
+					out.write(data);
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			try {
+				out.closeEntry();
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
+	
+	public static byte[] serialize(TBase<?, ? extends TFieldIdEnum> thrift) throws TException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        TIOStreamTransport transport = new TIOStreamTransport(baos);
+        TBinaryProtocol protocol = new TBinaryProtocol(transport);
+        thrift.write(protocol);
+        return baos.toByteArray();
+    }
 
-	/**
-	 * Converte códigos gerais de procedimentos SIA.
-	 */
-	private List<String> converterProcedimentosSia() {
-		List<String> siaList = new ArrayList<>();
+    public static void unserialize(byte[] data, TBase<?, ? extends TFieldIdEnum> thrift) throws TException {
+        ByteArrayInputStream bais = new ByteArrayInputStream(data);
+        TIOStreamTransport transport = new TIOStreamTransport(bais);
+        TBinaryProtocol protocol = new TBinaryProtocol(transport);
+        thrift.read(protocol);
+    }
 
-		siaList.add("ABEX010"); // MAMOGRAFIA BILATERAL;
-		siaList.add("ABEX007"); // HDL;
-		siaList.add("ABEX009"); // LDL;
+    public static Long castToLong(Object value, Long defaultValue) {
+        if (value != null) {
+            if (value instanceof Long) {
+                return (Long) value;
+            } else if (value instanceof Number) {
+                return new Long(((Number) value).longValue());
+            } else if (value instanceof String) {
+                try {
+                    return value.equals("") ? defaultValue : new Long((String) value);
+                } catch (NumberFormatException exn) {
+                    return defaultValue;
+                }
+            } else if (value instanceof BigInteger) {
+                return ((BigInteger) value).longValue();
+            } else if (value instanceof BigDecimal) {
+                return ((BigDecimal) value).longValue();
+            }
+        }
+        return defaultValue;
+    }
 
-		return siaList;
-	}
+    public static Long castToLong(Object value) {
+        return castToLong(value, null);
+    }
 
-	/**
-	 * Converte códigos gerais de procedimentos realizados.
-	 */
-	private List<String> converterProcedimentos() {
-		List<String> procedimentosList = new ArrayList<>();
+    public static boolean isBlank(String text) {
+        if (text != null && text.length() > 0) {
+            for (int i = 0, iSize = text.length(); i < iSize; i++) {
+                if (text.charAt(i) != ' ') {
+                    return false;
+                }
+            }
+        }
 
-		procedimentosList.add("ABPG019"); // SUTURA SIMPLES;
-		procedimentosList.add("ABEX004"); // ELETROCARDIOGRAMA;
+        return true;
+    }
 
-		return procedimentosList;
-	}
+    public static boolean isNotBlank(String nome) {
+        return !isBlank(nome);
+    }
+
+    public static Integer castToInteger(Object value, Integer defaultValue) {
+        if (value != null) {
+            if (value instanceof Integer) {
+                return (Integer) value;
+            } else if (value instanceof Number) {
+                return new Integer(((Number) value).intValue());
+            } else if (value instanceof BigInteger) {
+                return ((BigInteger) value).intValue();
+            } else if (value instanceof BigDecimal) {
+                return ((BigDecimal) value).intValue();
+            } else if (value instanceof String) {
+                try {
+                    return value.equals("") ? defaultValue : new Integer((String) value);
+                } catch (NumberFormatException exn) {
+                    return defaultValue;
+                }
+            }
+        }
+        return defaultValue;
+    }
+
+    public static Integer castToInteger(Object value) {
+        return castToInteger(value, null);
+    }
+
+
 }

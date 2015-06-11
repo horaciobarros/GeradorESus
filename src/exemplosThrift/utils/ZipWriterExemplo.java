@@ -52,7 +52,7 @@ public class ZipWriterExemplo {
 	 * @param l - o arquivo thrift a ser analisado
 	 * @return o nome da entrada no arquivo .zip
 	 */
-	private static String resolveZipEntry(DadoTransporteThrift thrift) {
+	public static String resolveZipEntry(DadoTransporteThrift thrift) {
 		String entryName = thrift.getTipoDadoSerializado() + "";
 
 		// Realizar os testes de tipos e escolher qual o nome de cada entrada do arquivo zip gerado;
