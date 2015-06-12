@@ -10,9 +10,9 @@ import br.gov.saude.esus.cds.transport.generated.thrift.procedimento.FichaProced
 import br.gov.saude.esus.cds.transport.generated.thrift.procedimento.FichaProcedimentoMasterThrift;
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 import exemplosThrift.InformacoesEnvioDto;
-import exemplosThrift.InformacoesEnvioExemplo;
+import exemplosThrift.InformacoesEnvio;
 import exemplosThrift.utils.ThriftSerializer;
-import exemplosThrift.utils.ZipWriterExemplo;
+import exemplosThrift.utils.ZipWriter;
 
 public class ExemploDadosParaThrift {
 
@@ -30,10 +30,10 @@ public class ExemploDadosParaThrift {
 		informacoesEnvioDto.setDadoSerializado(dadoSerializado);
 
 		// Passo 4: preencher o thrift de transporte com as informações coletadas;
-		DadoTransporteThrift dadoTransporteThrift = InformacoesEnvioExemplo.getInfoInstalacao(informacoesEnvioDto);
+		DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio.getInfoInstalacao(informacoesEnvioDto);
 
 		// Passo 5: serializar o thrift de transporte e gerar o arquivo zip;
-		ZipWriterExemplo.generateZip(dadoTransporteThrift);
+		ZipWriter.generateZip(dadoTransporteThrift);
 	}
 
 	/**

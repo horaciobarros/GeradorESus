@@ -9,7 +9,7 @@ import java.util.zip.ZipOutputStream;
 
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 
-public class ZipWriterExemplo {
+public class ZipWriter {
 
 	// private final static String EXTENSAO_EXPORT_V12 = ".cds";
 	private final static String EXTENSAO_EXPORT_V13 = ".esus13";

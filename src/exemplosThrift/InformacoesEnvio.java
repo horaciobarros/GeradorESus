@@ -4,7 +4,7 @@ import br.gov.saude.esus.transport.common.api.configuracaodestino.VersaoThrift;
 import br.gov.saude.esus.transport.common.generated.thrift.DadoInstalacaoThrift;
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 
-public class InformacoesEnvioExemplo {
+public class InformacoesEnvio {
 
 	public static DadoTransporteThrift getInfoInstalacao(InformacoesEnvioDto informacoesEnvioDto) {
 		DadoTransporteThrift dadoTransporteThrift = new DadoTransporteThrift();
