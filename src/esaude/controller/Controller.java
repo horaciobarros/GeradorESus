@@ -13,9 +13,7 @@ public class Controller {
 	}
 	
 	private void geraCadastroDomiciliar() {
-		for (EsusCadastroDomiciliar cadDomiciliar : cadastroDomiciliarService.findNaoEnvidados()) {
-			System.out.println(cadDomiciliar.getNuDomicilio());
-		}
+		cadastroDomiciliarService.processaArquivo();
 	}
 
 }

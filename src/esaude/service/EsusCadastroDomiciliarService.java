@@ -29,6 +29,9 @@ import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.transport.TIOStreamTransport;
 
 import br.gov.saude.esus.cds.transport.generated.thrift.cadastrodomiciliar.CadastroDomiciliarThrift;
+import br.gov.saude.esus.cds.transport.generated.thrift.cadastrodomiciliar.EnderecoLocalPermanenciaThrift;
+import br.gov.saude.esus.cds.transport.generated.thrift.cadastrodomiciliar.FamiliaRowThrift;
+import br.gov.saude.esus.cds.transport.generated.thrift.common.HeaderCdsCadastroThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.common.UnicaLotacaoHeaderThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.procedimento.FichaProcedimentoChildThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.procedimento.FichaProcedimentoMasterThrift;
@@ -45,25 +48,38 @@ public class EsusCadastroDomiciliarService {
 
 		List<DadoTransporteThrift> dados = new ArrayList<DadoTransporteThrift>();
 		for (EsusCadastroDomiciliar cad : dao.findNaoEnviados()) {
-			CadastroDomiciliarThrift thriftCadastroDomiciliar = converterParaThrift(cad);
+			try {
+				CadastroDomiciliarThrift thriftCadastroDomiciliar = converterParaThrift(cad);
 
-			InformacoesEnvioDto informacoesEnvioDto = new InformacoesEnvioDto();
+				InformacoesEnvioDto informacoesEnvioDto = new InformacoesEnvioDto();
 
-			byte[] dadoSerializado;
+				byte[] dadoSerializado;
 
-			// Passo 2: serializar o thrift
-			dadoSerializado = ThriftSerializer
-					.serialize(thriftCadastroDomiciliar);
+				// Passo 2: serializar o thrift
+				dadoSerializado = ThriftSerializer
+						.serialize(thriftCadastroDomiciliar);
 
-			// Passo 3: coletar as informações do envio
-			informacoesEnvioDto.setTipoDadoSerializado(7l);
-			informacoesEnvioDto.setDadoSerializado(dadoSerializado);
+				// Passo 3: coletar as informações do envio
+				informacoesEnvioDto.setTipoDadoSerializado(7l);
+				informacoesEnvioDto.setDadoSerializado(dadoSerializado);
+				informacoesEnvioDto.setUuidDadoSerializado(cad.getId()
+						.toString());
+				informacoesEnvioDto.setIneDadoSerializado(cad.getIneEquipe());
+				informacoesEnvioDto
+						.setCnesDadoSerializado(cad.getCnesUnidade());
 
-			// Passo 4: preencher o thrift de transporte com as informadosçõeso
-			// coletadas;
-			DadoTransporteThrift dadoTransporteThrift = InformacoesEnvioExemplo
-					.getInfoInstalacao(informacoesEnvioDto);
-			dados.add(dadoTransporteThrift);
+				// Passo 4: preencher o thrift de transporte com as
+				// informadosçõeso
+				// coletadas;
+				DadoTransporteThrift dadoTransporteThrift = InformacoesEnvioExemplo
+						.getInfoInstalacao(informacoesEnvioDto);
+
+				dados.add(dadoTransporteThrift);
+				System.out.println("Gerando cadastro -- " + cad.getNuDomicilio() + " " + cad.getNoLogradouro());
+
+			} catch (Exception e) {
+
+			}
 		}
 		// Passo 5: serializar o thrift de transporte e gerar o arquivo zip;
 		empacotaZipCadastroDomiciliar(dados);
@@ -71,35 +87,99 @@ public class EsusCadastroDomiciliarService {
 
 	private CadastroDomiciliarThrift converterParaThrift(
 			EsusCadastroDomiciliar cad) {
-		CadastroDomiciliarThrift cadastroDomiciliar = new CadastroDomiciliarThrift();
+		CadastroDomiciliarThrift cadastroDomiciliarThrift = new CadastroDomiciliarThrift();
 
-		// String uuidFicha = UUID.randomUUID() + "";
-		// informacoesEnvioDto.setUuidDadoSerializado(uuidFicha);
-		cadastroDomiciliar.setUuid(cad.getId().toString());
-		cadastroDomiciliar.setAnimaisNoDomicilio(null);
-		cadastroDomiciliar.setCondicaoMoradia(null);
-		cadastroDomiciliar.setDadosGerais(null);
-		cadastroDomiciliar.setEnderecoLocalPermanencia(null);
-		cadastroDomiciliar.setFamilias(null);
-		cadastroDomiciliar.setFichaAtualizadaIsSet(true);
-		cadastroDomiciliar.setFichaAtualizada(true);
-		cadastroDomiciliar.setQuantosAnimaisNoDomicilio(null);
-		cadastroDomiciliar.setStAnimaisNoDomicilioIsSet(false);
-		cadastroDomiciliar.setStAnimaisNoDomicilio(false);
-		cadastroDomiciliar
+		cadastroDomiciliarThrift.setUuid(cad.getId().toString());
+
+		cadastroDomiciliarThrift.setAnimaisNoDomicilio(null);
+		cadastroDomiciliarThrift.setCondicaoMoradia(null);
+
+		// Dados gerais
+		HeaderCdsCadastroThrift dadosGerais = new HeaderCdsCadastroThrift();
+		dadosGerais.setCnesUnidadeSaude(cad.getCnesUnidade());
+		dadosGerais.setCnesUnidadeSaudeIsSet(true); // ?? TODO
+		dadosGerais.setCnsProfissional(cad.getCnsProfissional());
+		dadosGerais.setCodigoIbgeMunicipio(cad.getCoMunicipio());
+		dadosGerais.setCodigoIbgeMunicipioIsSet(false); // ?? TODO
+		dadosGerais.setDataAtendimento(cad.getDtCadastro().getTime());
+		dadosGerais.setDataAtendimentoIsSet(false); // ?? TODO
+		dadosGerais.setIneEquipe(cad.getIneEquipe());
+		dadosGerais.setIneEquipeIsSet(false);
+		dadosGerais.setMicroarea(cad.getMicroarea());
+		dadosGerais.setMicroareaIsSet(false);// ?? TODO
+		cadastroDomiciliarThrift.setDadosGerais(dadosGerais);
+
+		// Endereco
+		EnderecoLocalPermanenciaThrift endereco = new EnderecoLocalPermanenciaThrift();
+		endereco.setBairro(cad.getNoBairro());
+		endereco.setBairroIsSet(false);// ?? TODO
+		endereco.setCep(cad.getNuCep());
+		endereco.setCepIsSet(false);// ?? TODO
+		endereco.setCodigoIbgeMunicipio(cad.getCoMunicipio());
+		endereco.setCodigoIbgeMunicipioIsSet(false);// ?? TODO
+		endereco.setComplemento(cad.getDsComplemento());
+		endereco.setComplementoIsSet(false);// ?? TODO
+		endereco.setNomeLogradouro(cad.getNoLogradouro());
+		endereco.setNomeLogradouroIsSet(false);// ?? TODO
+		endereco.setNumero(cad.getNuDomicilio());
+		endereco.setNumeroIsSet(false);// ?? TODO
+		endereco.setTelReferencial(cad.getNuFoneReferencia());
+		endereco.setTelReferencialIsSet(false);// ?? TODO
+		endereco.setTelResidencial(cad.getNuFoneResidencia());
+		endereco.setTelResidencialIsSet(false);// ?? TODO
+		endereco.setTipoLogradouroNumeroDne(cad.getTpLogradouro().toString());
+		endereco.setTipoLogradouroNumeroDneIsSet(false);// ?? TODO
+		cadastroDomiciliarThrift.setEnderecoLocalPermanencia(endereco);
+
+		FamiliaRowThrift familia = new FamiliaRowThrift();
+		if (cad.getQtMembrosFamilia() != null) {
+			familia.setNumeroMembrosFamilia(Integer.parseInt(Long.toString(cad
+					.getQtMembrosFamilia())));
+		}
+		familia.setNumeroCnsResponsavelIsSet(false);// ?? TODO
+		if (cad.getIdProntuarioResponsavel() != null) {
+			familia.setNumeroProntuario(Long.toString(cad
+					.getIdProntuarioResponsavel()));
+		}
+		familia.setNumeroProntuarioIsSet(false);// ?? TODO
+		try {
+			familia.setRendaFamiliar(cad.getCoCdsRendaFamiliar());
+		} catch (Exception e) {
+
+		}
+		familia.setRendaFamiliarIsSet(false);// ?? TODO
+		if (cad.getDtMudanca() != null) {
+			familia.setResideDesde(cad.getDtMudanca().getTime());
+		}
+
+		familia.setStMudancaIsSet(false);// ?? TODO
+		List<FamiliaRowThrift> familias = new ArrayList<FamiliaRowThrift>();
+		familias.add(familia);
+		cadastroDomiciliarThrift.setFamilias(familias);
+
+		cadastroDomiciliarThrift.setFichaAtualizada(true);
+		cadastroDomiciliarThrift.setFichaAtualizadaIsSet(true);
+		if (cad.getQuantidadeAnimais() != null) {
+			cadastroDomiciliarThrift.setQuantosAnimaisNoDomicilio(Long
+					.toString(cad.getQuantidadeAnimais()));
+		}
+		cadastroDomiciliarThrift.setStAnimaisNoDomicilioIsSet(false);// ?? TODO
+		cadastroDomiciliarThrift.setStAnimaisNoDomicilio(false);// ?? TODO
+		cadastroDomiciliarThrift
 				.setStatusTermoRecusaCadastroDomiciliarAtencaoBasicaIsSet(false);
-		cadastroDomiciliar
-				.setStatusTermoRecusaCadastroDomiciliarAtencaoBasica(false);
-		cadastroDomiciliar.setTpCdsOrigemIsSet(false);
-		cadastroDomiciliar.setTpCdsOrigem(0);
+		cadastroDomiciliarThrift
+				.setStatusTermoRecusaCadastroDomiciliarAtencaoBasica(cad
+						.getStRecusaCadastro());
+		cadastroDomiciliarThrift.setTpCdsOrigemIsSet(false);
+		cadastroDomiciliarThrift.setTpCdsOrigem(0);
 
-		return cadastroDomiciliar;
+		return cadastroDomiciliarThrift;
 	}
 
 	private void empacotaZipCadastroDomiciliar(
 			List<DadoTransporteThrift> dadosTransport) {
 
-		final File f = new File("c:\\temp\\cidadaos_exemplo.zip");
+		final File f = new File("c:\\temp\\cadastro_domiciliar.zip");
 		ZipOutputStream out = null;
 		try {
 			out = new ZipOutputStream(new FileOutputStream(f));
@@ -128,87 +208,90 @@ public class EsusCadastroDomiciliarService {
 			}
 		}
 	}
-	
-	public static byte[] serialize(TBase<?, ? extends TFieldIdEnum> thrift) throws TException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        TIOStreamTransport transport = new TIOStreamTransport(baos);
-        TBinaryProtocol protocol = new TBinaryProtocol(transport);
-        thrift.write(protocol);
-        return baos.toByteArray();
-    }
 
-    public static void unserialize(byte[] data, TBase<?, ? extends TFieldIdEnum> thrift) throws TException {
-        ByteArrayInputStream bais = new ByteArrayInputStream(data);
-        TIOStreamTransport transport = new TIOStreamTransport(bais);
-        TBinaryProtocol protocol = new TBinaryProtocol(transport);
-        thrift.read(protocol);
-    }
+	public static byte[] serialize(TBase<?, ? extends TFieldIdEnum> thrift)
+			throws TException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		TIOStreamTransport transport = new TIOStreamTransport(baos);
+		TBinaryProtocol protocol = new TBinaryProtocol(transport);
+		thrift.write(protocol);
+		return baos.toByteArray();
+	}
 
-    public static Long castToLong(Object value, Long defaultValue) {
-        if (value != null) {
-            if (value instanceof Long) {
-                return (Long) value;
-            } else if (value instanceof Number) {
-                return new Long(((Number) value).longValue());
-            } else if (value instanceof String) {
-                try {
-                    return value.equals("") ? defaultValue : new Long((String) value);
-                } catch (NumberFormatException exn) {
-                    return defaultValue;
-                }
-            } else if (value instanceof BigInteger) {
-                return ((BigInteger) value).longValue();
-            } else if (value instanceof BigDecimal) {
-                return ((BigDecimal) value).longValue();
-            }
-        }
-        return defaultValue;
-    }
+	public static void unserialize(byte[] data,
+			TBase<?, ? extends TFieldIdEnum> thrift) throws TException {
+		ByteArrayInputStream bais = new ByteArrayInputStream(data);
+		TIOStreamTransport transport = new TIOStreamTransport(bais);
+		TBinaryProtocol protocol = new TBinaryProtocol(transport);
+		thrift.read(protocol);
+	}
 
-    public static Long castToLong(Object value) {
-        return castToLong(value, null);
-    }
+	public static Long castToLong(Object value, Long defaultValue) {
+		if (value != null) {
+			if (value instanceof Long) {
+				return (Long) value;
+			} else if (value instanceof Number) {
+				return new Long(((Number) value).longValue());
+			} else if (value instanceof String) {
+				try {
+					return value.equals("") ? defaultValue : new Long(
+							(String) value);
+				} catch (NumberFormatException exn) {
+					return defaultValue;
+				}
+			} else if (value instanceof BigInteger) {
+				return ((BigInteger) value).longValue();
+			} else if (value instanceof BigDecimal) {
+				return ((BigDecimal) value).longValue();
+			}
+		}
+		return defaultValue;
+	}
 
-    public static boolean isBlank(String text) {
-        if (text != null && text.length() > 0) {
-            for (int i = 0, iSize = text.length(); i < iSize; i++) {
-                if (text.charAt(i) != ' ') {
-                    return false;
-                }
-            }
-        }
+	public static Long castToLong(Object value) {
+		return castToLong(value, null);
+	}
 
-        return true;
-    }
+	public static boolean isBlank(String text) {
+		if (text != null && text.length() > 0) {
+			for (int i = 0, iSize = text.length(); i < iSize; i++) {
+				if (text.charAt(i) != ' ') {
+					return false;
+				}
+			}
+		}
 
-    public static boolean isNotBlank(String nome) {
-        return !isBlank(nome);
-    }
+		return true;
+	}
 
-    public static Integer castToInteger(Object value, Integer defaultValue) {
-        if (value != null) {
-            if (value instanceof Integer) {
-                return (Integer) value;
-            } else if (value instanceof Number) {
-                return new Integer(((Number) value).intValue());
-            } else if (value instanceof BigInteger) {
-                return ((BigInteger) value).intValue();
-            } else if (value instanceof BigDecimal) {
-                return ((BigDecimal) value).intValue();
-            } else if (value instanceof String) {
-                try {
-                    return value.equals("") ? defaultValue : new Integer((String) value);
-                } catch (NumberFormatException exn) {
-                    return defaultValue;
-                }
-            }
-        }
-        return defaultValue;
-    }
+	public static boolean isNotBlank(String nome) {
+		return !isBlank(nome);
+	}
 
-    public static Integer castToInteger(Object value) {
-        return castToInteger(value, null);
-    }
+	public static Integer castToInteger(Object value, Integer defaultValue) {
+		if (value != null) {
+			if (value instanceof Integer) {
+				return (Integer) value;
+			} else if (value instanceof Number) {
+				return new Integer(((Number) value).intValue());
+			} else if (value instanceof BigInteger) {
+				return ((BigInteger) value).intValue();
+			} else if (value instanceof BigDecimal) {
+				return ((BigDecimal) value).intValue();
+			} else if (value instanceof String) {
+				try {
+					return value.equals("") ? defaultValue : new Integer(
+							(String) value);
+				} catch (NumberFormatException exn) {
+					return defaultValue;
+				}
+			}
+		}
+		return defaultValue;
+	}
 
+	public static Integer castToInteger(Object value) {
+		return castToInteger(value, null);
+	}
 
 }
