@@ -2,32 +2,15 @@ package esaude.service;
 
 import esaude.dao.EsusCadastroDomiciliarDao;
 import esaude.model.EsusCadastroDomiciliar;
-import esaude.util.GeradorZip;
 import exemplosThrift.InformacoesEnvioDto;
 import exemplosThrift.InformacoesEnvio;
 import exemplosThrift.utils.ThriftSerializer;
-import exemplosThrift.utils.ZipWriter;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.UUID;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
-import org.apache.thrift.TBase;
-import org.apache.thrift.TException;
-import org.apache.thrift.TFieldIdEnum;
-import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.transport.TIOStreamTransport;
+import org.apache.log4j.Logger;
+import org.hibernate.exception.JDBCConnectionException;
 
 import br.gov.saude.esus.cds.transport.generated.thrift.cadastrodomiciliar.CadastroDomiciliarThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.cadastrodomiciliar.EnderecoLocalPermanenciaThrift;
@@ -36,6 +19,8 @@ import br.gov.saude.esus.cds.transport.generated.thrift.common.HeaderCdsCadastro
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 
 public class EsusCadastroDomiciliarService {
+	static Logger log = Logger.getLogger(EsusCadastroDomiciliarService.class
+			.getName());
 	private EsusCadastroDomiciliarDao dao = new EsusCadastroDomiciliarDao();
 
 	public List<EsusCadastroDomiciliar> findNaoEnvidados() {
@@ -45,39 +30,51 @@ public class EsusCadastroDomiciliarService {
 	public List<DadoTransporteThrift> buscaRegistros() {
 
 		List<DadoTransporteThrift> dados = new ArrayList<DadoTransporteThrift>();
-		for (EsusCadastroDomiciliar cad : dao.findNaoEnviados()) {
-			try {
-				CadastroDomiciliarThrift thriftCadastroDomiciliar = converterParaThrift(cad);
+		try {
+			for (EsusCadastroDomiciliar cad : dao.findNaoEnviados()) {
+				try {
+					CadastroDomiciliarThrift thriftCadastroDomiciliar = converterParaThrift(cad);
 
-				InformacoesEnvioDto informacoesEnvioDto = new InformacoesEnvioDto();
+					InformacoesEnvioDto informacoesEnvioDto = new InformacoesEnvioDto();
 
-				byte[] dadoSerializado;
+					byte[] dadoSerializado;
 
-				// Passo 2: serializar o thrift
-				dadoSerializado = ThriftSerializer
-						.serialize(thriftCadastroDomiciliar);
+					// Passo 2: serializar o thrift
+					dadoSerializado = ThriftSerializer
+							.serialize(thriftCadastroDomiciliar);
 
-				// Passo 3: coletar as informações do envio
-				informacoesEnvioDto.setTipoDadoSerializado(7l);
-				informacoesEnvioDto.setDadoSerializado(dadoSerializado);
-				informacoesEnvioDto.setUuidDadoSerializado(cad.getId()
-						.toString());
-				informacoesEnvioDto.setIneDadoSerializado(cad.getIneEquipe());
-				informacoesEnvioDto
-						.setCnesDadoSerializado(cad.getCnesUnidade());
+					// Passo 3: coletar as informações do envio
+					informacoesEnvioDto.setTipoDadoSerializado(7l);
+					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
+					informacoesEnvioDto.setUuidDadoSerializado(cad.getId()
+							.toString());
+					informacoesEnvioDto.setIneDadoSerializado(cad
+							.getIneEquipe());
+					informacoesEnvioDto.setCnesDadoSerializado(cad
+							.getCnesUnidade());
 
-				// Passo 4: preencher o thrift de transporte com as
-				// informadosçõeso
-				// coletadas;
-				DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio
-						.getInfoInstalacao(informacoesEnvioDto);
+					// Passo 4: preencher o thrift de transporte com as
+					// informadosçõeso
+					// coletadas;
+					DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio
+							.getInfoInstalacao(informacoesEnvioDto);
 
-				dados.add(dadoTransporteThrift);
-				System.out.println("Gerando cadastro -- " + cad.getNuDomicilio() + " " + cad.getNoLogradouro());
+					dados.add(dadoTransporteThrift);
+					System.out.println("Gerando cadastro -- "
+							+ cad.getNuDomicilio() + " "
+							+ cad.getNoLogradouro());
 
-			} catch (Exception e) {
-
+				} catch (JDBCConnectionException e) {
+					log.info(e.getMessage());
+				} catch (Exception e) {
+					log.info(e.getMessage());
+				}
 			}
+			
+		} catch (JDBCConnectionException e) {
+			log.error(e.getMessage());
+		} catch (Exception e) {
+			log.error(e.getMessage());
 		}
 		return dados;
 	}
@@ -173,6 +170,4 @@ public class EsusCadastroDomiciliarService {
 		return cadastroDomiciliarThrift;
 	}
 
-	
-	
 }
