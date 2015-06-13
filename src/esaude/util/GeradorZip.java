@@ -11,8 +11,6 @@ import java.util.zip.ZipOutputStream;
 import org.apache.log4j.Logger;
 
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
-import exemplosThrift.utils.ThriftSerializer;
-import exemplosThrift.utils.ZipWriter;
 
 public class GeradorZip {
 	static Logger log = Logger.getLogger(GeradorZip.class.getName());

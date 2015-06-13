@@ -1,4 +1,4 @@
-package exemplosThrift.procedimentos;
+package esaude.util;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,12 +9,6 @@ import br.gov.saude.esus.cds.transport.generated.thrift.common.UnicaLotacaoHeade
 import br.gov.saude.esus.cds.transport.generated.thrift.procedimento.FichaProcedimentoChildThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.procedimento.FichaProcedimentoMasterThrift;
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
-import exemplosThrift.InformacoesEnvioDto;
-import exemplosThrift.InformacoesEnvio;
-import exemplosThrift.procedimentos.exemplosFichas.ExemploFichaProcedimento;
-import exemplosThrift.procedimentos.exemplosFichas.ExemploFichaProcedimentoInformacoesGerais;
-import exemplosThrift.utils.ThriftSerializer;
-import exemplosThrift.utils.ZipWriter;
 
 public class ExemploDadosFormParaThrift {
 

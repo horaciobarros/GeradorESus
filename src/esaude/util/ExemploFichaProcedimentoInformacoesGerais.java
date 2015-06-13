@@ -1,4 +1,4 @@
-package exemplosThrift.procedimentos.exemplosFichas;
+package esaude.util;
 
 import java.util.ArrayList;
 import java.util.Calendar;

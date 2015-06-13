@@ -1,4 +1,4 @@
-package exemplosThrift;
+package esaude.util;
 
 import br.gov.saude.esus.transport.common.api.configuracaodestino.VersaoThrift;
 import br.gov.saude.esus.transport.common.generated.thrift.DadoInstalacaoThrift;

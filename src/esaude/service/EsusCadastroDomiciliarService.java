@@ -2,9 +2,9 @@ package esaude.service;
 
 import esaude.dao.EsusCadastroDomiciliarDao;
 import esaude.model.EsusCadastroDomiciliar;
-import exemplosThrift.InformacoesEnvioDto;
-import exemplosThrift.InformacoesEnvio;
-import exemplosThrift.utils.ThriftSerializer;
+import esaude.util.InformacoesEnvio;
+import esaude.util.InformacoesEnvioDto;
+import esaude.util.ThriftSerializer;
 
 import java.util.ArrayList;
 import java.util.List;

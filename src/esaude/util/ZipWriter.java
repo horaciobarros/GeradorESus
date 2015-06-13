@@ -1,4 +1,4 @@
-package exemplosThrift.utils;
+package esaude.util;
 
 import java.io.File;
 import java.io.FileNotFoundException;
