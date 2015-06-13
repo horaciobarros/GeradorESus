@@ -5,6 +5,7 @@ import esaude.model.EsusCadastroDomiciliar;
 import esaude.util.InformacoesEnvio;
 import esaude.util.InformacoesEnvioDto;
 import esaude.util.ThriftSerializer;
+import esaude.view.TelaPrincipal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,8 @@ public class EsusCadastroDomiciliarService {
 
 		List<DadoTransporteThrift> dados = new ArrayList<DadoTransporteThrift>();
 		try {
+			
+
 			for (EsusCadastroDomiciliar cad : dao.findNaoEnviados()) {
 				try {
 					CadastroDomiciliarThrift thriftCadastroDomiciliar = converterParaThrift(cad);
