@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -18,7 +20,7 @@ public class GeradorZip {
 	public void empacotaZir(
 			List<DadoTransporteThrift> dadosTransportCadastroDomiciliar) {
 
-		final File f = new File("\\temp\\geradorEsus\\esaude_exportacao.zip");
+		final File f = new File("\\temp\\geradorEsus\\esaude_exportacao" + getInstante() + ".zip");
 		ZipOutputStream out = null;
 		try {
 			out = new ZipOutputStream(new FileOutputStream(f));
@@ -30,7 +32,7 @@ public class GeradorZip {
 			for (DadoTransporteThrift dado : dadosTransportCadastroDomiciliar) {
 				byte[] data;
 				try {
-					String entryName = "cadastro_domiciliar"
+					String entryName = "cadastro_domiciliar_"
 							+ ZipWriter.resolveZipEntry(dado);
 					out.putNextEntry(new ZipEntry(entryName));
 					data = ThriftSerializer.serialize(dado);
@@ -57,6 +59,12 @@ public class GeradorZip {
 				
 			}
 		}
+	}
+
+	private String getInstante() {
+		Calendar c = Calendar.getInstance(); 
+		String data = "_" + c.get(Calendar.DAY_OF_MONTH) + "_" + c.get(Calendar.MONTH) + "_" + c.get(Calendar.YEAR);
+		return data;
 	}
 
 	

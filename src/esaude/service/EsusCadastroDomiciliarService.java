@@ -9,6 +9,7 @@ import esaude.util.ThriftSerializer;
 import esaude.view.TelaPrincipal;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -44,6 +45,7 @@ public class EsusCadastroDomiciliarService {
 			throw e;
 		}
 
+		log.info(new Date() + " -- Gerando Cadastro domiciliar -------");
 
 		List<DadoTransporteThrift> dados = new ArrayList<DadoTransporteThrift>();
 		try {
@@ -83,6 +85,9 @@ public class EsusCadastroDomiciliarService {
 					}
 					
 					dados.add(dadoTransporteThrift);
+					log.info(new Date() + " -- Gerando cadastro --> " + cad.getId() + " - " 
+							+ cad.getNuDomicilio() + " - "
+							+ cad.getNoLogradouro());
 					System.out.println("Gerando cadastro --> " + cad.getId() + " - " 
 							+ cad.getNuDomicilio() + " - "
 							+ cad.getNoLogradouro());
@@ -97,7 +102,7 @@ public class EsusCadastroDomiciliarService {
 			}
 
 		} catch (JDBCConnectionException e) {
-			log.error(e.getMessage());
+			log.error(new Date() + e.getMessage());
 			e.printStackTrace();
 		} catch (Exception e) {
 			log.error(e.getMessage());
