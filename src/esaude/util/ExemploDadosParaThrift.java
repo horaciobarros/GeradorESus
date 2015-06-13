@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
+import esaude.model.EsusRegistro;
 import br.gov.saude.esus.cds.transport.generated.thrift.common.UnicaLotacaoHeaderThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.procedimento.FichaProcedimentoChildThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.procedimento.FichaProcedimentoMasterThrift;
@@ -26,7 +27,7 @@ public class ExemploDadosParaThrift {
 		informacoesEnvioDto.setDadoSerializado(dadoSerializado);
 
 		// Passo 4: preencher o thrift de transporte com as informações coletadas;
-		DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio.getInfoInstalacao(informacoesEnvioDto);
+		DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio.getInfoInstalacao(informacoesEnvioDto, new EsusRegistro());
 
 		// Passo 5: serializar o thrift de transporte e gerar o arquivo zip;
 		ZipWriter.generateZip(dadoTransporteThrift);

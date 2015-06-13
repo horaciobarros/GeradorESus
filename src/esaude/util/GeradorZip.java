@@ -18,7 +18,7 @@ public class GeradorZip {
 	public void empacotaZir(
 			List<DadoTransporteThrift> dadosTransportCadastroDomiciliar) {
 
-		final File f = new File("\\temp\\esaude_exportacao.zip");
+		final File f = new File("\\temp\\geradorEsus\\esaude_exportacao.zip");
 		ZipOutputStream out = null;
 		try {
 			out = new ZipOutputStream(new FileOutputStream(f));
@@ -36,15 +36,16 @@ public class GeradorZip {
 					data = ThriftSerializer.serialize(dado);
 					out.write(data);
 				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
 					log.error(e1);
+					e1.printStackTrace();
 				} catch (IOException e) {
-					e.printStackTrace();
 					log.error(e);
+					e.printStackTrace();
 
 				} catch (Exception e) {
-					e.printStackTrace();
 					log.error(e);
+					e.printStackTrace();
+				
 				}
 			}
 			try {

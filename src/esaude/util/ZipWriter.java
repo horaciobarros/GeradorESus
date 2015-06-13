@@ -17,7 +17,9 @@ public class ZipWriter {
 	/**
 	 * Gera um arquivo .zip contendo os dados serializados.
 	 * 
-	 * @param procedimentos - a lista com os dados (thrifts) a serem serializados e armazenados no arquivo .zip
+	 * @param procedimentos
+	 *            - a lista com os dados (thrifts) a serem serializados e
+	 *            armazenados no arquivo .zip
 	 */
 	public static void generateZip(DadoTransporteThrift thrift) {
 		File zipFile = new File("C:\\Temp\\exemploConversaoThrift.zip");
@@ -49,16 +51,14 @@ public class ZipWriter {
 	/**
 	 * Determina o nome e a extensão das entradas do arquivo .zip
 	 * 
-	 * @param l - o arquivo thrift a ser analisado
+	 * @param l
+	 *            - o arquivo thrift a ser analisado
 	 * @return o nome da entrada no arquivo .zip
 	 */
 	public static String resolveZipEntry(DadoTransporteThrift thrift) {
-		String entryName = thrift.getTipoDadoSerializado() + "";
+		String entryName;
 
-		// Realizar os testes de tipos e escolher qual o nome de cada entrada do arquivo zip gerado;
-		if (thrift.getTipoDadoSerializado() == 7) { // Thrift Procedimentos;
-			entryName = thrift.getUuidDadoSerializado() + EXTENSAO_EXPORT_V13;
-		}
+		entryName = thrift.getUuidDadoSerializado() + EXTENSAO_EXPORT_V13;
 
 		return entryName;
 	}

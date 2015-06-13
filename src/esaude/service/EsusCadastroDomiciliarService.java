@@ -2,6 +2,7 @@ package esaude.service;
 
 import esaude.dao.EsusCadastroDomiciliarDao;
 import esaude.model.EsusCadastroDomiciliar;
+import esaude.model.EsusRegistro;
 import esaude.util.InformacoesEnvio;
 import esaude.util.InformacoesEnvioDto;
 import esaude.util.ThriftSerializer;
@@ -9,6 +10,8 @@ import esaude.view.TelaPrincipal;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 import org.hibernate.exception.JDBCConnectionException;
@@ -23,16 +26,27 @@ public class EsusCadastroDomiciliarService {
 	static Logger log = Logger.getLogger(EsusCadastroDomiciliarService.class
 			.getName());
 	private EsusCadastroDomiciliarDao dao = new EsusCadastroDomiciliarDao();
+	private EsusRegistro esusRegistro = new EsusRegistro();
 
 	public List<EsusCadastroDomiciliar> findNaoEnvidados() {
 		return dao.findNaoEnviados();
 	}
 
 	public List<DadoTransporteThrift> buscaRegistros() {
+		
+		EsusRegistroServiceImpl esusRegistroService = new EsusRegistroServiceImpl();
+		try {
+			esusRegistro = esusRegistroService
+					.buscaEsusRegistro();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,
+					"Esus registro não encontrado");
+			throw e;
+		}
+
 
 		List<DadoTransporteThrift> dados = new ArrayList<DadoTransporteThrift>();
 		try {
-			
 
 			for (EsusCadastroDomiciliar cad : dao.findNaoEnviados()) {
 				try {
@@ -51,6 +65,9 @@ public class EsusCadastroDomiciliarService {
 					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
 					informacoesEnvioDto.setUuidDadoSerializado(cad.getId()
 							.toString());
+					if (cad.getId() == null) {
+						log.info("UuidDadoSerializado inexistente para o endereço: " + cad.getDsComplemento());
+					}
 					informacoesEnvioDto.setIneDadoSerializado(cad
 							.getIneEquipe());
 					informacoesEnvioDto.setCnesDadoSerializado(cad
@@ -60,24 +77,31 @@ public class EsusCadastroDomiciliarService {
 					// informadosÃ§Ãµeso
 					// coletadas;
 					DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio
-							.getInfoInstalacao(informacoesEnvioDto);
-
+							.getInfoInstalacao(informacoesEnvioDto, esusRegistro);
+					if (dadoTransporteThrift.getUuidDadoSerializado() == null) {
+						log.info("UuidDadoSerializado inexistente para o complemento: " + cad.getDsComplemento());
+					}
+					
 					dados.add(dadoTransporteThrift);
-					System.out.println("Gerando cadastro -- "
-							+ cad.getNuDomicilio() + " "
+					System.out.println("Gerando cadastro --> " + cad.getId() + " - " 
+							+ cad.getNuDomicilio() + " - "
 							+ cad.getNoLogradouro());
 
 				} catch (JDBCConnectionException e) {
 					log.info(e.getMessage());
+					e.printStackTrace();
 				} catch (Exception e) {
 					log.info(e.getMessage());
+					e.printStackTrace();
 				}
 			}
-			
+
 		} catch (JDBCConnectionException e) {
 			log.error(e.getMessage());
+			e.printStackTrace();
 		} catch (Exception e) {
 			log.error(e.getMessage());
+			e.printStackTrace();
 		}
 		return dados;
 	}
@@ -102,8 +126,12 @@ public class EsusCadastroDomiciliarService {
 		dadosGerais.setDataAtendimentoIsSet(false); // ?? TODO
 		dadosGerais.setIneEquipe(cad.getIneEquipe());
 		dadosGerais.setIneEquipeIsSet(false);
-		dadosGerais.setMicroarea(cad.getMicroarea());
-		dadosGerais.setMicroareaIsSet(false);// ?? TODO
+		try {
+			dadosGerais.setMicroarea(cad.getMicroarea());
+			dadosGerais.setMicroareaIsSet(false);// ?? TODO
+		} catch (Exception e) {
+			
+		}
 		cadastroDomiciliarThrift.setDadosGerais(dadosGerais);
 
 		// Endereco

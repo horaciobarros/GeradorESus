@@ -1060,7 +1060,9 @@ public class DadoTransporteThrift implements org.apache.thrift.TBase<DadoTranspo
   public void validate() throws org.apache.thrift.TException {
     // check for required fields
     if (!isSetUuidDadoSerializado()) {
-      throw new org.apache.thrift.protocol.TProtocolException("Required field 'uuidDadoSerializado' is unset! Struct:" + toString());
+    	
+      throw new org.apache.thrift.protocol.TProtocolException("Required field 'uuidDadoSerializado' is unset! Struct:" + toString() + 
+    		  "Conteudo: " + this.getUuidDadoSerializado());
     }
 
     if (!isSetTipoDadoSerializado()) {

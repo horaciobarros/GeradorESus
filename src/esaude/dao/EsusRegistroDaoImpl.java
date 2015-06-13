@@ -2,9 +2,12 @@ package esaude.dao;
 
 import java.io.*;
 import java.util.*;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.Query;
 import org.hibernate.Transaction;
+import org.hibernate.cfg.AnnotationConfiguration;
+
 import esaude.model.EsusRegistro;
 import esaude.dao.*;
 
@@ -15,11 +18,16 @@ public class EsusRegistroDaoImpl implements Serializable {
 	private SessionFactory sessionFactory;
 
 	StringBuilder hql;
+	
+	public EsusRegistroDaoImpl() {
+		sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory(); 
+	}
 
 	public EsusRegistro buscaEsusRegistro() {
-		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
-		Query query = sessionFactory.getCurrentSession().createQuery(
-				"from EsusRegistro e where e.id = :pId ");
+		Transaction tx = sessionFactory.openSession()
+				.beginTransaction();
+		Query query = sessionFactory.openSession().createQuery(
+				"from EsusRegistro e  ");
 		return (EsusRegistro) query.uniqueResult();
 	}
 }
