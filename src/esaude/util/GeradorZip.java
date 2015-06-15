@@ -18,9 +18,9 @@ public class GeradorZip {
 	static Logger log = Logger.getLogger(GeradorZip.class.getName());
 
 	public void empacotaZir(
-			List<DadoTransporteThrift> dadosTransportCadastroDomiciliar) {
+			List<DadoTransporteThrift> dadosTransportCadastroDomiciliar, String pathPadrao) {
 
-		final File f = new File("\\temp\\geradorEsus\\esaude_exportacao" + getInstante() + ".zip");
+		final File f = new File(pathPadrao + "\\esaude_exportacao" + getInstante() + ".zip");
 		ZipOutputStream out = null;
 		try {
 			out = new ZipOutputStream(new FileOutputStream(f));
@@ -63,7 +63,8 @@ public class GeradorZip {
 
 	private String getInstante() {
 		Calendar c = Calendar.getInstance(); 
-		String data = "_" + c.get(Calendar.DAY_OF_MONTH) + "_" + c.get(Calendar.MONTH) + "_" + c.get(Calendar.YEAR);
+		String data = "_" + c.get(Calendar.DAY_OF_MONTH) + "_" + c.get(Calendar.MONTH) + "_" + c.get(Calendar.YEAR) + 
+				"_" + c.get(Calendar.MINUTE) + "_" + c.get(Calendar.SECOND);
 		return data;
 	}
 
