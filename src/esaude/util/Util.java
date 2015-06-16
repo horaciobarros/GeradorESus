@@ -10,9 +10,11 @@ import org.apache.thrift.TException;
 import org.apache.thrift.TFieldIdEnum;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.transport.TIOStreamTransport;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.AnnotationConfiguration;
 
 public class Util {
-	
+
 	public static byte[] serialize(TBase<?, ? extends TFieldIdEnum> thrift)
 			throws TException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -98,5 +100,8 @@ public class Util {
 		return castToInteger(value, null);
 	}
 
-
+	public static SessionFactory getSessionFactory() {
+		AnnotationConfiguration configuracao = new AnnotationConfiguration().configure();
+		return configuracao.buildSessionFactory();
+	}
 }

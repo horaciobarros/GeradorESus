@@ -1,6 +1,7 @@
 package esaude.dao;
 
 import esaude.model.*;
+import esaude.util.Util;
 
 import java.util.List;
 import java.util.Date;
@@ -21,7 +22,8 @@ public class EsusCadastroDomiciliarDao extends Dao {
 	private SessionFactory sessionFactory;
 
 	public EsusCadastroDomiciliarDao() {
-		sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory(); 
+		
+		sessionFactory = Util.getSessionFactory(); 
 	}
 
 	public List<EsusCadastroDomiciliar> findNaoEnviados() {

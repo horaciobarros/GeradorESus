@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 
 import esaude.model.EsusRegistro;
+import esaude.util.Util;
 import esaude.dao.*;
 
 public class EsusRegistroDaoImpl implements Serializable {
@@ -20,7 +21,7 @@ public class EsusRegistroDaoImpl implements Serializable {
 	StringBuilder hql;
 	
 	public EsusRegistroDaoImpl() {
-		sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory(); 
+		sessionFactory = Util.getSessionFactory(); 
 	}
 
 	public EsusRegistro buscaEsusRegistro() {
