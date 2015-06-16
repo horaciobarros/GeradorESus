@@ -26,7 +26,7 @@ public class HibernateUtil {
 	private static SessionFactory buildSessionFactory() {
 		try {
 
-			File file = new File(System.getProperty("user.home") + "\\gerador_esus\\hibernate.cfg.xml");
+			File file = new File("hibernate.cfg.xml");
 			if (!file.exists()) {
 				JOptionPane.showMessageDialog(null, "arquivo de configuração do Banco de Dados não encontrado!");
 				log.error("arquivo de configuração do Banco de Dados não encontrado!");
@@ -43,31 +43,6 @@ public class HibernateUtil {
 			throw new ExceptionInInitializerError(ex);
 		}
 	}
-
-	private static void copiaArquivoConfiguracaoHibernate() {
-		File origem = new File(System.getProperty("java.io.tmpdir") + "/hibernate.cfg.xml");
-		File destino = new File(System.getProperty("user.home") + "\\gerador_esus\\hibernate.cfg.xml");
-		try {
-			copy(origem, destino);
-		} catch (IOException e) {
-			log.error("Cópia de arquivo Hibernate.cfg.xml não realizada:" + e);
-			JOptionPane.showMessageDialog(null, "Cópia de arquivo Hibernate.cfg.xml não realizada:" + e);
-			e.printStackTrace();
-		}
-	}
-	
-	private static void copy(File src, File dst) throws IOException {
-        InputStream in = new FileInputStream(src);
-        OutputStream out = new FileOutputStream(dst); // Transferindo bytes de entrada para saída
-        byte[] buf = new byte[1024];
-        int len;
-        while ((len = in.read(buf)) > 0) {
-            out.write(buf, 0, len);
-        }
-        in.close();
-        out.close();
-    }
-
 
 	public static SessionFactory getSessionFactory() {
 		return sessionFactory;

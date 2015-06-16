@@ -31,7 +31,7 @@ public class EsusCadastroDomiciliarDao extends Dao {
 		Transaction tx = sessionFactory.openSession()
 				.beginTransaction();
 		Query query = sessionFactory.openSession().createQuery(
-				"from EsusCadastroDomiciliar cd  where dt_envio is null");
+				"from EsusCadastroDomiciliar cd  where st_envio is null");
 		List<EsusCadastroDomiciliar> lista = query.list();
 		tx.commit();
 

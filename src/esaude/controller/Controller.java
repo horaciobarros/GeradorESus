@@ -21,7 +21,7 @@ public class Controller {
 	private EsusCadastroDomiciliarService cadastroDomiciliarService = new EsusCadastroDomiciliarService();
 	private GeradorZip geradorZip = new GeradorZip();
 	
-	String userHome = System.getProperty("user.home");
+	String userHome = System.getProperty("user.dir");
 	String pathPadrao;
 	
 	public void geraArquivos() {
