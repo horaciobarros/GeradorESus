@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
@@ -27,11 +28,20 @@ public class EsusCadastroDomiciliarDao extends Dao {
 		Transaction tx = sessionFactory.openSession()
 				.beginTransaction();
 		Query query = sessionFactory.openSession().createQuery(
-				"from EsusCadastroDomiciliar cd  ");
+				"from EsusCadastroDomiciliar cd  where dt_envio is null");
 		List<EsusCadastroDomiciliar> lista = query.list();
 		tx.commit();
 
 		return lista;
+	}
+	
+	public void atualiza(EsusCadastroDomiciliar entity) {
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		session.update(entity);
+		session.beginTransaction().commit();
+		
+		
 	}
 
 }

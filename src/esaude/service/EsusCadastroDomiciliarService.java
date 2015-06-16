@@ -9,6 +9,7 @@ import esaude.util.ThriftSerializer;
 import esaude.view.TelaPrincipal;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -91,6 +92,10 @@ public class EsusCadastroDomiciliarService {
 					System.out.println("Gerando cadastro --> " + cad.getId() + " - " 
 							+ cad.getNuDomicilio() + " - "
 							+ cad.getNoLogradouro());
+					
+					cad.setDtEnvio(new Date());
+					cad.setStEnvio(Long.valueOf(1));
+					dao.atualiza(cad);
 
 				} catch (JDBCConnectionException e) {
 					log.info(e.getMessage());
@@ -205,5 +210,5 @@ public class EsusCadastroDomiciliarService {
 
 		return cadastroDomiciliarThrift;
 	}
-
+	
 }
