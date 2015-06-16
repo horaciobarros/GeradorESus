@@ -100,8 +100,5 @@ public class Util {
 		return castToInteger(value, null);
 	}
 
-	public static SessionFactory getSessionFactory() {
-		AnnotationConfiguration configuracao = new AnnotationConfiguration().configure();
-		return configuracao.buildSessionFactory();
-	}
+
 }

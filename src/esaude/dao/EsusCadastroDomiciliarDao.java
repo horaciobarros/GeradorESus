@@ -1,6 +1,7 @@
 package esaude.dao;
 
 import esaude.model.*;
+import esaude.util.HibernateUtil;
 import esaude.util.Util;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class EsusCadastroDomiciliarDao extends Dao {
 
 	public EsusCadastroDomiciliarDao() {
 		
-		sessionFactory = Util.getSessionFactory(); 
+		sessionFactory = HibernateUtil.getSessionFactory(); 
 	}
 
 	public List<EsusCadastroDomiciliar> findNaoEnviados() {

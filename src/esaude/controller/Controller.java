@@ -45,7 +45,7 @@ public class Controller {
 
 	private void criaPastas() {
 		
-		pathPadrao = userHome + "\\geradorEsus";
+		pathPadrao = userHome + "\\gerador_esus";
 		File d1 = new File(pathPadrao);
         d1.mkdir();
 		
