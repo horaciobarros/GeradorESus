@@ -1,15 +1,6 @@
 package esaude.service;
 
-import esaude.dao.EsusCadastroDomiciliarDao;
-import esaude.model.EsusCadastroDomiciliar;
-import esaude.model.EsusRegistro;
-import esaude.util.InformacoesEnvio;
-import esaude.util.InformacoesEnvioDto;
-import esaude.util.ThriftSerializer;
-import esaude.view.TelaPrincipal;
-
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +14,13 @@ import br.gov.saude.esus.cds.transport.generated.thrift.cadastrodomiciliar.Ender
 import br.gov.saude.esus.cds.transport.generated.thrift.cadastrodomiciliar.FamiliaRowThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.common.HeaderCdsCadastroThrift;
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
+import esaude.dao.EsusCadastroDomiciliarDao;
+import esaude.model.EsusCadastroDomiciliar;
+import esaude.model.EsusRegistro;
+import esaude.util.InformacoesEnvio;
+import esaude.util.InformacoesEnvioDto;
+import esaude.util.ThriftSerializer;
+import esaude.view.TelaPrincipal;
 
 public class EsusCadastroDomiciliarService {
 	static Logger log = Logger.getLogger(EsusCadastroDomiciliarService.class
@@ -47,7 +45,8 @@ public class EsusCadastroDomiciliarService {
 		}
 
 		log.info(new Date() + " -- Gerando Cadastro domiciliar -------");
-
+		TelaPrincipal.enviaLog(new Date() + " -- Gerando Cadastro domiciliar -------");
+		
 		List<DadoTransporteThrift> dados = new ArrayList<DadoTransporteThrift>();
 		try {
 
@@ -100,9 +99,11 @@ public class EsusCadastroDomiciliarService {
 				} catch (JDBCConnectionException e) {
 					log.info(e.getMessage());
 					e.printStackTrace();
+					TelaPrincipal.enviaLog(new Date()+" - "+e.getMessage());
 				} catch (Exception e) {
 					log.info(e.getMessage());
 					e.printStackTrace();
+					TelaPrincipal.enviaLog(new Date()+" - "+e.getMessage());
 				}
 			}
 

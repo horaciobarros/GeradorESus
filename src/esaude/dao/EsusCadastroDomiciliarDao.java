@@ -1,20 +1,14 @@
 package esaude.dao;
 
-import esaude.model.*;
-import esaude.util.HibernateUtil;
-import esaude.util.Util;
-
 import java.util.List;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.AnnotationConfiguration;
-import org.hibernate.cfg.Configuration;
+
+import esaude.model.EsusCadastroDomiciliar;
+import esaude.util.HibernateUtil;
 
 
 public class EsusCadastroDomiciliarDao extends Dao {
@@ -31,7 +25,7 @@ public class EsusCadastroDomiciliarDao extends Dao {
 		Transaction tx = sessionFactory.openSession()
 				.beginTransaction();
 		Query query = sessionFactory.openSession().createQuery(
-				"from EsusCadastroDomiciliar cd  where st_envio is null");
+				"from EsusCadastroDomiciliar cd  where st_envio is null or st_envio=0");
 		List<EsusCadastroDomiciliar> lista = query.list();
 		tx.commit();
 

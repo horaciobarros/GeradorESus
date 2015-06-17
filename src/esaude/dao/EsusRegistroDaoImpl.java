@@ -1,17 +1,13 @@
 package esaude.dao;
 
-import java.io.*;
-import java.util.*;
+import java.io.Serializable;
 
-import org.hibernate.SessionFactory;
 import org.hibernate.Query;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.AnnotationConfiguration;
 
 import esaude.model.EsusRegistro;
 import esaude.util.HibernateUtil;
-import esaude.util.Util;
-import esaude.dao.*;
 
 public class EsusRegistroDaoImpl implements Serializable {
 

@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
@@ -39,7 +38,7 @@ public class Controller {
 			log.error(new Date() + " " +  e.getMessage());
 			JOptionPane
 					.showMessageDialog(null, "Erro grave: " + e.getMessage());
-			
+			TelaPrincipal.enviaLog(new Date()+" - "+e.getMessage());
 		}
 	}
 
