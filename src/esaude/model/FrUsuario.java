@@ -20,7 +20,7 @@ public class FrUsuario implements Serializable {
 
    @Id
    @Column(name="usr_codigo")
-   private int usrCodigo;
+   private String usrCodigo;
 
    @Column(name="usr_login")
    private String usrLogin;
@@ -35,7 +35,7 @@ public class FrUsuario implements Serializable {
    private String usrTipoExpiracao;
 
    @Column(name="usr_dias_expiracao")
-   private int usrDiasExpiracao;
+   private String usrDiasExpiracao;
 
    @Column(name="usr_imagem_digital")
    private String usrImagemDigital;
@@ -55,10 +55,10 @@ public class FrUsuario implements Serializable {
    @Column(name="usr_inicio_expiracao")
    private Date usrInicioExpiracao;
 
-   public int getUsrCodigo() { 
+   public String getUsrCodigo() { 
       return usrCodigo;
    }
-   public void  setUsrCodigo(int usrCodigo) { 
+   public void  setUsrCodigo(String usrCodigo) { 
       this.usrCodigo = usrCodigo;
    }
 
@@ -90,10 +90,10 @@ public class FrUsuario implements Serializable {
       this.usrTipoExpiracao = usrTipoExpiracao;
    }
 
-   public int getUsrDiasExpiracao() { 
+   public String getUsrDiasExpiracao() { 
       return usrDiasExpiracao;
    }
-   public void  setUsrDiasExpiracao(int usrDiasExpiracao) { 
+   public void  setUsrDiasExpiracao(String usrDiasExpiracao) { 
       this.usrDiasExpiracao = usrDiasExpiracao;
    }
 

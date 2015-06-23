@@ -12,9 +12,6 @@ import org.hibernate.exception.JDBCConnectionException;
 import br.gov.saude.esus.cds.transport.generated.thrift.atividadecoletiva.FichaAtividadeColetivaThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.atividadecoletiva.ParticipanteRowItemThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.atividadecoletiva.ProfissionalCboRowItemThrift;
-import br.gov.saude.esus.cds.transport.generated.thrift.cadastrodomiciliar.EnderecoLocalPermanenciaThrift;
-import br.gov.saude.esus.cds.transport.generated.thrift.cadastrodomiciliar.FamiliaRowThrift;
-import br.gov.saude.esus.cds.transport.generated.thrift.common.HeaderCdsCadastroThrift;
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 import esaude.dao.EsusAtividadeColetivaDao;
 import esaude.model.EsusAtividadeColetiva;
@@ -37,20 +34,19 @@ public class EsusAtividadeColetivaService {
 	}
 
 	public List<DadoTransporteThrift> buscaRegistros() {
-		
+
 		EsusRegistroServiceImpl esusRegistroService = new EsusRegistroServiceImpl();
 		try {
-			esusRegistro = esusRegistroService
-					.buscaEsusRegistro();
+			esusRegistro = esusRegistroService.buscaEsusRegistro();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null,
-					"Esus registro não encontrado");
+			JOptionPane.showMessageDialog(null, "Esus registro não encontrado");
 			throw e;
 		}
 
 		log.info(new Date() + " -- Gerando Atividade Coletiva  -------");
-		TelaPrincipal.enviaLog(new Date() + " -- Gerando Atividade Coletiva  -------");
-		
+		TelaPrincipal.enviaLog(new Date()
+				+ " -- Gerando Atividade Coletiva  -------");
+
 		List<DadoTransporteThrift> dados = new ArrayList<DadoTransporteThrift>();
 		try {
 
@@ -71,13 +67,18 @@ public class EsusAtividadeColetivaService {
 					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
 					informacoesEnvioDto.setUuidDadoSerializado(cad.getId()
 							.toString());
+					informacoesEnvioDto.setIneDadoSerializado(cad
+							.getIneEquipe());
+					informacoesEnvioDto.setCnesDadoSerializado(cad
+							.getCnesUnidade());
 
 					// Passo 4: preencher o thrift de transporte com as
 					// informadosÃ§Ãµeso
 					// coletadas;
 					DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio
-							.getInfoInstalacao(informacoesEnvioDto, esusRegistro);
-					
+							.getInfoInstalacao(informacoesEnvioDto,
+									esusRegistro);
+
 					dados.add(dadoTransporteThrift);
 					cad.setDtEnvio(new Date());
 					cad.setStEnvio(Long.valueOf(1));
@@ -86,11 +87,11 @@ public class EsusAtividadeColetivaService {
 				} catch (JDBCConnectionException e) {
 					log.info(e.getMessage());
 					e.printStackTrace();
-					TelaPrincipal.enviaLog(new Date()+" - "+e.getMessage());
+					TelaPrincipal.enviaLog(new Date() + " - " + e.getMessage());
 				} catch (Exception e) {
 					log.info(e.getMessage());
 					e.printStackTrace();
-					TelaPrincipal.enviaLog(new Date()+" - "+e.getMessage());
+					TelaPrincipal.enviaLog(new Date() + " - " + e.getMessage());
 				}
 			}
 
@@ -107,25 +108,46 @@ public class EsusAtividadeColetivaService {
 	private FichaAtividadeColetivaThrift converterParaThrift(
 			EsusAtividadeColetiva cad) {
 		FichaAtividadeColetivaThrift ficha = new FichaAtividadeColetivaThrift();
-		List<EsusAtividadeColetivaParticipantes> participantes = dao.findParticipantes(cad.getId());
+		List<EsusAtividadeColetivaParticipantes> participantes = dao
+				.findParticipantes(cad.getId());
 		List<ParticipanteRowItemThrift> participantesThrift = converteParticipantes(participantes);
 		ficha.setParticipantes(participantesThrift);
-		
-		List<EsusAtividadeColetivaProfissional> profissionais = dao.findProfissionais(cad.getId());
+
+		List<EsusAtividadeColetivaProfissional> profissionais = dao
+				.findProfissionais(cad.getId());
 		List<ProfissionalCboRowItemThrift> profissionaisThrift = converteProfissionais(profissionais);
 		ficha.setProfissionais(profissionaisThrift);
-		
+
 		ficha.setCodigoIbgeMunicipio(cad.getIbgeMunicipio());
-		ficha.setAtividadeTipo(cad.getEsusTipoatividadecoletiva().getId());
+		try {
+			ficha.setAtividadeTipo(cad.getEsusTipoatividadecoletiva().getId());
+		} catch (Exception e) {
+
+		}
+
 		ficha.setAtividadeTipoIsSet(true);
-		
-		
+		ficha.setUuidFicha(cad.getId().toString());
+		try {
+			ficha.setNumParticipantesProgramados(Integer.parseInt(cad
+					.getNumParticipantesProgramados().toString()));
+		} catch (Exception e) {
+
+		}
+		try {
+			ficha.setNumAvaliacoesAlteradas(Integer.parseInt(cad
+					.getNumAvaliacoes().toString()));
+		} catch (Exception e) {
+
+		}
+
+		ficha.setResponsavelCnesUnidade(cad.getCnsResponsavel());
+
 		return ficha;
 	}
 
 	private List<ProfissionalCboRowItemThrift> converteProfissionais(
 			List<EsusAtividadeColetivaProfissional> profissionais) {
-		List<ProfissionalCboRowItemThrift> lista = new ArrayList<ProfissionalCboRowItemThrift>(); 
+		List<ProfissionalCboRowItemThrift> lista = new ArrayList<ProfissionalCboRowItemThrift>();
 		for (EsusAtividadeColetivaProfissional prof : profissionais) {
 			ProfissionalCboRowItemThrift item = new ProfissionalCboRowItemThrift();
 			item.setCns(prof.getCnsProfissional());
@@ -151,11 +173,11 @@ public class EsusAtividadeColetivaService {
 			item.setAvaliacaoAlteradaIsSet(true);
 			item.setCessouHabitoFumar(part.getCessouHabitoFumar());
 			item.setCessouHabitoFumarIsSet(true);
-			item.setCns(part.getPProntuario().getCertidaoNova()); // obrigatório 
+			item.setCns(part.getPProntuario().getCertidaoNova()); // obrigatório
 			item.setCnsIsSet(true);
 			lista.add(item);
 		}
 		return lista;
 	}
-	
+
 }
