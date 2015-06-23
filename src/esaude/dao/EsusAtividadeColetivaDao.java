@@ -11,6 +11,7 @@ import br.gov.saude.esus.cds.transport.generated.thrift.atividadecoletiva.Partic
 import esaude.model.EsusAtividadeColetiva;
 import esaude.model.EsusAtividadeColetivaParticipantes;
 import esaude.model.EsusAtividadeColetivaProfissional;
+import esaude.model.PProntuario;
 import esaude.util.HibernateUtil;
 
 
@@ -28,12 +29,12 @@ public class EsusAtividadeColetivaDao extends Dao {
 		Transaction tx = sessionFactory.openSession()
 				.beginTransaction();
 		Query query = sessionFactory.openSession().createQuery(
-				"from EsusAtividadeColetiva ac left join ac.tipoAtividadeColetiva "
-				+ "where ac.st_envio is null or ac.st_envio=0");
+				"select ac from EsusAtividadeColetiva ac left join ac.esusTipoatividadecoletiva "
+				+ "where ac.stEnvio is null or ac.stEnvio=0");
 		List<EsusAtividadeColetiva> lista = query.list();
 		tx.commit();
 
-		return lista;
+		return (List<EsusAtividadeColetiva>) lista;
 	}
 	
 	public void atualiza(EsusAtividadeColetiva entity) {
@@ -49,7 +50,7 @@ public class EsusAtividadeColetivaDao extends Dao {
 		Transaction tx = sessionFactory.openSession()
 				.beginTransaction();
 		Query query = sessionFactory.openSession().createQuery(
-				"from EsusAtividadeColetivaParticipantes ap  left join ap.pprontuario where ap.atividadeColetiva.id = " + id);
+				"from EsusAtividadeColetivaParticipantes ap  inner join ap.pProntuario p where ap.esusAtividadeColetiva.id = " + id);
 		List<EsusAtividadeColetivaParticipantes> lista = query.list();
 		tx.commit();
 
@@ -60,7 +61,7 @@ public class EsusAtividadeColetivaDao extends Dao {
 		Transaction tx = sessionFactory.openSession()
 				.beginTransaction();
 		Query query = sessionFactory.openSession().createQuery(
-				"from EsusAtividadeColetivaProfissional ap  where ap.atividadeColetiva = " + id);
+				"from EsusAtividadeColetivaProfissional ap  where ap.esusAtividadeColetiva = " + id);
 		List<EsusAtividadeColetivaProfissional> lista = query.list();
 		tx.commit();
 

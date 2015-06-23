@@ -18,19 +18,19 @@ public class PRacaCor implements Serializable {
 
    private static final long serialVersionUID = 1L;
 
-   @ManyToOne
-   @JoinColumn(name = "co_raca")
-   private PRacaCor pRacaCor;
+   @Id
+   @Column(name = "co_raca")
+   private String coRaca;
 
    @Column(name="ds_raca")
    private String dsRaca;
 
 
-   public  PRacaCor  getPRacaCor() { 
-      return pRacaCor;
+   public  String  getCoRaca() { 
+      return coRaca;
    }
-   public void  setPRacaCor(PRacaCor pRacaCor) { 
-      this.pRacaCor = pRacaCor;
+   public void  setPRacaCor(String coRaca) { 
+      this.coRaca = coRaca;
    }
 
    public String getDsRaca() { 
@@ -40,30 +40,4 @@ public class PRacaCor implements Serializable {
       this.dsRaca = dsRaca;
    }
 
-   @Override 
-   public int hashCode() { 
-      final int prime = 31;
-      int result = 1;
-      result = prime * result + ((pRacaCor == null) ? 0 : pRacaCor.hashCode());
-      result = prime * result + ((dsRaca == null) ? 0 : dsRaca.hashCode());
-      return result;
-   }
-
-   @Override 
-   public boolean equals(Object obj) {
-      if (this == obj)
-      return true;
-      if (obj == null)
-      return true;
-      if (getClass() != obj.getClass())
-      return false;
-      PRacaCor other = (PRacaCor) obj;
-      if (pRacaCor == null) {
-          if (other.pRacaCor != null) return false;
-       }
-      if (dsRaca == null) {
-          if (other.dsRaca != null) return false;
-       }
-      return true;
-   }
 }

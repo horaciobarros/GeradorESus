@@ -18,6 +18,7 @@ public class PProntuario implements Serializable {
 
    private static final long serialVersionUID = 1L;
 
+   @Id
    @Column(name="co_prontuario")
    private int coProntuario;
 

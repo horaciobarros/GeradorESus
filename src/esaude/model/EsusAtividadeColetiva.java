@@ -27,7 +27,7 @@ public class EsusAtividadeColetiva implements Serializable {
    private Date dtAtividade;
 
    @Column(name="num_participantes_programados")
-   private int numParticipantesProgramados;
+   private Long numParticipantesProgramados;
 
    @Column(name="local_atividade")
    private String localAtividade;
@@ -51,10 +51,10 @@ public class EsusAtividadeColetiva implements Serializable {
    private String ineEquipe;
 
    @Column(name="num_participantes")
-   private int numParticipantes;
+   private Long numParticipantes;
 
    @Column(name="num_avaliacoes")
-   private int numAvaliacoes;
+   private Long numAvaliacoes;
 
    @ManyToOne
    @JoinColumn(name = "id_tipoatividadecoletiva")
@@ -104,10 +104,10 @@ public Long getId() {
       this.dtAtividade = dtAtividade;
    }
 
-   public int getNumParticipantesProgramados() { 
+   public Long getNumParticipantesProgramados() { 
       return numParticipantesProgramados;
    }
-   public void  setNumParticipantesProgramados(int numParticipantesProgramados) { 
+   public void  setNumParticipantesProgramados(Long numParticipantesProgramados) { 
       this.numParticipantesProgramados = numParticipantesProgramados;
    }
 
@@ -160,17 +160,17 @@ public Long getId() {
       this.ineEquipe = ineEquipe;
    }
 
-   public int getNumParticipantes() { 
+   public Long getNumParticipantes() { 
       return numParticipantes;
    }
-   public void  setNumParticipantes(int numParticipantes) { 
+   public void  setNumParticipantes(Long numParticipantes) { 
       this.numParticipantes = numParticipantes;
    }
 
-   public int getNumAvaliacoes() { 
+   public Long getNumAvaliacoes() { 
       return numAvaliacoes;
    }
-   public void  setNumAvaliacoes(int numAvaliacoes) { 
+   public void  setNumAvaliacoes(Long numAvaliacoes) { 
       this.numAvaliacoes = numAvaliacoes;
    }
 

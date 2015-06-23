@@ -7,7 +7,7 @@
 	<session-factory>
 		<property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 		<property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-		<property name="hibernate.connection.url">jdbc:postgresql://localhost/esaude?autoReconnect=true</property>
+		<property name="hibernate.connection.url">jdbc:postgresql://localhost/esaude2?autoReconnect=true</property>
 		<property name="hibernate.connection.username">postgres</property>
 		<property name="hibernate.connection.password">postgres</property>
 		<mapping class="esaude.model.EsusCadastroDomiciliar" />
@@ -22,6 +22,19 @@
 		<mapping class="esaude.model.EsusTipodedomicilio" />
 		<mapping class="esaude.model.EsusTratamentodeaguanodomicilio" /> 
 		<mapping class="esaude.model.EsusRegistro" /> 
+		<mapping class="esaude.model.EsusAtividadeColetiva" />
+		<mapping class="esaude.model.EsusTipoatividadecoletiva" />
+		<mapping class="esaude.model.EsusAtividadeColetivaParticipantes" />
+		<mapping class="esaude.model.EsusAtividadeColetivaProfissional" /> 
+		<mapping class="esaude.model.PProntuario" /> 
+		<mapping class="esaude.model.CnesProfissionais"/> 
+		<mapping class="esaude.model.FrUsuario"/> 
+		<mapping class="esaude.model.CnesEstabelecimentos"/>
+		<mapping class="esaude.model.PMunicipio"/>
+		<mapping class="esaude.model.PNacionalidade"/>
+		<mapping class="esaude.model.PNacionalidade"/>
+		<mapping class="esaude.model.PRacaCor"/>
+		<mapping class="esaude.model.EsusTipoatividadecoletiva"/>
 		
 		
 		

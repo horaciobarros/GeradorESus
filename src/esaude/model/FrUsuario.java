@@ -18,6 +18,7 @@ public class FrUsuario implements Serializable {
 
    private static final long serialVersionUID = 1L;
 
+   @Id
    @Column(name="usr_codigo")
    private int usrCodigo;
 
