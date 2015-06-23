@@ -18,7 +18,7 @@ public class GeradorZip {
 	static Logger log = Logger.getLogger(GeradorZip.class.getName());
 
 	public void empacotaZir(
-			List<DadoTransporteThrift> dadosTransportCadastroDomiciliar, String pathPadrao) {
+			List<DadoTransporteThrift> dadosTransportCadastroDomiciliar, List<DadoTransporteThrift> dadosTransportAtividadeColetiva, String pathPadrao) {
 
 		final File f = new File(pathPadrao + "\\esaude_exportacao" + getInstante() + ".zip");
 		ZipOutputStream out = null;
@@ -28,28 +28,10 @@ public class GeradorZip {
 			e2.printStackTrace();
 		}
 		if (out != null) {
-
-			for (DadoTransporteThrift dado : dadosTransportCadastroDomiciliar) {
-				byte[] data;
-				try {
-					String entryName = "cadastro_domiciliar_"
-							+ ZipWriter.resolveZipEntry(dado);
-					out.putNextEntry(new ZipEntry(entryName));
-					data = ThriftSerializer.serialize(dado);
-					out.write(data);
-				} catch (FileNotFoundException e1) {
-					log.error(e1);
-					e1.printStackTrace();
-				} catch (IOException e) {
-					log.error(e);
-					e.printStackTrace();
-
-				} catch (Exception e) {
-					log.error(e);
-					e.printStackTrace();
-				
-				}
-			}
+			
+			geraEntradaEmArquivoZip(out, dadosTransportCadastroDomiciliar, "cadastro_domiciliar");
+			geraEntradaEmArquivoZip(out, dadosTransportAtividadeColetiva, "atividade_coletiva");
+			
 			try {
 				out.closeEntry();
 				out.close();
@@ -59,6 +41,33 @@ public class GeradorZip {
 				
 			}
 		}
+	}
+
+	private void geraEntradaEmArquivoZip(ZipOutputStream out,
+			List<DadoTransporteThrift> dadosTransport, String nomeArquivo) {
+		for (DadoTransporteThrift dado : dadosTransport) {
+			byte[] data;
+			try {
+				String entryName = nomeArquivo + "_"
+						+ ZipWriter.resolveZipEntry(dado);
+				out.putNextEntry(new ZipEntry(entryName));
+				data = ThriftSerializer.serialize(dado);
+				out.write(data);
+			} catch (FileNotFoundException e1) {
+				log.error(e1);
+				e1.printStackTrace();
+			} catch (IOException e) {
+				log.error(e);
+				e.printStackTrace();
+
+			} catch (Exception e) {
+				log.error(e);
+				e.printStackTrace();
+			
+			}
+		}
+
+		
 	}
 
 	private String getInstante() {

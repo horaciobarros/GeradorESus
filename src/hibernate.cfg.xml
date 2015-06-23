@@ -22,6 +22,10 @@
 		<mapping class="esaude.model.EsusTipodedomicilio" />
 		<mapping class="esaude.model.EsusTratamentodeaguanodomicilio" /> 
 		<mapping class="esaude.model.EsusRegistro" /> 
+		<mapping class="esaude.model.EsusAtividadeColetiva" />
+		<mapping class="esaude.model.EsusTipoAtividadeColetiva" />
+		<mapping class="esaude.model.EsusAtividadeColetivaParticipantes" />
+		<mapping class="esaude.model.EsusAtividadeColetivaProfissional" /> 
 		
 		
 		

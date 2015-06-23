@@ -68,8 +68,29 @@ public class EsusAtividadeColetiva implements Serializable {
 
    @Column(name="dt_envio")
    private Date dtEnvio;
+   
+   private transient List<EsusAtividadeColetivaParticipantes> participantes;
+   
+   private transient List<EsusAtividadeColetivaProfissional> profissionais;
 
-   public Long getId() { 
+   public List<EsusAtividadeColetivaParticipantes> getParticipantes() {
+	return participantes;
+}
+public void setParticipantes(
+		List<EsusAtividadeColetivaParticipantes> participantes) {
+	this.participantes = participantes;
+}
+public List<EsusAtividadeColetivaProfissional> getProfissionais() {
+	return profissionais;
+}
+public void setProfissionais(
+		List<EsusAtividadeColetivaProfissional> profissionais) {
+	this.profissionais = profissionais;
+}
+public static long getSerialversionuid() {
+	return serialVersionUID;
+}
+public Long getId() { 
       return id;
    }
    public void  setId(Long id) { 

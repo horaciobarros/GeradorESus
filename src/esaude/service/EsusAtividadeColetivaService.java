@@ -10,12 +10,16 @@ import org.apache.log4j.Logger;
 import org.hibernate.exception.JDBCConnectionException;
 
 import br.gov.saude.esus.cds.transport.generated.thrift.atividadecoletiva.FichaAtividadeColetivaThrift;
+import br.gov.saude.esus.cds.transport.generated.thrift.atividadecoletiva.ParticipanteRowItemThrift;
+import br.gov.saude.esus.cds.transport.generated.thrift.atividadecoletiva.ProfissionalCboRowItemThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.cadastrodomiciliar.EnderecoLocalPermanenciaThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.cadastrodomiciliar.FamiliaRowThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.common.HeaderCdsCadastroThrift;
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 import esaude.dao.EsusAtividadeColetivaDao;
 import esaude.model.EsusAtividadeColetiva;
+import esaude.model.EsusAtividadeColetivaParticipantes;
+import esaude.model.EsusAtividadeColetivaProfissional;
 import esaude.model.EsusRegistro;
 import esaude.util.InformacoesEnvio;
 import esaude.util.InformacoesEnvioDto;
@@ -44,8 +48,8 @@ public class EsusAtividadeColetivaService {
 			throw e;
 		}
 
-		log.info(new Date() + " -- Gerando Cadastro domiciliar -------");
-		TelaPrincipal.enviaLog(new Date() + " -- Gerando Cadastro domiciliar -------");
+		log.info(new Date() + " -- Gerando Atividade Coletiva  -------");
+		TelaPrincipal.enviaLog(new Date() + " -- Gerando Atividade Coletiva  -------");
 		
 		List<DadoTransporteThrift> dados = new ArrayList<DadoTransporteThrift>();
 		try {
@@ -102,11 +106,56 @@ public class EsusAtividadeColetivaService {
 
 	private FichaAtividadeColetivaThrift converterParaThrift(
 			EsusAtividadeColetiva cad) {
-		FichaAtividadeColetivaThrift fichaAtividadeColetivaThrift = new FichaAtividadeColetivaThrift();
+		FichaAtividadeColetivaThrift ficha = new FichaAtividadeColetivaThrift();
+		List<EsusAtividadeColetivaParticipantes> participantes = dao.findParticipantes(cad.getId());
+		List<ParticipanteRowItemThrift> participantesThrift = converteParticipantes(participantes);
+		ficha.setParticipantes(participantesThrift);
+		
+		List<EsusAtividadeColetivaProfissional> profissionais = dao.findProfissionais(cad.getId());
+		List<ProfissionalCboRowItemThrift> profissionaisThrift = converteProfissionais(profissionais);
+		ficha.setProfissionais(profissionaisThrift);
+		
+		ficha.setCodigoIbgeMunicipio(cad.getIbgeMunicipio());
+		ficha.setAtividadeTipo(cad.getEsusTipoatividadecoletiva().getId());
+		ficha.setAtividadeTipoIsSet(true);
+		
+		
+		return ficha;
+	}
 
+	private List<ProfissionalCboRowItemThrift> converteProfissionais(
+			List<EsusAtividadeColetivaProfissional> profissionais) {
+		List<ProfissionalCboRowItemThrift> lista = new ArrayList<ProfissionalCboRowItemThrift>(); 
+		for (EsusAtividadeColetivaProfissional prof : profissionais) {
+			ProfissionalCboRowItemThrift item = new ProfissionalCboRowItemThrift();
+			item.setCns(prof.getCnsProfissional());
+			item.setCnsIsSet(true);
+			item.setCodigoCbo2002(prof.getCbo());
+			item.setCodigoCbo2002IsSet(true);
+			lista.add(item);
+		}
 
+		return lista;
+	}
 
-		return fichaAtividadeColetivaThrift;
+	private List<ParticipanteRowItemThrift> converteParticipantes(
+			List<EsusAtividadeColetivaParticipantes> participantes) {
+		List<ParticipanteRowItemThrift> lista = new ArrayList<ParticipanteRowItemThrift>();
+		for (EsusAtividadeColetivaParticipantes part : participantes) {
+			ParticipanteRowItemThrift item = new ParticipanteRowItemThrift();
+			item.setAbandonouGrupo(part.getAbandonouGrupo());
+			item.setAbandonouGrupoIsSet(true);
+			item.setAltura(part.getAltura());
+			item.setAlturaIsSet(true);
+			item.setAvaliacaoAlterada(part.getAvaliacaoAlterada());
+			item.setAvaliacaoAlteradaIsSet(true);
+			item.setCessouHabitoFumar(part.getCessouHabitoFumar());
+			item.setCessouHabitoFumarIsSet(true);
+			item.setCns(part.getPProntuario().getCertidaoNova()); // obrigatório 
+			item.setCnsIsSet(true);
+			lista.add(item);
+		}
+		return lista;
 	}
 	
 }
