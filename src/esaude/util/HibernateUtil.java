@@ -17,8 +17,7 @@ import org.hibernate.cfg.Configuration;
 import esaude.controller.Controller;
 
 public class HibernateUtil {
-	static Logger log = Logger.getLogger(HibernateUtil.class
-			.getName());
+	static Logger log = Logger.getLogger(HibernateUtil.class.getName());
 
 	private static final SessionFactory sessionFactory = buildSessionFactory();
 
@@ -28,17 +27,69 @@ public class HibernateUtil {
 
 			File file = new File("hibernate.cfg.xml");
 			if (!file.exists()) {
-				JOptionPane.showMessageDialog(null, "arquivo de configuração do Banco de Dados não encontrado!");
+				JOptionPane
+						.showMessageDialog(null,
+								"arquivo de configuração do Banco de Dados não encontrado!");
 				log.error("arquivo de configuração do Banco de Dados não encontrado!");
 				throw new ExceptionInInitializerError();
 			} else {
 				AnnotationConfiguration configuration = new AnnotationConfiguration();
-				SessionFactory sessionFactory = configuration.configure(
-					file).buildSessionFactory();
+				configuration
+						.addAnnotatedClass(esaude.model.EsusTipoatividadecoletiva.class);
+				configuration
+						.addAnnotatedClass(esaude.model.EsusCadastroDomiciliar.class);
+				configuration
+						.addAnnotatedClass(esaude.model.EsusAbastecimentodeagua.class);
+				configuration
+						.addAnnotatedClass(esaude.model.EsusCondicaodeposseeusodaterra.class);
+				configuration
+						.addAnnotatedClass(esaude.model.EsusDestinodolixo.class);
+				configuration
+						.addAnnotatedClass(esaude.model.EsusFormadeescoamentodobanheiroousanitario.class);
+				configuration
+						.addAnnotatedClass(esaude.model.EsusLocalizacaodamoradia.class);
+				configuration
+						.addAnnotatedClass(esaude.model.EsusMaterialpredominantenaconstrucao.class);
+				configuration
+						.addAnnotatedClass(esaude.model.EsusSituacaodemoradia.class);
+				configuration
+						.addAnnotatedClass(esaude.model.EsusTipodeacessoaodomicilio.class);
+				configuration
+						.addAnnotatedClass(esaude.model.EsusTipodedomicilio.class);
+				configuration
+						.addAnnotatedClass(esaude.model.EsusTratamentodeaguanodomicilio.class);
+				configuration
+						.addAnnotatedClass(esaude.model.EsusRegistro.class);
+				configuration
+						.addAnnotatedClass(esaude.model.EsusAtividadeColetiva.class);
+				configuration
+						.addAnnotatedClass(esaude.model.EsusTipoatividadecoletiva.class);
+				configuration
+						.addAnnotatedClass(esaude.model.EsusAtividadeColetivaParticipantes.class);
+				configuration
+						.addAnnotatedClass(esaude.model.EsusAtividadeColetivaProfissional.class);
+				configuration.addAnnotatedClass(esaude.model.PProntuario.class);
+				configuration
+						.addAnnotatedClass(esaude.model.CnesProfissionais.class);
+				configuration.addAnnotatedClass(esaude.model.FrUsuario.class);
+				configuration
+						.addAnnotatedClass(esaude.model.CnesEstabelecimentos.class);
+				configuration.addAnnotatedClass(esaude.model.PMunicipio.class);
+				configuration
+						.addAnnotatedClass(esaude.model.PNacionalidade.class);
+				configuration
+						.addAnnotatedClass(esaude.model.PNacionalidade.class);
+				configuration.addAnnotatedClass(esaude.model.PRacaCor.class);
+				configuration
+						.addAnnotatedClass(esaude.model.EsusTipoatividadecoletiva.class);
+
+				SessionFactory sessionFactory = configuration.configure(file)
+						.buildSessionFactory();
 				return sessionFactory;
 			}
 		} catch (Throwable ex) {
-			JOptionPane.showMessageDialog(null, "Erro em configuração do banco!");
+			JOptionPane.showMessageDialog(null,
+					"Erro em configuração do banco!");
 			log.error("Erro em configuração do banco!" + ex);
 			throw new ExceptionInInitializerError(ex);
 		}
