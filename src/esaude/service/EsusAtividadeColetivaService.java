@@ -140,7 +140,20 @@ public class EsusAtividadeColetivaService {
 
 		}
 
-		ficha.setResponsavelCnesUnidade(cad.getCnsResponsavel());
+		try {
+
+			ficha.setResponsavelCnesUnidade(cad.getCnsResponsavel());
+			ficha.setCodigoIbgeMunicipio(cad.getIbgeMunicipio());
+			ficha.setCodigoIbgeMunicipioIsSet(true);
+			ficha.setDtAtividadeColetiva(cad.getDtAtividade().getTime());
+			ficha.setDtAtividadeColetivaIsSet(true);
+			ficha.setInep(cad.getInep());
+			ficha.setInepIsSet(true);
+			ficha.setLocalAtividade(cad.getLocalAtividade());
+			ficha.setLocalAtividadeIsSet(true);
+			ficha.setResponsavelCnesUnidadeIsSet(true);
+		} catch (Exception e) {
+		}
 
 		return ficha;
 	}
