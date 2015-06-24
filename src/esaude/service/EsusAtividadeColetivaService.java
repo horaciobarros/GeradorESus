@@ -90,6 +90,7 @@ public class EsusAtividadeColetivaService {
 					TelaPrincipal.enviaLog(new Date() + " - " + e.getMessage());
 				} catch (Exception e) {
 					log.info(e.getMessage());
+					
 					e.printStackTrace();
 					TelaPrincipal.enviaLog(new Date() + " - " + e.getMessage());
 				}

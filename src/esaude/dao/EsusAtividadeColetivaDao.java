@@ -14,43 +14,51 @@ import esaude.model.EsusAtividadeColetivaProfissional;
 import esaude.model.PProntuario;
 import esaude.util.HibernateUtil;
 
-
 public class EsusAtividadeColetivaDao extends Dao {
 
 	StringBuilder hql;
 	private SessionFactory sessionFactory;
 
 	public EsusAtividadeColetivaDao() {
-		
-		sessionFactory = HibernateUtil.getSessionFactory(); 
+
+		sessionFactory = HibernateUtil.getSessionFactory();
 	}
 
 	public List<EsusAtividadeColetiva> findNaoEnviados() {
-		Transaction tx = sessionFactory.openSession()
-				.beginTransaction();
-		Query query = sessionFactory.openSession().createQuery(
-				"select ac from EsusAtividadeColetiva ac left join ac.esusTipoatividadecoletiva "
-				+ "where ac.stEnvio is null or ac.stEnvio=0");
+		Transaction tx = sessionFactory.openSession().beginTransaction();
+		Query query = sessionFactory
+				.openSession()
+				.createQuery(
+						"select ac from EsusAtividadeColetiva ac left join ac.esusTipoatividadecoletiva "
+								+ "where ac.stEnvio is null or ac.stEnvio=0");
 		List<EsusAtividadeColetiva> lista = query.list();
 		tx.commit();
 
 		return (List<EsusAtividadeColetiva>) lista;
 	}
-	
+
 	public void atualiza(EsusAtividadeColetiva entity) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		session.update(entity);
+		
+		Query query = session.createQuery("update EsusAtividadeColetiva set stEnvio=:stEnvio, dtEnvio=:dtEnvio where id = :id");
+		query.setInteger("stEnvio", 1);
+		query.setLong("id", entity.getId());
+		query.setDate("dtEnvio", entity.getDtEnvio());
+		query.executeUpdate();
 		session.beginTransaction().commit();
+
 		
 		
 	}
 
 	public List<EsusAtividadeColetivaParticipantes> findParticipantes(Long id) {
-		Transaction tx = sessionFactory.openSession()
-				.beginTransaction();
-		Query query = sessionFactory.openSession().createQuery(
-				"from EsusAtividadeColetivaParticipantes ap  inner join ap.pProntuario p where ap.esusAtividadeColetiva.id = " + id);
+		Transaction tx = sessionFactory.openSession().beginTransaction();
+		Query query = sessionFactory
+				.openSession()
+				.createQuery(
+						"from EsusAtividadeColetivaParticipantes ap  inner join ap.pProntuario p where ap.esusAtividadeColetiva.id = "
+								+ id);
 		List<EsusAtividadeColetivaParticipantes> lista = query.list();
 		tx.commit();
 
@@ -58,10 +66,10 @@ public class EsusAtividadeColetivaDao extends Dao {
 	}
 
 	public List<EsusAtividadeColetivaProfissional> findProfissionais(Long id) {
-		Transaction tx = sessionFactory.openSession()
-				.beginTransaction();
+		Transaction tx = sessionFactory.openSession().beginTransaction();
 		Query query = sessionFactory.openSession().createQuery(
-				"from EsusAtividadeColetivaProfissional ap  where ap.esusAtividadeColetiva = " + id);
+				"from EsusAtividadeColetivaProfissional ap  where ap.esusAtividadeColetiva = "
+						+ id);
 		List<EsusAtividadeColetivaProfissional> lista = query.list();
 		tx.commit();
 
