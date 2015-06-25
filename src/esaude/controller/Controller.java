@@ -33,6 +33,8 @@ public class Controller {
 					.enviaLog("Importando e Convertendo Cadastro Domiciliar");
 			List<DadoTransporteThrift> dadosTransportCadastroDomiciliar = cadastroDomiciliarService
 					.buscaRegistros();
+			TelaPrincipal
+			.enviaLog("Importando e Convertendo Atividade Coletiva");
 			List<DadoTransporteThrift> dadosTransportAtividadeColetiva = atividadeColetivaService
 					.buscaRegistros();
 			
