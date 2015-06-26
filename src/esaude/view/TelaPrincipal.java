@@ -43,7 +43,7 @@ public class TelaPrincipal extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaPrincipal.class.getResource("/imagens/network.png")));
-		setTitle("Exportador de dados para o e-SUS - v1.0");
+		setTitle("Exportador de dados para o e-SUS - v1.3");
 		setBounds(100, 100, 618, 372);
 		this.contentPane = new JPanel();
 		this.contentPane.setBackground(Color.WHITE);
