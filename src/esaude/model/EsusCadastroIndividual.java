@@ -110,7 +110,7 @@ public class EsusCadastroIndividual implements Serializable {
    private boolean estaGestante;
 
    @Column(name="st_envio")
-   private int stEnvio;
+   private Long stEnvio;
 
    @Column(name="dt_envio")
    private Date dtEnvio;
@@ -320,10 +320,10 @@ public class EsusCadastroIndividual implements Serializable {
       this.estaGestante = estaGestante;
    }
 
-   public int getStEnvio() { 
+   public Long getStEnvio() { 
       return stEnvio;
    }
-   public void  setStEnvio(int stEnvio) { 
+   public void  setStEnvio(Long stEnvio) { 
       this.stEnvio = stEnvio;
    }
 
