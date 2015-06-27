@@ -104,11 +104,13 @@ public class EsusCadastroIndividualService {
 
 	private CadastroIndividualThrift converterParaThrift(
 			EsusCadastroIndividual cad) {
-		CadastroIndividualThrift cadastroIndividualThrift = new CadastroIndividualThrift();
+		CadastroIndividualThrift c = new CadastroIndividualThrift();
 
-		cadastroIndividualThrift.setUuid(cad.getId().toString());
+		c.setUuid(cad.getId().toString());
+		
+		
 
-		return cadastroIndividualThrift;
+		return c;
 	}
 	
 }
