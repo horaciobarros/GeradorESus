@@ -1,14 +1,17 @@
 package esaude.model; 
 
 import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 import java.io.*;
 import java.util.*;
 
@@ -23,11 +26,11 @@ public class EsusAtividadeColetivaProfissional implements Serializable {
    @Column(name="id")
    private Long id;
 
-   @ManyToOne
+   @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "id_atividade_coletiva")
    private EsusAtividadeColetiva esusAtividadeColetiva;
 
-   @ManyToOne
+   @ManyToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "id_profissional")
    private CnesProfissionais cnesProfissionais;
 
