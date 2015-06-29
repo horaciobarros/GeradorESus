@@ -54,7 +54,7 @@ public class EsusCadastroIndividual implements Serializable {
    @Column(name="em_situacao_rua")
    private boolean emSituacaoRua;
 
-   @ManyToOne(fetch = FetchType.EAGER)
+   @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "tempo_situacao_rua")
    private EsusTemposituacaoderua esusTemposituacaoderua;
 
