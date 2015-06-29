@@ -72,9 +72,6 @@ public class CnesProfissionais implements Serializable {
    @JoinColumn(name = "id_usuario")
    private FrUsuario frUsuario;
 
-   @Column(name="tmp_prof")
-   private String tmpProf;
-
    public Long getId() { 
       return id;
    }
@@ -195,12 +192,6 @@ public class CnesProfissionais implements Serializable {
       this.frUsuario = frUsuario;
    }
 
-   public String getTmpProf() { 
-      return tmpProf;
-   }
-   public void  setTmpProf(String tmpProf) { 
-      this.tmpProf = tmpProf;
-   }
 
    @Override 
    public int hashCode() { 
@@ -223,7 +214,6 @@ public class CnesProfissionais implements Serializable {
       result = prime * result + ((numRegistro == null) ? 0 : numRegistro.hashCode());
       result = prime * result + ((email == null) ? 0 : email.hashCode());
       result = prime * result + ((frUsuario == null) ? 0 : frUsuario.hashCode());
-      result = prime * result + ((tmpProf == null) ? 0 : tmpProf.hashCode());
       return result;
    }
 
@@ -286,9 +276,6 @@ public class CnesProfissionais implements Serializable {
        }
       if (frUsuario == null) {
           if (other.frUsuario != null) return false;
-       }
-      if (tmpProf == null) {
-          if (other.tmpProf != null) return false;
        }
       return true;
    }
