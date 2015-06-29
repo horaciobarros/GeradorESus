@@ -1,6 +1,7 @@
 package esaude.view;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +18,7 @@ import javax.swing.text.DefaultCaret;
 
 import esaude.controller.Controller;
 import esaude.util.LookAndFeel;
+
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class TelaPrincipal extends JFrame {
@@ -89,7 +91,9 @@ public class TelaPrincipal extends JFrame {
 	}
 
 	private void enviar() {
+		this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		controller.geraArquivos();
+		this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
 
 	public static void enviaLog(String log){
