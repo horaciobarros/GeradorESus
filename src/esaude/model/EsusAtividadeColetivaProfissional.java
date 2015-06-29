@@ -26,11 +26,11 @@ public class EsusAtividadeColetivaProfissional implements Serializable {
    @Column(name="id")
    private Long id;
 
-   @ManyToOne(fetch = FetchType.EAGER)
+   @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "id_atividade_coletiva")
    private EsusAtividadeColetiva esusAtividadeColetiva;
 
-   @ManyToOne(fetch = FetchType.EAGER)
+   @ManyToOne(fetch = FetchType.LAZY, optional = true)
    @JoinColumn(name = "id_profissional")
    private CnesProfissionais cnesProfissionais;
 
