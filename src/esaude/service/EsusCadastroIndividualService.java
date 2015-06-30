@@ -10,6 +10,9 @@ import org.apache.log4j.Logger;
 import org.hibernate.exception.JDBCConnectionException;
 
 import br.gov.saude.esus.cds.transport.generated.thrift.cadastroindividual.CadastroIndividualThrift;
+import br.gov.saude.esus.cds.transport.generated.thrift.cadastroindividual.CondicoesDeSaudeThrift;
+import br.gov.saude.esus.cds.transport.generated.thrift.cadastroindividual.EmSituacaoDeRuaThrift;
+import br.gov.saude.esus.cds.transport.generated.thrift.common.HeaderCdsCadastroThrift;
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 import esaude.dao.EsusCadastroIndividualDao;
 import esaude.model.EsusCadastroIndividual;
@@ -108,8 +111,41 @@ public class EsusCadastroIndividualService {
 
 		c.setUuid(cad.getId().toString());
 		
+		CondicoesDeSaudeThrift condicoesDeSaude = new CondicoesDeSaudeThrift();
+		condicoesDeSaude.setStatusEhDependenteAlcool(cad.getDependenteAlcool());
+		condicoesDeSaude.setStatusEhDependenteAlcoolIsSet(true);
+		condicoesDeSaude.setStatusEhDependenteOutrasDrogas(cad.getDependenteDroga());
+		condicoesDeSaude.setStatusEhDependenteOutrasDrogasIsSet(true);
+		condicoesDeSaude.setStatusEhFumante(cad.getEstaFumante());
+		condicoesDeSaude.setStatusEhFumanteIsSet(true);
+		condicoesDeSaude.setStatusEhGestante(cad.getEstaGestante());
+		condicoesDeSaude.setStatusEhGestanteIsSet(true);
+		condicoesDeSaude.setStatusTemDiabetes(cad.getDiabete());
+		condicoesDeSaude.setStatusTemDiabetesIsSet(true);
+		c.setCondicoesDeSaude(condicoesDeSaude);
+		c.setCondicoesDeSaudeIsSet(true);
 		
-
+		HeaderCdsCadastroThrift dadosGerais = new HeaderCdsCadastroThrift();
+		dadosGerais.setCnesUnidadeSaude(cad.getCnesUnidade());
+		dadosGerais.setCnesUnidadeSaudeIsSet(true);
+		dadosGerais.setCnsProfissional(cad.getCnsProfissional());
+		dadosGerais.setCnsProfissionalIsSet(true);
+		dadosGerais.setCodigoIbgeMunicipio(cad.getPProntuario().getPMunicipio().getCoMunicipio());
+		dadosGerais.setCodigoIbgeMunicipioIsSet(true);
+		dadosGerais.setDataAtendimento(cad.getDataAtendimento().getTime());
+		dadosGerais.setDataAtendimentoIsSet(true);
+		dadosGerais.setIneEquipe(cad.getIneEquipe());
+		dadosGerais.setIneEquipeIsSet(true);
+		dadosGerais.setMicroarea(cad.getMicroarea());
+		dadosGerais.setMicroareaIsSet(true);
+		c.setDadosGerais(dadosGerais);
+		c.setDadosGeraisIsSet(true);
+		
+		EmSituacaoDeRuaThrift emSituacaoDeRua = new EmSituacaoDeRuaThrift();
+		
+		
+		c.setEmSituacaoDeRua(emSituacaoDeRua);
+		c.setEmSituacaoDeRuaIsSet(true);
 		return c;
 	}
 	
