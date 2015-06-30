@@ -49,7 +49,7 @@ public class EsusCadastroIndividualService {
 
 			for (EsusCadastroIndividual cad : dao.findNaoEnviados()) {
 				try {
-					CadastroIndividualThrift thriftCadastroDomiciliar = converterParaThrift(cad);
+					CadastroIndividualThrift thriftCadastroIndividual = converterParaThrift(cad);
 
 					InformacoesEnvioDto informacoesEnvioDto = new InformacoesEnvioDto();
 
@@ -57,7 +57,7 @@ public class EsusCadastroIndividualService {
 
 					// Passo 2: serializar o thrift
 					dadoSerializado = ThriftSerializer
-							.serialize(thriftCadastroDomiciliar);
+							.serialize(thriftCadastroIndividual);
 
 					// Passo 3: coletar as informações do envio
 					informacoesEnvioDto.setTipoDadoSerializado(7l);
