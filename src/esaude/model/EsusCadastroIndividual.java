@@ -26,7 +26,7 @@ public class EsusCadastroIndividual implements Serializable {
    @Column(name="id")
    private Long id;
 
-   @ManyToOne
+   @ManyToOne(optional = true)
    @JoinColumn(name = "id_prontuario")
    private PProntuario pProntuario;
 

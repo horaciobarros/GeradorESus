@@ -12,6 +12,8 @@ import org.hibernate.exception.JDBCConnectionException;
 import br.gov.saude.esus.cds.transport.generated.thrift.cadastroindividual.CadastroIndividualThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.cadastroindividual.CondicoesDeSaudeThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.cadastroindividual.EmSituacaoDeRuaThrift;
+import br.gov.saude.esus.cds.transport.generated.thrift.cadastroindividual.IdentificacaoUsuarioCidadaoThrift;
+import br.gov.saude.esus.cds.transport.generated.thrift.cadastroindividual.InformacoesSocioDemograficasThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.common.HeaderCdsCadastroThrift;
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 import esaude.dao.EsusCadastroIndividualDao;
@@ -83,6 +85,8 @@ public class EsusCadastroIndividualService {
 					cad.setDtEnvio(new Date());
 					cad.setStEnvio(Long.valueOf(1));
 					dao.atualiza(cad);
+					
+					System.out.println("Cadastro individual:" + cad.getId());
 
 				} catch (JDBCConnectionException e) {
 					log.info(e.getMessage());
@@ -141,11 +145,22 @@ public class EsusCadastroIndividualService {
 		c.setDadosGerais(dadosGerais);
 		c.setDadosGeraisIsSet(true);
 		
-		EmSituacaoDeRuaThrift emSituacaoDeRua = new EmSituacaoDeRuaThrift();
+		IdentificacaoUsuarioCidadaoThrift identificacao = new IdentificacaoUsuarioCidadaoThrift();
+		identificacao.setCodigoIbgeMunicipioNascimento(cad.getPProntuario().getCoMunicipioNasc());
+		identificacao.setCodigoIbgeMunicipioNascimentoIsSet(true);
+		identificacao.setDataNascimentoCidadao(cad.getPProntuario().getDtNascimento().getTime());
+		identificacao.setDataNascimentoCidadaoIsSet(true);
+		identificacao.setNomeCidadao(cad.getPProntuario().getNomeSocial());
+		identificacao.setNomeCidadaoIsSet(true);
+		identificacao.setNomeMaeCidadao(cad.getPProntuario().getNoMae());
+		identificacao.setNomeMaeCidadaoIsSet(true);
+		c.setIdentificacaoUsuarioCidadao(identificacao);
 		
 		
-		c.setEmSituacaoDeRua(emSituacaoDeRua);
-		c.setEmSituacaoDeRuaIsSet(true);
+		InformacoesSocioDemograficasThrift informacoesSocioDemograficas = new InformacoesSocioDemograficasThrift();
+		c.setInformacoesSocioDemograficas(informacoesSocioDemograficas);
+		
+		
 		return c;
 	}
 	

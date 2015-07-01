@@ -82,6 +82,17 @@ public class HibernateUtil {
 				configuration.addAnnotatedClass(esaude.model.PRacaCor.class);
 				configuration
 						.addAnnotatedClass(esaude.model.EsusTipoatividadecoletiva.class);
+				configuration
+				.addAnnotatedClass(esaude.model.EsusCadastroIndividual.class);
+				
+				configuration
+				.addAnnotatedClass(esaude.model.EsusTemposituacaoderua.class);
+				
+				configuration
+				.addAnnotatedClass(esaude.model.PProntuario.class);
+
+
+
 
 				SessionFactory sessionFactory = configuration.configure(file)
 						.buildSessionFactory();

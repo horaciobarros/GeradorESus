@@ -25,7 +25,7 @@ public class EsusCadastroIndividualDao extends Dao {
 		Query query = sessionFactory
 				.openSession()
 				.createQuery(
-						"select ci from EsusCadastroIndividual ci  "
+						"from EsusCadastroIndividual ci  left outer join fetch ci.pProntuario pp "
 								+ "where ci.stEnvio is null or ci.stEnvio=0");
 		List<EsusCadastroIndividual> lista = query.list();
 		tx.commit();
