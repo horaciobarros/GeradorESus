@@ -117,8 +117,26 @@ public class EsusCadastroIndividual implements Serializable {
 
    @Column(name="dt_envio")
    private Date dtEnvio;
+   
+   @Column(name="ficha_atualizada")
+   private Boolean fichaAtualizada;
 
-   public Long getId() { 
+   public PProntuario getpProntuario() {
+	return pProntuario;
+}
+public void setpProntuario(PProntuario pProntuario) {
+	this.pProntuario = pProntuario;
+}
+public boolean isFichaAtualizada() {
+	if (fichaAtualizada == null) {
+		return false;
+	}
+	return fichaAtualizada;
+}
+public void setFichaAtualizada(boolean fichaAtualizada) {
+	this.fichaAtualizada = fichaAtualizada;
+}
+public Long getId() { 
       return id;
    }
    public void  setId(Long id) { 

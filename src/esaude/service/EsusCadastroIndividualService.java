@@ -162,6 +162,8 @@ public class EsusCadastroIndividualService {
 		c.setTpCdsOrigem(3);
 		c.setTpCdsOrigemIsSet(true);
 		
+		c.setFichaAtualizada(cad.isFichaAtualizada());
+		c.setFichaAtualizadaIsSet(true);
 		
 		return c;
 	}
