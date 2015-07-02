@@ -153,6 +153,8 @@ public class EsusAtividadeColetivaService {
 			ficha.setLocalAtividade(cad.getLocalAtividade());
 			ficha.setLocalAtividadeIsSet(true);
 			ficha.setResponsavelCnesUnidadeIsSet(true);
+			ficha.setTbCdsOrigem(3);
+			ficha.setTbCdsOrigemIsSet(true);
 		} catch (Exception e) {
 		}
 

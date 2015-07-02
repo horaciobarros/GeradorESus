@@ -159,6 +159,9 @@ public class EsusCadastroIndividualService {
 		InformacoesSocioDemograficasThrift informacoesSocioDemograficas = new InformacoesSocioDemograficasThrift();
 		c.setInformacoesSocioDemograficas(informacoesSocioDemograficas);
 		
+		c.setTpCdsOrigem(3);
+		c.setTpCdsOrigemIsSet(true);
+		
 		
 		return c;
 	}

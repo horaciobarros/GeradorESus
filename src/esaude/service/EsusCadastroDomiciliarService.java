@@ -206,8 +206,9 @@ public class EsusCadastroDomiciliarService {
 		cadastroDomiciliarThrift
 				.setStatusTermoRecusaCadastroDomiciliarAtencaoBasica(cad
 						.getStRecusaCadastro());
-		cadastroDomiciliarThrift.setTpCdsOrigemIsSet(false);
-		cadastroDomiciliarThrift.setTpCdsOrigem(0);
+		cadastroDomiciliarThrift.setTpCdsOrigemIsSet(true);
+		cadastroDomiciliarThrift.setTpCdsOrigem(3);
+		
 
 		return cadastroDomiciliarThrift;
 	}
