@@ -43,7 +43,7 @@ public class EsusCadastroIndividual implements Serializable {
    private Date dataAtendimento;
 
    @Column(name="microarea")
-   private int microarea;
+   private Long microarea;
 
    @Column(name="frequenta_escola")
    private boolean frequentaEscola;
@@ -161,10 +161,10 @@ public class EsusCadastroIndividual implements Serializable {
       this.dataAtendimento = dataAtendimento;
    }
 
-   public int getMicroarea() { 
+   public Long getMicroarea() { 
       return microarea;
    }
-   public void  setMicroarea(int microarea) { 
+   public void  setMicroarea(Long microarea) { 
       this.microarea = microarea;
    }
 

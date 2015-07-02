@@ -140,7 +140,6 @@ public class EsusCadastroIndividualService {
 		dadosGerais.setDataAtendimentoIsSet(true);
 		dadosGerais.setIneEquipe(cad.getIneEquipe());
 		dadosGerais.setIneEquipeIsSet(true);
-		dadosGerais.setMicroarea(cad.getMicroarea());
 		dadosGerais.setMicroareaIsSet(true);
 		c.setDadosGerais(dadosGerais);
 		c.setDadosGeraisIsSet(true);

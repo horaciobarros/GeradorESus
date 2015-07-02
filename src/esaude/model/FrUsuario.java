@@ -20,7 +20,7 @@ public class FrUsuario implements Serializable {
 
    @Id
    @Column(name="usr_codigo")
-   private String usrCodigo;
+   private Long usrCodigo;
 
    @Column(name="usr_login")
    private String usrLogin;
@@ -55,10 +55,10 @@ public class FrUsuario implements Serializable {
    @Column(name="usr_inicio_expiracao")
    private Date usrInicioExpiracao;
 
-   public String getUsrCodigo() { 
+   public Long getUsrCodigo() { 
       return usrCodigo;
    }
-   public void  setUsrCodigo(String usrCodigo) { 
+   public void  setUsrCodigo(Long usrCodigo) { 
       this.usrCodigo = usrCodigo;
    }
 

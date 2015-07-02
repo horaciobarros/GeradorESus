@@ -34,19 +34,19 @@ public class EsusCondicoesdesaude implements Serializable {
    private String descricaoplantasmedicinaisusadas;
 
    @Column(name="doencacardiaca")
-   private int doencacardiaca;
+   private Long doencacardiaca;
 
    @Column(name="doencarespiratoria")
-   private int doencarespiratoria;
+   private Long doencarespiratoria;
 
    @Column(name="doencarins")
-   private int doencarins;
+   private Long doencarins;
 
    @Column(name="maternidadedereferencia")
    private String maternidadedereferencia;
 
    @Column(name="situacaopeso")
-   private int situacaopeso;
+   private Long situacaopeso;
 
    @Column(name="statusehdependentealcool")
    private boolean statusehdependentealcool;
@@ -143,24 +143,24 @@ public class EsusCondicoesdesaude implements Serializable {
       this.descricaoplantasmedicinaisusadas = descricaoplantasmedicinaisusadas;
    }
 
-   public int getDoencacardiaca() { 
+   public Long getDoencacardiaca() { 
       return doencacardiaca;
    }
-   public void  setDoencacardiaca(int doencacardiaca) { 
+   public void  setDoencacardiaca(Long doencacardiaca) { 
       this.doencacardiaca = doencacardiaca;
    }
 
-   public int getDoencarespiratoria() { 
+   public Long getDoencarespiratoria() { 
       return doencarespiratoria;
    }
-   public void  setDoencarespiratoria(int doencarespiratoria) { 
+   public void  setDoencarespiratoria(Long doencarespiratoria) { 
       this.doencarespiratoria = doencarespiratoria;
    }
 
-   public int getDoencarins() { 
+   public Long getDoencarins() { 
       return doencarins;
    }
-   public void  setDoencarins(int doencarins) { 
+   public void  setDoencarins(Long doencarins) { 
       this.doencarins = doencarins;
    }
 
@@ -171,10 +171,10 @@ public class EsusCondicoesdesaude implements Serializable {
       this.maternidadedereferencia = maternidadedereferencia;
    }
 
-   public int getSituacaopeso() { 
+   public Long getSituacaopeso() { 
       return situacaopeso;
    }
-   public void  setSituacaopeso(int situacaopeso) { 
+   public void  setSituacaopeso(Long situacaopeso) { 
       this.situacaopeso = situacaopeso;
    }
 

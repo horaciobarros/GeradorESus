@@ -20,7 +20,7 @@ public class PProntuario implements Serializable {
 
    @Id
    @Column(name="co_prontuario")
-   private int coProntuario;
+   private Long coProntuario;
 
    @Column(name="co_usuario")
    private String coUsuario;
@@ -204,10 +204,10 @@ public class PProntuario implements Serializable {
    @Column(name="mae_desconhecida")
    private Long maeDesconhecida;
 
-   public int getCoProntuario() { 
+   public Long getCoProntuario() { 
       return coProntuario;
    }
-   public void  setCoProntuario(int coProntuario) { 
+   public void  setCoProntuario(Long coProntuario) { 
       this.coProntuario = coProntuario;
    }
 

@@ -91,6 +91,8 @@ public class HibernateUtil {
 				configuration
 				.addAnnotatedClass(esaude.model.PProntuario.class);
 
+				configuration
+				.addAnnotatedClass(esaude.model.FrUsuario.class);
 
 
 

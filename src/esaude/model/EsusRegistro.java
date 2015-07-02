@@ -56,7 +56,7 @@ public class EsusRegistro implements Serializable {
    private String remUuidinstalacao;
 
    @Column(name="lote")
-   private int lote;
+   private Long lote;
 
    public Long getId() { 
       return id;
@@ -149,10 +149,10 @@ public class EsusRegistro implements Serializable {
       this.remUuidinstalacao = remUuidinstalacao;
    }
 
-   public int getLote() { 
+   public Long getLote() { 
       return lote;
    }
-   public void  setLote(int lote) { 
+   public void  setLote(Long lote) { 
       this.lote = lote;
    }
 

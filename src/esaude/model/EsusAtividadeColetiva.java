@@ -60,9 +60,6 @@ public class EsusAtividadeColetiva implements Serializable {
    @JoinColumn(name = "id_tipoatividadecoletiva")
    private EsusTipoatividadecoletiva esusTipoatividadecoletiva;
 
-   @Column(name="ibge_municipio")
-   private String ibgeMunicipio;
-
    @Column(name="st_envio")
    private Long stEnvio;
 
@@ -180,13 +177,6 @@ public Long getId() {
    }
    public void  setEsusTipoatividadecoletiva(EsusTipoatividadecoletiva esusTipoatividadecoletiva) { 
       this.esusTipoatividadecoletiva = esusTipoatividadecoletiva;
-   }
-
-   public String getIbgeMunicipio() { 
-      return ibgeMunicipio;
-   }
-   public void  setIbgeMunicipio(String ibgeMunicipio) { 
-      this.ibgeMunicipio = ibgeMunicipio;
    }
 
    public Long getStEnvio() { 

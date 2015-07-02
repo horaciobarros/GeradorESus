@@ -83,6 +83,8 @@ public class EsusAtividadeColetivaService {
 					cad.setDtEnvio(new Date());
 					cad.setStEnvio(Long.valueOf(1));
 					dao.atualiza(cad);
+					
+					System.out.println("Atividade coletiva -->" + cad.getId());
 
 				} catch (JDBCConnectionException e) {
 					log.info(e.getMessage());
@@ -119,7 +121,6 @@ public class EsusAtividadeColetivaService {
 		List<ProfissionalCboRowItemThrift> profissionaisThrift = converteProfissionais(profissionais);
 		ficha.setProfissionais(profissionaisThrift);
 
-		ficha.setCodigoIbgeMunicipio(cad.getIbgeMunicipio());
 		try {
 			ficha.setAtividadeTipo(cad.getEsusTipoatividadecoletiva().getId());
 		} catch (Exception e) {
@@ -144,7 +145,6 @@ public class EsusAtividadeColetivaService {
 		try {
 
 			ficha.setResponsavelCnesUnidade(cad.getCnsResponsavel());
-			ficha.setCodigoIbgeMunicipio(cad.getIbgeMunicipio());
 			ficha.setCodigoIbgeMunicipioIsSet(true);
 			ficha.setDtAtividadeColetiva(cad.getDtAtividade().getTime());
 			ficha.setDtAtividadeColetivaIsSet(true);
@@ -181,8 +181,6 @@ public class EsusAtividadeColetivaService {
 			ParticipanteRowItemThrift item = new ParticipanteRowItemThrift();
 			item.setAbandonouGrupo(part.getAbandonouGrupo());
 			item.setAbandonouGrupoIsSet(true);
-			item.setAltura(part.getAltura());
-			item.setAlturaIsSet(true);
 			item.setAvaliacaoAlterada(part.getAvaliacaoAlterada());
 			item.setAvaliacaoAlteradaIsSet(true);
 			item.setCessouHabitoFumar(part.getCessouHabitoFumar());

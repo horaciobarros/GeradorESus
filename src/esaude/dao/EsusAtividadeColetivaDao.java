@@ -57,7 +57,7 @@ public class EsusAtividadeColetivaDao extends Dao {
 		Query query = sessionFactory
 				.openSession()
 				.createQuery(
-						"from EsusAtividadeColetivaParticipantes ap  inner join ap.pProntuario p where ap.esusAtividadeColetiva.id = "
+						"from EsusAtividadeColetivaParticipantes pa where pa.id = "
 								+ id);
 		List<EsusAtividadeColetivaParticipantes> lista = query.list();
 		tx.commit();
