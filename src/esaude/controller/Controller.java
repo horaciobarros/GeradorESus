@@ -1,3 +1,15 @@
+/**
+ * Ficha de Cadastro Individual	2 L	
+	Ficha de Cadastro Domiciliar	3 L	
+ 	Ficha de Atendimento Individual	4 L	
+ 	Ficha de Atendimento Odontológico	5 L	
+ 	Ficha de Atividade Coletiva	6 L	
+ 	Ficha de Procedimentos	7 L	
+ 	Ficha de Visita Domiciliar	8 L	
+ 	Atendimento realizado pelo software de prontuário 9 L
+
+ */
+
 package esaude.controller;
 
 import java.io.File;

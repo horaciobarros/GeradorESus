@@ -11,6 +11,8 @@ import br.gov.saude.esus.cds.transport.generated.thrift.atividadecoletiva.Partic
 import esaude.model.EsusAtividadeColetiva;
 import esaude.model.EsusAtividadeColetivaParticipantes;
 import esaude.model.EsusAtividadeColetivaProfissional;
+import esaude.model.EsusAtividadeColetivaPublico;
+import esaude.model.EsusAtividadeColetivaTemas;
 import esaude.model.PProntuario;
 import esaude.util.HibernateUtil;
 
@@ -57,7 +59,7 @@ public class EsusAtividadeColetivaDao extends Dao {
 		Query query = sessionFactory
 				.openSession()
 				.createQuery(
-						"from EsusAtividadeColetivaParticipantes pa where pa.id = "
+						"from EsusAtividadeColetivaParticipantes pa where pa.esusAtividadeColetiva.id = "
 								+ id);
 		List<EsusAtividadeColetivaParticipantes> lista = query.list();
 		tx.commit();
@@ -68,12 +70,36 @@ public class EsusAtividadeColetivaDao extends Dao {
 	public List<EsusAtividadeColetivaProfissional> findProfissionais(Long id) {
 		Transaction tx = sessionFactory.openSession().beginTransaction();
 		Query query = sessionFactory.openSession().createQuery(
-				"from EsusAtividadeColetivaProfissional ap  where ap.esusAtividadeColetiva = "
+				"from EsusAtividadeColetivaProfissional ap  where ap.esusAtividadeColetiva.id = "
 						+ id);
 		List<EsusAtividadeColetivaProfissional> lista = query.list();
 		tx.commit();
 
 		return lista;
 	}
+	
+	public List<EsusAtividadeColetivaTemas> findTemas(Long id) {
+		Transaction tx = sessionFactory.openSession().beginTransaction();
+		Query query = sessionFactory.openSession().createQuery(
+				"from EsusAtividadeColetivaTemas at join fetch at.esusTemasparareuniao where at.esusAtividadeColetiva.id = "
+						+ id);
+		List<EsusAtividadeColetivaTemas> lista = query.list();
+		tx.commit();
+
+		return lista;
+	}
+
+	public List<EsusAtividadeColetivaPublico> findPublico(Long id) {
+		Transaction tx = sessionFactory.openSession().beginTransaction();
+		Query query = sessionFactory.openSession().createQuery(
+				"from EsusAtividadeColetivaPublico ap join fetch ap.esusPublicoalvo where ap.esusAtividadeColetiva.id = "
+						+ id);
+		List<EsusAtividadeColetivaPublico> lista = query.list();
+		tx.commit();
+
+		return lista;
+	}
+	
+	
 
 }
