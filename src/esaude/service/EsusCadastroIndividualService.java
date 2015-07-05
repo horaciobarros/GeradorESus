@@ -18,7 +18,10 @@ import br.gov.saude.esus.cds.transport.generated.thrift.common.HeaderCdsCadastro
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 import esaude.dao.EsusCadastroIndividualDao;
 import esaude.model.EsusCadastroIndividual;
+import esaude.model.EsusCadastroIndividualDeficiencia;
+import esaude.model.EsusCadastroIndividualHigienepessoalsituacaorua;
 import esaude.model.EsusRegistro;
+import esaude.model.SisRegistro;
 import esaude.util.InformacoesEnvio;
 import esaude.util.InformacoesEnvioDto;
 import esaude.util.ThriftSerializer;
@@ -29,26 +32,33 @@ public class EsusCadastroIndividualService {
 			.getName());
 	private EsusCadastroIndividualDao dao = new EsusCadastroIndividualDao();
 	private EsusRegistro esusRegistro = new EsusRegistro();
+	private SisRegistro sisRegistro = new SisRegistro();
 
 	public List<EsusCadastroIndividual> findNaoEnvidados() {
 		return dao.findNaoEnviados();
 	}
 
 	public List<DadoTransporteThrift> buscaRegistros() {
-		
+
 		EsusRegistroServiceImpl esusRegistroService = new EsusRegistroServiceImpl();
 		try {
-			esusRegistro = esusRegistroService
-					.buscaEsusRegistro();
+			esusRegistro = esusRegistroService.buscaEsusRegistro();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null,
-					"Esus registro não encontrado");
+			JOptionPane.showMessageDialog(null, "Esus registro não encontrado");
+			throw e;
+		}
+		SisRegistroService sisRegistroService = new SisRegistroService();
+		try {
+			sisRegistro = sisRegistroService.buscaSisRegistro();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Sisregistro não encontrado");
 			throw e;
 		}
 
 		log.info(new Date() + " -- Gerando Cadastro individual -------");
-		TelaPrincipal.enviaLog(new Date() + " -- Gerando Cadastro individual -------");
-		
+		TelaPrincipal.enviaLog(new Date()
+				+ " -- Gerando Cadastro individual -------");
+
 		List<DadoTransporteThrift> dados = new ArrayList<DadoTransporteThrift>();
 		try {
 
@@ -78,24 +88,31 @@ public class EsusCadastroIndividualService {
 					// informadosÃ§Ãµeso
 					// coletadas;
 					DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio
-							.getInfoInstalacao(informacoesEnvioDto, esusRegistro);
-					
+							.getInfoInstalacao(informacoesEnvioDto,
+									esusRegistro);
+
 					dados.add(dadoTransporteThrift);
+					
+					log.info(new Date() + " -- Gerando cadastro Individual --> "
+							+ cad.getId() + " - " + cad.getId());
+					System.out.println("Gerando cadastro Individual --> " + cad.getId()
+							);
+
 
 					cad.setDtEnvio(new Date());
 					cad.setStEnvio(Long.valueOf(1));
 					dao.atualiza(cad);
-					
+
 					System.out.println("Cadastro individual:" + cad.getId());
 
 				} catch (JDBCConnectionException e) {
 					log.info(e.getMessage());
 					e.printStackTrace();
-					TelaPrincipal.enviaLog(new Date()+" - "+e.getMessage());
+					TelaPrincipal.enviaLog(new Date() + " - " + e.getMessage());
 				} catch (Exception e) {
 					log.info(e.getMessage());
 					e.printStackTrace();
-					TelaPrincipal.enviaLog(new Date()+" - "+e.getMessage());
+					TelaPrincipal.enviaLog(new Date() + " - " + e.getMessage());
 				}
 			}
 
@@ -114,11 +131,12 @@ public class EsusCadastroIndividualService {
 		CadastroIndividualThrift c = new CadastroIndividualThrift();
 
 		c.setUuid(cad.getId().toString());
-		
+
 		CondicoesDeSaudeThrift condicoesDeSaude = new CondicoesDeSaudeThrift();
 		condicoesDeSaude.setStatusEhDependenteAlcool(cad.getDependenteAlcool());
 		condicoesDeSaude.setStatusEhDependenteAlcoolIsSet(true);
-		condicoesDeSaude.setStatusEhDependenteOutrasDrogas(cad.getDependenteDroga());
+		condicoesDeSaude.setStatusEhDependenteOutrasDrogas(cad
+				.getDependenteDroga());
 		condicoesDeSaude.setStatusEhDependenteOutrasDrogasIsSet(true);
 		condicoesDeSaude.setStatusEhFumante(cad.getEstaFumante());
 		condicoesDeSaude.setStatusEhFumanteIsSet(true);
@@ -128,13 +146,14 @@ public class EsusCadastroIndividualService {
 		condicoesDeSaude.setStatusTemDiabetesIsSet(true);
 		c.setCondicoesDeSaude(condicoesDeSaude);
 		c.setCondicoesDeSaudeIsSet(true);
-		
+
 		HeaderCdsCadastroThrift dadosGerais = new HeaderCdsCadastroThrift();
 		dadosGerais.setCnesUnidadeSaude(cad.getCnesUnidade());
 		dadosGerais.setCnesUnidadeSaudeIsSet(true);
 		dadosGerais.setCnsProfissional(cad.getCnsProfissional());
 		dadosGerais.setCnsProfissionalIsSet(true);
-		dadosGerais.setCodigoIbgeMunicipio(cad.getPProntuario().getPMunicipio().getCoMunicipio());
+		dadosGerais.setCodigoIbgeMunicipio(cad.getPProntuario().getPMunicipio()
+				.getCoMunicipio());
 		dadosGerais.setCodigoIbgeMunicipioIsSet(true);
 		dadosGerais.setDataAtendimento(cad.getDataAtendimento().getTime());
 		dadosGerais.setDataAtendimentoIsSet(true);
@@ -143,29 +162,87 @@ public class EsusCadastroIndividualService {
 		dadosGerais.setMicroareaIsSet(true);
 		c.setDadosGerais(dadosGerais);
 		c.setDadosGeraisIsSet(true);
-		
+
 		IdentificacaoUsuarioCidadaoThrift identificacao = new IdentificacaoUsuarioCidadaoThrift();
-		identificacao.setCodigoIbgeMunicipioNascimento(cad.getPProntuario().getCoMunicipioNasc());
+		identificacao.setCodigoIbgeMunicipioNascimento(cad.getPProntuario()
+				.getCoMunicipioNasc());
 		identificacao.setCodigoIbgeMunicipioNascimentoIsSet(true);
-		identificacao.setDataNascimentoCidadao(cad.getPProntuario().getDtNascimento().getTime());
+		identificacao.setDataNascimentoCidadao(cad.getPProntuario()
+				.getDtNascimento().getTime());
 		identificacao.setDataNascimentoCidadaoIsSet(true);
 		identificacao.setNomeCidadao(cad.getPProntuario().getNomeSocial());
 		identificacao.setNomeCidadaoIsSet(true);
 		identificacao.setNomeMaeCidadao(cad.getPProntuario().getNoMae());
 		identificacao.setNomeMaeCidadaoIsSet(true);
+		identificacao.setRacaCorCidadao(Long.valueOf(cad.getPProntuario()
+				.getPRacaCor().getCoRaca()));
+		identificacao.setRacaCorCidadaoIsSet(true);
+		Long sexo = new Long(0);
+		if (cad.getpProntuario().getCoSexo().equals("M")) {
+			sexo = Long.valueOf(2);
+		} else {
+			sexo = Long.valueOf(1);
+		}
+		identificacao.setSexoCidadao(sexo);
+		identificacao.setSexoCidadaoIsSet(true);
 		c.setIdentificacaoUsuarioCidadao(identificacao);
-		
-		
+
 		InformacoesSocioDemograficasThrift informacoesSocioDemograficas = new InformacoesSocioDemograficasThrift();
+		List<Long> deficiencias = buscaDeficienciasCidadao(cad);
+		informacoesSocioDemograficas.setDeficienciasCidadao(deficiencias);
+		informacoesSocioDemograficas.setDeficienciasCidadaoIsSet(true);
+		informacoesSocioDemograficas.setStatusFrequentaEscola(cad
+				.getFrequentaEscola());
+		informacoesSocioDemograficas.setStatusFrequentaEscolaIsSet(true);
+		informacoesSocioDemograficas
+				.setStatusTemAlgumaDeficiencia(deficiencias != null
+						&& deficiencias.size() >= 0);
+		informacoesSocioDemograficas
+				.setStatusTemAlgumaDeficienciaIsSet(deficiencias != null
+						&& deficiencias.size() >= 0);
 		c.setInformacoesSocioDemograficas(informacoesSocioDemograficas);
-		
+
+		EmSituacaoDeRuaThrift emSituacaoDeRua = new EmSituacaoDeRuaThrift();
+		emSituacaoDeRua.setStatusSituacaoRua(cad.getEmSituacaoRua());
+		emSituacaoDeRua.setStatusSituacaoRuaIsSet(true);
+		emSituacaoDeRua.setGrauParentescoFamiliarFrequentado(cad
+				.getGrauParentescoFamiliarFreq());
+		emSituacaoDeRua.setGrauParentescoFamiliarFrequentadoIsSet(true);
+		try {
+			emSituacaoDeRua.setHigienePessoalSituacaoRua(buscaHigiente(cad));
+			emSituacaoDeRua.setHigienePessoalSituacaoRuaIsSet(true);
+		} catch (Exception e) {
+
+		}
+		c.setEmSituacaoDeRua(emSituacaoDeRua);
+
 		c.setTpCdsOrigem(3);
 		c.setTpCdsOrigemIsSet(true);
-		
+
 		c.setFichaAtualizada(cad.isFichaAtualizada());
 		c.setFichaAtualizadaIsSet(true);
-		
+
 		return c;
 	}
-	
+
+	private List<Long> buscaHigiente(EsusCadastroIndividual cad) {
+		List<Long> lista = new ArrayList<Long>();
+
+		for (EsusCadastroIndividualHigienepessoalsituacaorua cid : dao
+				.findHigiene(cad.getId())) {
+			lista.add(cid.getEsusAcessohigiene().getId());
+		}
+		return lista;
+	}
+
+	private List<Long> buscaDeficienciasCidadao(EsusCadastroIndividual cad) {
+		List<Long> lista = new ArrayList<Long>();
+
+		for (EsusCadastroIndividualDeficiencia cid : dao.findDeficiencias(cad
+				.getId())) {
+			lista.add(cid.getEsusDeficienciacidadao().getId());
+		}
+		return lista;
+	}
+
 }

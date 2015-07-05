@@ -20,14 +20,16 @@ public class EsusAtividadeColetivaDao extends Dao {
 
 	StringBuilder hql;
 	private SessionFactory sessionFactory;
+	private Session session;
 
 	public EsusAtividadeColetivaDao() {
 
 		sessionFactory = HibernateUtil.getSessionFactory();
+		session = sessionFactory.openSession();
 	}
 
 	public List<EsusAtividadeColetiva> findNaoEnviados() {
-		Transaction tx = sessionFactory.openSession().beginTransaction();
+		Transaction tx = session.beginTransaction();
 		Query query = sessionFactory
 				.openSession()
 				.createQuery(
@@ -40,7 +42,7 @@ public class EsusAtividadeColetivaDao extends Dao {
 	}
 
 	public void atualiza(EsusAtividadeColetiva entity) {
-		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
 		session.beginTransaction();
 		
 		Query query = session.createQuery("update EsusAtividadeColetiva set stEnvio=:stEnvio, dtEnvio=:dtEnvio where id = :id");
@@ -55,7 +57,7 @@ public class EsusAtividadeColetivaDao extends Dao {
 	}
 
 	public List<EsusAtividadeColetivaParticipantes> findParticipantes(Long id) {
-		Transaction tx = sessionFactory.openSession().beginTransaction();
+		Transaction tx = session.beginTransaction();
 		Query query = sessionFactory
 				.openSession()
 				.createQuery(
@@ -68,7 +70,7 @@ public class EsusAtividadeColetivaDao extends Dao {
 	}
 
 	public List<EsusAtividadeColetivaProfissional> findProfissionais(Long id) {
-		Transaction tx = sessionFactory.openSession().beginTransaction();
+		Transaction tx = session.beginTransaction();
 		Query query = sessionFactory.openSession().createQuery(
 				"from EsusAtividadeColetivaProfissional ap  where ap.esusAtividadeColetiva.id = "
 						+ id);
@@ -79,7 +81,7 @@ public class EsusAtividadeColetivaDao extends Dao {
 	}
 	
 	public List<EsusAtividadeColetivaTemas> findTemas(Long id) {
-		Transaction tx = sessionFactory.openSession().beginTransaction();
+		Transaction tx = session.beginTransaction();
 		Query query = sessionFactory.openSession().createQuery(
 				"from EsusAtividadeColetivaTemas at join fetch at.esusTemasparareuniao where at.esusAtividadeColetiva.id = "
 						+ id);
@@ -90,7 +92,7 @@ public class EsusAtividadeColetivaDao extends Dao {
 	}
 
 	public List<EsusAtividadeColetivaPublico> findPublico(Long id) {
-		Transaction tx = sessionFactory.openSession().beginTransaction();
+		Transaction tx = session.beginTransaction();
 		Query query = sessionFactory.openSession().createQuery(
 				"from EsusAtividadeColetivaPublico ap join fetch ap.esusPublicoalvo where ap.esusAtividadeColetiva.id = "
 						+ id);

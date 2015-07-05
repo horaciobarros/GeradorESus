@@ -97,10 +97,10 @@ public class EsusCadastroDomiciliarService {
 					}
 
 					dados.add(dadoTransporteThrift);
-					log.info(new Date() + " -- Gerando cadastro --> "
+					log.info(new Date() + " -- Gerando cadastro Domiciliar --> "
 							+ cad.getId() + " - " + cad.getNuDomicilio()
 							+ " - " + cad.getNoLogradouro());
-					System.out.println("Gerando cadastro --> " + cad.getId()
+					System.out.println("Gerando cadastro Domiciliar --> " + cad.getId()
 							+ " - " + cad.getNuDomicilio() + " - "
 							+ cad.getNoLogradouro());
 
@@ -151,12 +151,20 @@ public class EsusCadastroDomiciliarService {
 		try {
 			condicaoMoradia.setSituacaoMoradiaPosseTerra(cad
 					.getEsusCondicaodeposseeusodaterra().getId());
-			condicaoMoradia.setFormaEscoamentoBanheiro(cad
-					.getEsusFormadeescoamentodobanheiroousanitario().getId());
+			condicaoMoradia.setSituacaoMoradiaPosseTerraIsSet(true);
 			
 		} catch (Exception e) {
-			log.info("Condição de moradia null:" + cad.getId());
+			log.info("Condição de moradia posse por terra null:" + cad.getId());
 		}
+		try {
+			condicaoMoradia.setFormaEscoamentoBanheiro(cad
+					.getEsusFormadeescoamentodobanheiroousanitario().getId());
+			condicaoMoradia.setFormaEscoamentoBanheiroIsSet(true);
+			
+		} catch (Exception e) {
+			log.info("Condição de moradia forma escoamento banheiro:" + cad.getId());
+		}
+
 		cadastroDomiciliarThrift.setCondicaoMoradia(condicaoMoradia);
 
 		// Dados gerais
@@ -182,22 +190,22 @@ public class EsusCadastroDomiciliarService {
 		// Endereco
 		EnderecoLocalPermanenciaThrift endereco = new EnderecoLocalPermanenciaThrift();
 		endereco.setBairro(cad.getNoBairro());
-		endereco.setBairroIsSet(true);// ?? TODO
+		endereco.setBairroIsSet(true);
 		endereco.setCep(cad.getNuCep());
-		endereco.setCepIsSet(true);// ?? TODO
+		endereco.setCepIsSet(true);
 		endereco.setCodigoIbgeMunicipio(cad.getCoMunicipio());
-		endereco.setCodigoIbgeMunicipioIsSet(true);// ?? TODO
+		endereco.setCodigoIbgeMunicipioIsSet(true);
 		endereco.setComplemento(cad.getDsComplemento());
-		endereco.setComplementoIsSet(false);// ?? TODO
+		endereco.setComplementoIsSet(false);
 		endereco.setNomeLogradouro(cad.getNoLogradouro());
-		endereco.setNomeLogradouroIsSet(true);// ?? TODO
+		endereco.setNomeLogradouroIsSet(true);
 		endereco.setNumero(cad.getNuDomicilio());
 		if (cad.getNuDomicilio() == null) {
 			endereco.setNumero("SN");
 		}
-		endereco.setNumeroIsSet(true);// ?? TODO
+		endereco.setNumeroIsSet(true);
 		endereco.setTelReferencial(cad.getNuFoneReferencia());
-		endereco.setTelReferencialIsSet(false);// ?? TODO
+		endereco.setTelReferencialIsSet(false);
 		endereco.setTelResidencial(cad.getNuFoneResidencia());
 		endereco.setTelResidencialIsSet(false);
 		endereco.setTipoLogradouroNumeroDne(cad.getTpLogradouro().toString());

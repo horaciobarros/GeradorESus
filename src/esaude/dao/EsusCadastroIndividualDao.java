@@ -7,21 +7,26 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import esaude.model.EsusAtividadeColetivaPublico;
 import esaude.model.EsusCadastroIndividual;
+import esaude.model.EsusCadastroIndividualDeficiencia;
+import esaude.model.EsusCadastroIndividualHigienepessoalsituacaorua;
 import esaude.util.HibernateUtil;
 
 public class EsusCadastroIndividualDao extends Dao {
 
 	StringBuilder hql;
 	private SessionFactory sessionFactory;
+	Session session;
 
 	public EsusCadastroIndividualDao() {
 
 		sessionFactory = HibernateUtil.getSessionFactory();
+		session = sessionFactory.openSession();
 	}
 
 	public List<EsusCadastroIndividual> findNaoEnviados() {
-		Transaction tx = sessionFactory.openSession().beginTransaction();
+		Transaction tx = session.beginTransaction();
 		Query query = sessionFactory
 				.openSession()
 				.createQuery(
@@ -31,7 +36,7 @@ public class EsusCadastroIndividualDao extends Dao {
 								+ "where ci.stEnvio is null or ci.stEnvio=0");
 		List<EsusCadastroIndividual> lista = query.list();
 		tx.commit();
-
+		
 		return (List<EsusCadastroIndividual>) lista;
 	}
 
@@ -45,9 +50,30 @@ public class EsusCadastroIndividualDao extends Dao {
 		query.setDate("dtEnvio", entity.getDtEnvio());
 		query.executeUpdate();
 		session.beginTransaction().commit();
-
-		
-		
+		session.close();
 	}
+	
+	public List<EsusCadastroIndividualDeficiencia> findDeficiencias(Long id) {
+		Transaction tx = session.beginTransaction();
+		Query query = sessionFactory.openSession().createQuery(
+				"from EsusCadastroIndividualDeficiencia cid join fetch cid.esusDeficienciacidadao where cid.esusCadastroIndividual.id = "
+						+ id);
+		List<EsusCadastroIndividualDeficiencia> lista = query.list();
+		tx.commit();
+		return lista;
+	}
+	
+	public List<EsusCadastroIndividualHigienepessoalsituacaorua> findHigiene(Long id) {
+		Transaction tx = session.beginTransaction();
+		Query query = sessionFactory.openSession().createQuery(
+				"from EsusCadastroIndividualHigienepessoalsituacaorua h join fetch h.esusAcessohigiene where h.esusCadastroIndividual.id = "
+						+ id);
+		List<EsusCadastroIndividualHigienepessoalsituacaorua> lista = query.list();
+		tx.commit();
+
+		return lista;
+	}
+
+
 
 }

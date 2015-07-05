@@ -15,14 +15,16 @@ public class EsusCadastroDomiciliarDao extends Dao {
 
 	StringBuilder hql;
 	private SessionFactory sessionFactory;
+	private Session session;
 
 	public EsusCadastroDomiciliarDao() {
 		
-		sessionFactory = HibernateUtil.getSessionFactory(); 
+		sessionFactory = HibernateUtil.getSessionFactory();
+		session = sessionFactory.openSession();
 	}
 
 	public List<EsusCadastroDomiciliar> findNaoEnviados() {
-		Transaction tx = sessionFactory.openSession()
+		Transaction tx = session
 				.beginTransaction();
 		Query query = sessionFactory.openSession().createQuery(
 				"from EsusCadastroDomiciliar cd join fetch cd.esusSituacaodemoradia "
@@ -38,6 +40,7 @@ public class EsusCadastroDomiciliarDao extends Dao {
 		session.beginTransaction();
 		session.update(entity);
 		session.beginTransaction().commit();
+		session.close();
 		
 		
 	}

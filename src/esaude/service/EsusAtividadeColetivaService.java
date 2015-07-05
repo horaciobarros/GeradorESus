@@ -96,7 +96,11 @@ public class EsusAtividadeColetivaService {
 					cad.setStEnvio(Long.valueOf(1));
 					dao.atualiza(cad);
 					
-					System.out.println("Atividade coletiva -->" + cad.getId());
+					log.info(new Date() + " -- Gerando atividade coletiva  --> "
+							+ cad.getId() + " - " + cad.getId());
+					System.out.println("Gerando atividade coletiva --> " + cad.getId()
+							);
+
 
 				} catch (JDBCConnectionException e) {
 					log.info(e.getMessage());
