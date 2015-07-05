@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.exception.JDBCConnectionException;
 
 import br.gov.saude.esus.cds.transport.generated.thrift.cadastrodomiciliar.CadastroDomiciliarThrift;
+import br.gov.saude.esus.cds.transport.generated.thrift.cadastrodomiciliar.CondicaoMoradiaThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.cadastrodomiciliar.EnderecoLocalPermanenciaThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.cadastrodomiciliar.FamiliaRowThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.common.HeaderCdsCadastroThrift;
@@ -17,6 +18,7 @@ import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 import esaude.dao.EsusCadastroDomiciliarDao;
 import esaude.model.EsusCadastroDomiciliar;
 import esaude.model.EsusRegistro;
+import esaude.model.SisRegistro;
 import esaude.util.InformacoesEnvio;
 import esaude.util.InformacoesEnvioDto;
 import esaude.util.ThriftSerializer;
@@ -27,26 +29,33 @@ public class EsusCadastroDomiciliarService {
 			.getName());
 	private EsusCadastroDomiciliarDao dao = new EsusCadastroDomiciliarDao();
 	private EsusRegistro esusRegistro = new EsusRegistro();
+	private SisRegistro sisRegistro = new SisRegistro();
 
 	public List<EsusCadastroDomiciliar> findNaoEnvidados() {
 		return dao.findNaoEnviados();
 	}
 
 	public List<DadoTransporteThrift> buscaRegistros() {
-		
+
 		EsusRegistroServiceImpl esusRegistroService = new EsusRegistroServiceImpl();
 		try {
-			esusRegistro = esusRegistroService
-					.buscaEsusRegistro();
+			esusRegistro = esusRegistroService.buscaEsusRegistro();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null,
-					"Esus registro não encontrado");
+			JOptionPane.showMessageDialog(null, "Esusregistro não encontrado");
+			throw e;
+		}
+		SisRegistroService sisRegistroService = new SisRegistroService();
+		try {
+			sisRegistro = sisRegistroService.buscaSisRegistro();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Sisregistro não encontrado");
 			throw e;
 		}
 
 		log.info(new Date() + " -- Gerando Cadastro domiciliar -------");
-		TelaPrincipal.enviaLog(new Date() + " -- Gerando Cadastro domiciliar -------");
-		
+		TelaPrincipal.enviaLog(new Date()
+				+ " -- Gerando Cadastro domiciliar -------");
+
 		List<DadoTransporteThrift> dados = new ArrayList<DadoTransporteThrift>();
 		try {
 
@@ -68,7 +77,8 @@ public class EsusCadastroDomiciliarService {
 					informacoesEnvioDto.setUuidDadoSerializado(cad.getId()
 							.toString());
 					if (cad.getId() == null) {
-						log.info("UuidDadoSerializado inexistente para o endereço: " + cad.getDsComplemento());
+						log.info("UuidDadoSerializado inexistente para o endereço: "
+								+ cad.getDsComplemento());
 					}
 					informacoesEnvioDto.setIneDadoSerializado(cad
 							.getIneEquipe());
@@ -79,19 +89,21 @@ public class EsusCadastroDomiciliarService {
 					// informadosÃ§Ãµeso
 					// coletadas;
 					DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio
-							.getInfoInstalacao(informacoesEnvioDto, esusRegistro);
+							.getInfoInstalacao(informacoesEnvioDto,
+									esusRegistro);
 					if (dadoTransporteThrift.getUuidDadoSerializado() == null) {
-						log.info("UuidDadoSerializado inexistente para o complemento: " + cad.getDsComplemento());
+						log.info("UuidDadoSerializado inexistente para o complemento: "
+								+ cad.getDsComplemento());
 					}
-					
+
 					dados.add(dadoTransporteThrift);
-					log.info(new Date() + " -- Gerando cadastro --> " + cad.getId() + " - " 
-							+ cad.getNuDomicilio() + " - "
+					log.info(new Date() + " -- Gerando cadastro --> "
+							+ cad.getId() + " - " + cad.getNuDomicilio()
+							+ " - " + cad.getNoLogradouro());
+					System.out.println("Gerando cadastro --> " + cad.getId()
+							+ " - " + cad.getNuDomicilio() + " - "
 							+ cad.getNoLogradouro());
-					System.out.println("Gerando cadastro --> " + cad.getId() + " - " 
-							+ cad.getNuDomicilio() + " - "
-							+ cad.getNoLogradouro());
-					
+
 					cad.setDtEnvio(new Date());
 					cad.setStEnvio(Long.valueOf(1));
 					dao.atualiza(cad);
@@ -99,11 +111,11 @@ public class EsusCadastroDomiciliarService {
 				} catch (JDBCConnectionException e) {
 					log.info(e.getMessage());
 					e.printStackTrace();
-					TelaPrincipal.enviaLog(new Date()+" - "+e.getMessage());
+					TelaPrincipal.enviaLog(new Date() + " - " + e.getMessage());
 				} catch (Exception e) {
 					log.info(e.getMessage());
 					e.printStackTrace();
-					TelaPrincipal.enviaLog(new Date()+" - "+e.getMessage());
+					TelaPrincipal.enviaLog(new Date() + " - " + e.getMessage());
 				}
 			}
 
@@ -124,71 +136,97 @@ public class EsusCadastroDomiciliarService {
 		cadastroDomiciliarThrift.setUuid(cad.getId().toString());
 
 		cadastroDomiciliarThrift.setAnimaisNoDomicilio(null);
-		cadastroDomiciliarThrift.setCondicaoMoradia(null);
+
+		CondicaoMoradiaThrift condicaoMoradia = new CondicaoMoradiaThrift();
+		condicaoMoradia.setAbastecimentoAgua(cad.getEsusAbastecimentodeagua()
+				.getId());
+		condicaoMoradia.setAbastecimentoAguaIsSet(true);
+		condicaoMoradia.setDestinoLixo(cad.getEsusDestinodolixo().getId());
+		condicaoMoradia.setDestinoLixoIsSet(true);
+		condicaoMoradia.setLocalizacao(cad.getEsusLocalizacaodamoradia()
+				.getId());
+		condicaoMoradia.setLocalizacaoIsSet(true);
+		condicaoMoradia.setNuMoradores(cad.getQuantidadeMoradores().toString());
+		condicaoMoradia.setNuMoradoresIsSet(true);
+		try {
+			condicaoMoradia.setSituacaoMoradiaPosseTerra(cad
+					.getEsusCondicaodeposseeusodaterra().getId());
+			condicaoMoradia.setFormaEscoamentoBanheiro(cad
+					.getEsusFormadeescoamentodobanheiroousanitario().getId());
+			
+		} catch (Exception e) {
+			log.info("Condição de moradia null:" + cad.getId());
+		}
+		cadastroDomiciliarThrift.setCondicaoMoradia(condicaoMoradia);
 
 		// Dados gerais
 		HeaderCdsCadastroThrift dadosGerais = new HeaderCdsCadastroThrift();
 		dadosGerais.setCnesUnidadeSaude(cad.getCnesUnidade());
-		dadosGerais.setCnesUnidadeSaudeIsSet(true); // ?? TODO
+		dadosGerais.setCnesUnidadeSaudeIsSet(true);
 		dadosGerais.setCnsProfissional(cad.getCnsProfissional());
+		dadosGerais.setCnsProfissionalIsSet(true);
 		dadosGerais.setCodigoIbgeMunicipio(cad.getCoMunicipio());
-		dadosGerais.setCodigoIbgeMunicipioIsSet(false); // ?? TODO
+		dadosGerais.setCodigoIbgeMunicipioIsSet(true); // ?? TODO
 		dadosGerais.setDataAtendimento(cad.getDtCadastro().getTime());
-		dadosGerais.setDataAtendimentoIsSet(false); // ?? TODO
+		dadosGerais.setDataAtendimentoIsSet(true); // ?? TODO
 		dadosGerais.setIneEquipe(cad.getIneEquipe());
-		dadosGerais.setIneEquipeIsSet(false);
+		dadosGerais.setIneEquipeIsSet(true);
 		try {
 			dadosGerais.setMicroarea(cad.getMicroarea());
 			dadosGerais.setMicroareaIsSet(false);// ?? TODO
 		} catch (Exception e) {
-			
+
 		}
 		cadastroDomiciliarThrift.setDadosGerais(dadosGerais);
 
 		// Endereco
 		EnderecoLocalPermanenciaThrift endereco = new EnderecoLocalPermanenciaThrift();
 		endereco.setBairro(cad.getNoBairro());
-		endereco.setBairroIsSet(false);// ?? TODO
+		endereco.setBairroIsSet(true);// ?? TODO
 		endereco.setCep(cad.getNuCep());
-		endereco.setCepIsSet(false);// ?? TODO
+		endereco.setCepIsSet(true);// ?? TODO
 		endereco.setCodigoIbgeMunicipio(cad.getCoMunicipio());
-		endereco.setCodigoIbgeMunicipioIsSet(false);// ?? TODO
+		endereco.setCodigoIbgeMunicipioIsSet(true);// ?? TODO
 		endereco.setComplemento(cad.getDsComplemento());
 		endereco.setComplementoIsSet(false);// ?? TODO
 		endereco.setNomeLogradouro(cad.getNoLogradouro());
-		endereco.setNomeLogradouroIsSet(false);// ?? TODO
+		endereco.setNomeLogradouroIsSet(true);// ?? TODO
 		endereco.setNumero(cad.getNuDomicilio());
-		endereco.setNumeroIsSet(false);// ?? TODO
+		if (cad.getNuDomicilio() == null) {
+			endereco.setNumero("SN");
+		}
+		endereco.setNumeroIsSet(true);// ?? TODO
 		endereco.setTelReferencial(cad.getNuFoneReferencia());
 		endereco.setTelReferencialIsSet(false);// ?? TODO
 		endereco.setTelResidencial(cad.getNuFoneResidencia());
-		endereco.setTelResidencialIsSet(false);// ?? TODO
+		endereco.setTelResidencialIsSet(false);
 		endereco.setTipoLogradouroNumeroDne(cad.getTpLogradouro().toString());
-		endereco.setTipoLogradouroNumeroDneIsSet(false);// ?? TODO
+		endereco.setTipoLogradouroNumeroDneIsSet(false);
 		cadastroDomiciliarThrift.setEnderecoLocalPermanencia(endereco);
 
 		FamiliaRowThrift familia = new FamiliaRowThrift();
 		if (cad.getQtMembrosFamilia() != null) {
 			familia.setNumeroMembrosFamilia(Integer.parseInt(Long.toString(cad
 					.getQtMembrosFamilia())));
+			familia.setNumeroMembrosFamiliaIsSet(true);
 		}
-		familia.setNumeroCnsResponsavelIsSet(false);// ?? TODO
+		familia.setNumeroCnsResponsavel(cad.getCnesUnidade());
+		familia.setNumeroCnsResponsavelIsSet(true);
 		if (cad.getIdProntuarioResponsavel() != null) {
 			familia.setNumeroProntuario(Long.toString(cad
 					.getIdProntuarioResponsavel()));
+			familia.setNumeroProntuarioIsSet(true);
 		}
-		familia.setNumeroProntuarioIsSet(false);// ?? TODO
 		try {
 			familia.setRendaFamiliar(cad.getCoCdsRendaFamiliar());
+			familia.setRendaFamiliarIsSet(true);
 		} catch (Exception e) {
 
 		}
-		familia.setRendaFamiliarIsSet(false);// ?? TODO
 		if (cad.getDtMudanca() != null) {
 			familia.setResideDesde(cad.getDtMudanca().getTime());
+			familia.setResideDesdeIsSet(true);
 		}
-
-		familia.setStMudancaIsSet(false);// ?? TODO
 		List<FamiliaRowThrift> familias = new ArrayList<FamiliaRowThrift>();
 		familias.add(familia);
 		cadastroDomiciliarThrift.setFamilias(familias);
@@ -208,9 +246,8 @@ public class EsusCadastroDomiciliarService {
 						.getStRecusaCadastro());
 		cadastroDomiciliarThrift.setTpCdsOrigemIsSet(true);
 		cadastroDomiciliarThrift.setTpCdsOrigem(3);
-		
 
 		return cadastroDomiciliarThrift;
 	}
-	
+
 }
