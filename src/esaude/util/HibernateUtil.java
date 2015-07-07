@@ -115,6 +115,23 @@ public class HibernateUtil {
 				configuration
 				.addAnnotatedClass(esaude.model.EsusDeficienciacidadao.class);
 				
+				configuration
+				.addAnnotatedClass(esaude.model.EsusVisitaDomiciliar.class);
+				
+				configuration
+				.addAnnotatedClass(esaude.model.EsusSexo.class);
+				
+				configuration
+				.addAnnotatedClass(esaude.model.EsusVisitaDomiciliarMotivovisita.class);
+				
+				configuration
+				.addAnnotatedClass(esaude.model.EsusTurno.class);
+				
+				configuration
+				.addAnnotatedClass(esaude.model.EsusDesfecho.class);
+				
+				configuration
+				.addAnnotatedClass(esaude.model.EsusMotivovisita.class);
 				
 
 				SessionFactory sessionFactory = configuration.configure(file)
