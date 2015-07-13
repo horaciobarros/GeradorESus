@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
+import esaude.service.EsusAtendimentoIndividualService;
 import esaude.service.EsusAtividadeColetivaService;
 import esaude.service.EsusCadastroDomiciliarService;
 import esaude.service.EsusCadastroIndividualService;
@@ -36,6 +37,7 @@ public class Controller {
 	private EsusAtividadeColetivaService atividadeColetivaService = new EsusAtividadeColetivaService();
 	private EsusCadastroIndividualService cadastroIndividualService = new EsusCadastroIndividualService();
 	private EsusVisitaDomiciliarService visitaDomiciliarService = new EsusVisitaDomiciliarService();
+	private EsusAtendimentoIndividualService atendimentoIndividualService = new EsusAtendimentoIndividualService();
 	private GeradorZip geradorZip = new GeradorZip();
 	
 	String userHome = System.getProperty("user.dir");
@@ -63,9 +65,15 @@ public class Controller {
 			List<DadoTransporteThrift> dadosTransportVisitaDomiciliar = visitaDomiciliarService
 					.buscaRegistros();
 			
+			TelaPrincipal
+			.enviaLog("Importando e Convertendo Atendimento Individual");
+			List<DadoTransporteThrift> dadosTransportAtendimentoIndividual = atendimentoIndividualService
+					.buscaRegistros();
+			
+			
 			TelaPrincipal.enviaLog("Criando Arquivo Serializado");
 			geradorZip.empacotaZir(dadosTransportCadastroDomiciliar, dadosTransportAtividadeColetiva, 
-					dadosTransportCadastroIndividual, dadosTransportVisitaDomiciliar
+					dadosTransportCadastroIndividual, dadosTransportVisitaDomiciliar, dadosTransportAtendimentoIndividual
 					, pathPadrao);
 			TelaPrincipal.enviaLog("Processo Finalizado");
 		} catch (Exception e) {

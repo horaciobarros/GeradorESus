@@ -1,6 +1,7 @@
 package esaude.model; 
 
 import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 import java.io.*;
+import java.math.BigDecimal;
 import java.util.*;
 
 @Entity 
@@ -28,6 +31,7 @@ public class EsusAtendimentoIndividual implements Serializable {
 
    @Column(name="cns_profissional")
    private String cnsProfissional;
+
 
    @Column(name="cbo_profissional")
    private String cboProfissional;
@@ -55,10 +59,10 @@ public class EsusAtendimentoIndividual implements Serializable {
    private EsusTurno esusTurno;
 
    @Column(name="pesoacompanhemento")
-   private double pesoacompanhemento;
+   private BigDecimal pesoacompanhemento;
 
    @Column(name="alturaacompanhamento")
-   private double alturaacompanhamento;
+   private BigDecimal alturaacompanhamento;
 
    @ManyToOne
    @JoinColumn(name = "id_aleitamentomaterno")
@@ -81,10 +85,10 @@ public class EsusAtendimentoIndividual implements Serializable {
    private boolean gravidezplanejada;
 
    @Column(name="nugestasprevias")
-   private int nugestasprevias;
+   private Long nugestasprevias;
 
    @Column(name="nupartos")
-   private int nupartos;
+   private Long nupartos;
 
    @Column(name="dt_atendimento")
    private Date dtAtendimento;
@@ -96,7 +100,7 @@ public class EsusAtendimentoIndividual implements Serializable {
    private Date dumdagestante;
 
    @Column(name="st_envio")
-   private int stEnvio;
+   private Long stEnvio;
 
    @Column(name="dt_envio")
    private Date dtEnvio;
@@ -175,17 +179,17 @@ public class EsusAtendimentoIndividual implements Serializable {
       this.esusTurno = esusTurno;
    }
 
-   public double getPesoacompanhemento() { 
+   public BigDecimal getPesoacompanhemento() { 
       return pesoacompanhemento;
    }
-   public void  setPesoacompanhemento(double pesoacompanhemento) { 
+   public void  setPesoacompanhemento(BigDecimal pesoacompanhemento) { 
       this.pesoacompanhemento = pesoacompanhemento;
    }
 
-   public double getAlturaacompanhamento() { 
+   public BigDecimal getAlturaacompanhamento() { 
       return alturaacompanhamento;
    }
-   public void  setAlturaacompanhamento(double alturaacompanhamento) { 
+   public void  setAlturaacompanhamento(BigDecimal alturaacompanhamento) { 
       this.alturaacompanhamento = alturaacompanhamento;
    }
 
@@ -211,7 +215,6 @@ public class EsusAtendimentoIndividual implements Serializable {
       this.atencaodomicmodalidade = atencaodomicmodalidade;
    }
 
-
    public  EsusPraticasintegrativascomplementares  getEsusPraticasintegrativascomplementares() { 
       return esusPraticasintegrativascomplementares;
    }
@@ -233,17 +236,17 @@ public class EsusAtendimentoIndividual implements Serializable {
       this.gravidezplanejada = gravidezplanejada;
    }
 
-   public int getNugestasprevias() { 
+   public Long getNugestasprevias() { 
       return nugestasprevias;
    }
-   public void  setNugestasprevias(int nugestasprevias) { 
+   public void  setNugestasprevias(Long nugestasprevias) { 
       this.nugestasprevias = nugestasprevias;
    }
 
-   public int getNupartos() { 
+   public Long getNupartos() { 
       return nupartos;
    }
-   public void  setNupartos(int nupartos) { 
+   public void  setNupartos(Long nupartos) { 
       this.nupartos = nupartos;
    }
 
@@ -268,10 +271,10 @@ public class EsusAtendimentoIndividual implements Serializable {
       this.dumdagestante = dumdagestante;
    }
 
-   public int getStEnvio() { 
+   public Long getStEnvio() { 
       return stEnvio;
    }
-   public void  setStEnvio(int stEnvio) { 
+   public void  setStEnvio(Long stEnvio) { 
       this.stEnvio = stEnvio;
    }
 
