@@ -9,10 +9,16 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 import org.hibernate.exception.JDBCConnectionException;
 
+import br.gov.saude.esus.cds.transport.generated.thrift.atividadeindividual.FichaAtendimentoIndividualChildThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.atividadeindividual.FichaAtendimentoIndividualMasterThrift;
+import br.gov.saude.esus.cds.transport.generated.thrift.atividadeindividual.OutrosSiaThrift;
+import br.gov.saude.esus.cds.transport.generated.thrift.atividadeindividual.ProblemaCondicaoAvaliacaoAIThrift;
+import br.gov.saude.esus.cds.transport.generated.thrift.common.UnicaLotacaoHeaderThrift;
+import br.gov.saude.esus.cds.transport.generated.thrift.common.VariasLotacoesHeaderThrift;
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 import esaude.dao.EsusAtendimentoIndividualDao;
 import esaude.model.EsusAtendimentoIndividual;
+import esaude.model.EsusAtendimentoIndividualExames;
 import esaude.model.EsusRegistro;
 import esaude.model.SisRegistro;
 import esaude.util.InformacoesEnvio;
@@ -83,12 +89,12 @@ public class EsusAtendimentoIndividualService {
 									esusRegistro);
 
 					dados.add(dadoTransporteThrift);
-					
-					log.info(new Date() + " -- Gerando cadastro Individual --> "
-							+ cad.getId() + " - " + cad.getId());
-					System.out.println("Gerando cadastro Individual --> " + cad.getId()
-							);
 
+					log.info(new Date()
+							+ " -- Gerando cadastro Individual --> "
+							+ cad.getId() + " - " + cad.getId());
+					System.out.println("Gerando cadastro Individual --> "
+							+ cad.getId());
 
 					cad.setDtEnvio(new Date());
 					cad.setStEnvio(Long.valueOf(1));
@@ -123,12 +129,91 @@ public class EsusAtendimentoIndividualService {
 
 		c.setUuidFicha(cad.getId().toString());
 		c.setUuidFichaIsSet(true);
-
 		c.setTpCdsOrigem(3);
 		c.setTpCdsOrigemIsSet(true);
+
+		VariasLotacoesHeaderThrift vl = new VariasLotacoesHeaderThrift();
+		UnicaLotacaoHeaderThrift unicaLotacao = new UnicaLotacaoHeaderThrift();
+		unicaLotacao.setCboCodigo_2002(cad.getCboProfissional());
+		unicaLotacao.setCboCodigo_2002IsSet(true);
+		unicaLotacao.setCnes(cad.getCnesUnidade());
+		unicaLotacao.setCnesIsSet(true);
+		vl.setLotacaoForm(unicaLotacao);
+		c.setHeaderTransport(vl);
+
+		List<FichaAtendimentoIndividualChildThrift> atendimentosIndividuais = buscaAtendimentosIndividuais(cad);
+		c.setAtendimentosIndividuais(atendimentosIndividuais);
+		c.setAtendimentosIndividuaisIsSet(true);
 
 		return c;
 	}
 
+	private List<FichaAtendimentoIndividualChildThrift> buscaAtendimentosIndividuais(
+			EsusAtendimentoIndividual cad) {
+		FichaAtendimentoIndividualChildThrift ficha = new FichaAtendimentoIndividualChildThrift();
+		try {
+			ficha.setAleitamentoMaterno(cad.getEsusAleitamentomaterno().getId());
+			ficha.setAleitamentoMaternoIsSet(true);
+		} catch (Exception e) {
+
+		}
+		try {
+			ficha.setAlturaAcompanhamentoNutricional(cad
+					.getAlturaacompanhamento().doubleValue());
+			ficha.setAlturaAcompanhamentoNutricionalIsSet(true);
+		} catch (Exception e) {
+
+		}
+
+		try {
+			ficha.setAtencaoDomiciliarModalidade(cad
+					.getAtencaodomicmodalidade());
+			ficha.setAtencaoDomiciliarModalidadeIsSet(true);
+		} catch (Exception e) {
+
+		}
+
+		ficha.setCns(cad.getCnesUnidade());
+		ficha.setCnsIsSet(true);
+		List<Long> condutas = new ArrayList<Long>();
+		condutas.add(cad.getEsusTipodeatendimento().getId());
+		ficha.setCondutas(condutas);
+		ficha.setCondutasIsSet(true);
+		ficha.setDataNascimento(cad.getPProntuario().getDtNascimento()
+				.getTime());
+		ficha.setDataNascimentoIsSet(true);
+		ficha.setLocalDeAtendimento(cad.getEsusLocaldeatendimento().getId());
+		ficha.setLocalDeAtendimentoIsSet(true);
+		ficha.setTipoAtendimento(cad.getEsusTipodeatendimento().getId());
+		ficha.setTipoAtendimentoIsSet(true);
+
+		ficha.setOutrosSia(buscaOutrosSia(cad));
+		ficha.setOutrosSiaIsSet(true);
+
+		ProblemaCondicaoAvaliacaoAIThrift problema = new ProblemaCondicaoAvaliacaoAIThrift();
+		ficha.setProblemaCondicaoAvaliada(problema);
+		ficha.setProblemaCondicaoAvaliadaIsSet(true);
+
+		List<FichaAtendimentoIndividualChildThrift> fichas = new ArrayList<FichaAtendimentoIndividualChildThrift>();
+		fichas.add(ficha);
+
+		return fichas;
+	}
+
+	private List<OutrosSiaThrift> buscaOutrosSia(EsusAtendimentoIndividual cad) {
+
+		List<OutrosSiaThrift> lista = new ArrayList<OutrosSiaThrift>();
+		for (EsusAtendimentoIndividualExames aie : dao.findExames(cad)) {
+			OutrosSiaThrift outro = new OutrosSiaThrift();
+			outro.setCodigoExame(aie.getEsusExames().getCod());
+			outro.setCodigoExameIsSet(true);
+			List<String> solicitadoAvaliados = new ArrayList<String>();
+			solicitadoAvaliados.add(aie.getStatus());
+			outro.setSolicitadoAvaliado(solicitadoAvaliados);
+			lista.add(outro);
+		}
+
+		return lista;
+	}
 
 }

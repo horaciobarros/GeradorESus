@@ -1,5 +1,6 @@
 package esaude.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -8,6 +9,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import esaude.model.EsusAtendimentoIndividual;
+import esaude.model.EsusAtendimentoIndividualExames;
+import esaude.model.EsusAtendimentoIndividualExamesSia;
+import esaude.model.EsusExames;
 import esaude.util.HibernateUtil;
 
 public class EsusAtendimentoIndividualDao extends Dao {
@@ -54,5 +58,20 @@ public class EsusAtendimentoIndividualDao extends Dao {
 		session.beginTransaction().commit();
 		session.close();
 	}
+	
+	public List<EsusAtendimentoIndividualExames> findExames(EsusAtendimentoIndividual cad) {
+		Transaction tx = session.beginTransaction();
+		Query query = sessionFactory
+				.openSession()
+				.createQuery(
+						"from EsusAtendimentoIndividualExames e  left outer join fetch e.esusExames"
+						+ " left outer join fetch e.esusAtendimentoIndividual  "
+								+ "where e.esusAtendimentoIndividual.id = " + cad.getId());
+		List<EsusAtendimentoIndividualExames> lista = query.list();
+		tx.commit();
+		
+		return lista;
+	}
+
 
 }
