@@ -136,8 +136,10 @@ public class EsusAtendimentoIndividualService {
 		UnicaLotacaoHeaderThrift unicaLotacao = new UnicaLotacaoHeaderThrift();
 		unicaLotacao.setCboCodigo_2002(cad.getCboProfissional());
 		unicaLotacao.setCboCodigo_2002IsSet(true);
-		unicaLotacao.setCnes(cad.getCnesUnidade());
+		unicaLotacao.setCnes(cad.getCnsProfissional());
 		unicaLotacao.setCnesIsSet(true);
+		unicaLotacao.setDataAtendimento(cad.getDtAtendimento().getTime());
+		unicaLotacao.setDataAtendimentoIsSet(true);
 		vl.setLotacaoForm(unicaLotacao);
 		c.setHeaderTransport(vl);
 
@@ -173,7 +175,7 @@ public class EsusAtendimentoIndividualService {
 
 		}
 
-		ficha.setCns(cad.getCnesUnidade());
+		ficha.setCns(cad.getCnsProfissional());
 		ficha.setCnsIsSet(true);
 		List<Long> condutas = new ArrayList<Long>();
 		condutas.add(cad.getEsusTipodeatendimento().getId());
