@@ -77,10 +77,10 @@ public class Controller {
 					, pathPadrao);
 			TelaPrincipal.enviaLog("Processo Finalizado");
 		} catch (Exception e) {
-			log.error(new Date() + " " +  e.getMessage());
+			log.error(new Date() + " " +  e.getStackTrace());
 			JOptionPane
-					.showMessageDialog(null, "Erro grave: " + e.getMessage());
-			TelaPrincipal.enviaLog(new Date()+" - "+e.getMessage());
+					.showMessageDialog(null, "Erro grave: " + e.getStackTrace());
+			TelaPrincipal.enviaLog(new Date()+" - "+e.getStackTrace());
 		}
 	}
 

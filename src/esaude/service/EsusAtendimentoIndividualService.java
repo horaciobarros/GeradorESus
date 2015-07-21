@@ -103,13 +103,15 @@ public class EsusAtendimentoIndividualService {
 					System.out.println("Cadastro individual:" + cad.getId());
 
 				} catch (JDBCConnectionException e) {
-					log.info(e.getMessage());
+					log.info(e.getStackTrace());
 					e.printStackTrace();
-					TelaPrincipal.enviaLog(new Date() + " - " + e.getMessage());
+					TelaPrincipal.enviaLog(new Date() + " - "
+							+ e.getStackTrace());
 				} catch (Exception e) {
-					log.info(e.getMessage());
+					log.info(e.getStackTrace());
 					e.printStackTrace();
-					TelaPrincipal.enviaLog(new Date() + " - " + e.getMessage());
+					TelaPrincipal.enviaLog(new Date() + " - "
+							+ e.getStackTrace());
 				}
 			}
 
@@ -126,28 +128,44 @@ public class EsusAtendimentoIndividualService {
 	private FichaAtendimentoIndividualMasterThrift converterParaThrift(
 			EsusAtendimentoIndividual cad) {
 		FichaAtendimentoIndividualMasterThrift c = new FichaAtendimentoIndividualMasterThrift();
+		try {
+			c.setUuidFicha(cad.getId().toString());
+			c.setUuidFichaIsSet(true);
+		} catch (Exception e) {
 
-		c.setUuidFicha(cad.getId().toString());
-		c.setUuidFichaIsSet(true);
-		c.setTpCdsOrigem(3);
-		c.setTpCdsOrigemIsSet(true);
+		}
 
-		VariasLotacoesHeaderThrift vl = new VariasLotacoesHeaderThrift();
-		UnicaLotacaoHeaderThrift unicaLotacao = new UnicaLotacaoHeaderThrift();
-		unicaLotacao.setCboCodigo_2002(cad.getCboProfissional());
-		unicaLotacao.setCboCodigo_2002IsSet(true);
-		unicaLotacao.setCnes(cad.getCnesUnidade());
-		unicaLotacao.setCnesIsSet(true);
-		unicaLotacao.setProfissionalCNS(cad.getCnsProfissional());
-		unicaLotacao.setProfissionalCNSIsSet(true);
-		unicaLotacao.setDataAtendimento(cad.getDtAtendimento().getTime());
-		unicaLotacao.setDataAtendimentoIsSet(true);
-		vl.setLotacaoForm(unicaLotacao);
-		c.setHeaderTransport(vl);
+		try {
+			c.setTpCdsOrigem(3);
+			c.setTpCdsOrigemIsSet(true);
+		} catch (Exception e) {
 
-		List<FichaAtendimentoIndividualChildThrift> atendimentosIndividuais = buscaAtendimentosIndividuais(cad);
-		c.setAtendimentosIndividuais(atendimentosIndividuais);
-		c.setAtendimentosIndividuaisIsSet(true);
+		}
+
+		try {
+			VariasLotacoesHeaderThrift vl = new VariasLotacoesHeaderThrift();
+			UnicaLotacaoHeaderThrift unicaLotacao = new UnicaLotacaoHeaderThrift();
+			unicaLotacao.setCboCodigo_2002(cad.getCboProfissional());
+			unicaLotacao.setCboCodigo_2002IsSet(true);
+			unicaLotacao.setCnes(cad.getCnesUnidade());
+			unicaLotacao.setCnesIsSet(true);
+			unicaLotacao.setProfissionalCNS(cad.getCnsProfissional());
+			unicaLotacao.setProfissionalCNSIsSet(true);
+			unicaLotacao.setDataAtendimento(cad.getDtAtendimento().getTime());
+			unicaLotacao.setDataAtendimentoIsSet(true);
+			vl.setLotacaoForm(unicaLotacao);
+			c.setHeaderTransport(vl);
+		} catch (Exception e) {
+
+		}
+
+		try {
+			List<FichaAtendimentoIndividualChildThrift> atendimentosIndividuais = buscaAtendimentosIndividuais(cad);
+			c.setAtendimentosIndividuais(atendimentosIndividuais);
+			c.setAtendimentosIndividuaisIsSet(true);
+		} catch (Exception e) {
+
+		}
 
 		return c;
 	}
@@ -177,26 +195,58 @@ public class EsusAtendimentoIndividualService {
 
 		}
 
-		ficha.setCns(cad.getCnsProfissional());
-		ficha.setCnsIsSet(true);
-		List<Long> condutas = new ArrayList<Long>();
-		condutas.add(cad.getEsusTipodeatendimento().getId());
-		ficha.setCondutas(condutas);
-		ficha.setCondutasIsSet(true);
-		ficha.setDataNascimento(cad.getPProntuario().getDtNascimento()
-				.getTime());
-		ficha.setDataNascimentoIsSet(true);
-		ficha.setLocalDeAtendimento(cad.getEsusLocaldeatendimento().getId());
-		ficha.setLocalDeAtendimentoIsSet(true);
-		ficha.setTipoAtendimento(cad.getEsusTipodeatendimento().getId());
-		ficha.setTipoAtendimentoIsSet(true);
+		try {
+			ficha.setCns(cad.getCnsProfissional());
+			ficha.setCnsIsSet(true);
+		} catch (Exception e) {
 
-		ficha.setOutrosSia(buscaOutrosSia(cad));
-		ficha.setOutrosSiaIsSet(true);
+		}
 
-		ProblemaCondicaoAvaliacaoAIThrift problema = new ProblemaCondicaoAvaliacaoAIThrift();
-		ficha.setProblemaCondicaoAvaliada(problema);
-		ficha.setProblemaCondicaoAvaliadaIsSet(true);
+		try {
+			List<Long> condutas = new ArrayList<Long>();
+			condutas.add(cad.getEsusTipodeatendimento().getId());
+			ficha.setCondutas(condutas);
+			ficha.setCondutasIsSet(true);
+		} catch (Exception e) {
+
+		}
+
+		try {
+			ficha.setDataNascimento(cad.getPProntuario().getDtNascimento()
+					.getTime());
+			ficha.setDataNascimentoIsSet(true);
+		} catch (Exception e) {
+
+		}
+
+		try {
+			ficha.setLocalDeAtendimento(cad.getEsusLocaldeatendimento().getId());
+			ficha.setLocalDeAtendimentoIsSet(true);
+		} catch (Exception e) {
+
+		}
+
+		try {
+			ficha.setTipoAtendimento(cad.getEsusTipodeatendimento().getId());
+			ficha.setTipoAtendimentoIsSet(true);
+		} catch (Exception e) {
+
+		}
+
+		try {
+			ficha.setOutrosSia(buscaOutrosSia(cad));
+			ficha.setOutrosSiaIsSet(true);
+		} catch (Exception e) {
+
+		}
+
+		try {
+			ProblemaCondicaoAvaliacaoAIThrift problema = new ProblemaCondicaoAvaliacaoAIThrift();
+			ficha.setProblemaCondicaoAvaliada(problema);
+			ficha.setProblemaCondicaoAvaliadaIsSet(true);
+		} catch (Exception e) {
+
+		}
 
 		List<FichaAtendimentoIndividualChildThrift> fichas = new ArrayList<FichaAtendimentoIndividualChildThrift>();
 		fichas.add(ficha);
