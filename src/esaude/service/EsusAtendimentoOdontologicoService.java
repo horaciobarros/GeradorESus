@@ -12,8 +12,6 @@ import org.hibernate.exception.JDBCConnectionException;
 import br.gov.saude.esus.cds.transport.generated.thrift.atendimentoodontologico.FichaAtendimentoOdontologicoChildThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.atendimentoodontologico.FichaAtendimentoOdontologicoMasterThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.atendimentoodontologico.ProcedimentoQuantidadeThrift;
-import br.gov.saude.esus.cds.transport.generated.thrift.atividadeindividual.FichaAtendimentoIndividualChildThrift;
-import br.gov.saude.esus.cds.transport.generated.thrift.atividadeindividual.ProblemaCondicaoAvaliacaoAIThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.common.UnicaLotacaoHeaderThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.common.VariasLotacoesHeaderThrift;
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
@@ -245,20 +243,32 @@ public class EsusAtendimentoOdontologicoService {
 		
 		try {
 			ficha.setProcedimentosRealizados(buscaProcedimentosRealizados(cad));
-			ficha.setProcedimentosRealizadosIsSet(true);
+			ficha.setProcedimentosRealizadosIsSet(false);
 		} catch (Exception e) {
 
 		}
 
 		try {
 			ficha.setOutrosSiaProcedimentos(buscaOutrosSiaProcedimentos(cad));
-			ficha.setOutrosSiaProcedimentosIsSet(true);
+			ficha.setOutrosSiaProcedimentosIsSet(false);
 		} catch (Exception e) {
 
 		}
 		
+		try {
+			ficha.setSexo(cad.getEsusSexo().getId());
+			ficha.setSexoIsSet(true);
+		} catch (Exception e) {
 
-		
+		}
+
+		try {
+			ficha.setTurno(cad.getEsusTurno().getId());
+			ficha.setTurnoIsSet(true);
+		} catch (Exception e) {
+
+		}
+
 		
 
 		List<FichaAtendimentoOdontologicoChildThrift> fichas = new ArrayList<FichaAtendimentoOdontologicoChildThrift>();
@@ -270,7 +280,7 @@ public class EsusAtendimentoOdontologicoService {
 
 	private List<ProcedimentoQuantidadeThrift> buscaOutrosSiaProcedimentos(
 			EsusAtendimentoOdontologico cad) {
-		// TODO Auto-generated method stub
+		// não encontrada tabela correspondente. ver com cliente.
 		return null;
 	}
 
