@@ -160,6 +160,21 @@ public class HibernateUtil {
 				configuration
 				.addAnnotatedClass(esaude.model.EsusProced.class);
 				
+				configuration
+				.addAnnotatedClass(esaude.model.EsusAtendimentoOdontologico.class);
+				
+				configuration
+				.addAnnotatedClass(esaude.model.EsusAtendimentoOdontologicoConduta.class);
+				
+				configuration
+				.addAnnotatedClass(esaude.model.EsusAtendimentoOdontologicoEncam.class);
+				
+				configuration
+				.addAnnotatedClass(esaude.model.EsusAtendimentoOdontologicoFornecimento.class);
+				
+				configuration
+				.addAnnotatedClass(esaude.model.EsusAtendimentoOdontologicoVigilancia.class);
+				
 				
 				
 				SessionFactory sessionFactory = configuration.configure(file)

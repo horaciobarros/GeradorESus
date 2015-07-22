@@ -13,6 +13,7 @@
 package esaude.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import org.apache.log4j.Logger;
 
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 import esaude.service.EsusAtendimentoIndividualService;
+import esaude.service.EsusAtendimentoOdontologicoService;
 import esaude.service.EsusAtividadeColetivaService;
 import esaude.service.EsusCadastroDomiciliarService;
 import esaude.service.EsusCadastroIndividualService;
@@ -38,6 +40,7 @@ public class Controller {
 	private EsusCadastroIndividualService cadastroIndividualService = new EsusCadastroIndividualService();
 	private EsusVisitaDomiciliarService visitaDomiciliarService = new EsusVisitaDomiciliarService();
 	private EsusAtendimentoIndividualService atendimentoIndividualService = new EsusAtendimentoIndividualService();
+	private EsusAtendimentoOdontologicoService atendimentoOdontologicoService = new EsusAtendimentoOdontologicoService();
 	private GeradorZip geradorZip = new GeradorZip();
 	
 	String userHome = System.getProperty("user.dir");
@@ -70,10 +73,16 @@ public class Controller {
 			List<DadoTransporteThrift> dadosTransportAtendimentoIndividual = atendimentoIndividualService
 					.buscaRegistros();
 			
+			//TelaPrincipal
+			//.enviaLog("Importando e Convertendo Atendimento Odontologico");
+			//List<DadoTransporteThrift> dadosTransportAtendimentoOdontologico = atendimentoOdontologicoService
+			//		.buscaRegistros();
+			List<DadoTransporteThrift> dadosTransportAtendimentoOdontologico = new ArrayList<DadoTransporteThrift>();
+			
 			
 			TelaPrincipal.enviaLog("Criando Arquivo Serializado");
 			geradorZip.empacotaZir(dadosTransportCadastroDomiciliar, dadosTransportAtividadeColetiva, 
-					dadosTransportCadastroIndividual, dadosTransportVisitaDomiciliar, dadosTransportAtendimentoIndividual
+					dadosTransportCadastroIndividual, dadosTransportVisitaDomiciliar, dadosTransportAtendimentoIndividual, dadosTransportAtendimentoOdontologico
 					, pathPadrao);
 			TelaPrincipal.enviaLog("Processo Finalizado");
 		} catch (Exception e) {
