@@ -197,7 +197,7 @@ public class HibernateUtil {
 			}
 		} catch (Throwable ex) {
 			JOptionPane.showMessageDialog(null,
-					"Erro em configuração do banco!");
+					"Erro em configuração do banco! Detalhes no log da aplicação");
 			log.error("Erro em configuração do banco!" + ex);
 			throw new ExceptionInInitializerError(ex);
 		}

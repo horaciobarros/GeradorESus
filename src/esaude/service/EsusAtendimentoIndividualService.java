@@ -91,16 +91,16 @@ public class EsusAtendimentoIndividualService {
 					dados.add(dadoTransporteThrift);
 
 					log.info(new Date()
-							+ " -- Gerando cadastro Individual --> "
+							+ " -- Gerando atendimento Individual --> "
 							+ cad.getId() + " - " + cad.getId());
-					System.out.println("Gerando cadastro Individual --> "
+					System.out.println("Gerando atendimento Individual --> "
 							+ cad.getId());
 
 					cad.setDtEnvio(new Date());
 					cad.setStEnvio(Long.valueOf(1));
 					dao.atualiza(cad);
 
-					System.out.println("Cadastro individual:" + cad.getId());
+					System.out.println("Atendimento individual:" + cad.getId());
 
 				} catch (JDBCConnectionException e) {
 					log.info(e.getStackTrace());
