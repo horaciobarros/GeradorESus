@@ -55,29 +55,47 @@ public class Controller {
 			List<DadoTransporteThrift> dadosTransportCadastroDomiciliar = cadastroDomiciliarService
 					.buscaRegistros();
 			TelaPrincipal
+			.enviaLog("----> Total de registros:" + (dadosTransportCadastroDomiciliar != null ? dadosTransportCadastroDomiciliar.size() : 0));
+
+			TelaPrincipal
 			.enviaLog("Importando e Convertendo Atividade Coletiva");
 			List<DadoTransporteThrift> dadosTransportAtividadeColetiva = atividadeColetivaService
 					.buscaRegistros();
 			TelaPrincipal
+			.enviaLog("----> Total de registros:" + (dadosTransportAtividadeColetiva != null ? dadosTransportAtividadeColetiva.size() : 0));
+
+			TelaPrincipal
 			.enviaLog("Importando e Convertendo Cadastro Individual");
 			List<DadoTransporteThrift> dadosTransportCadastroIndividual = cadastroIndividualService
 					.buscaRegistros();
+			TelaPrincipal
+			.enviaLog("----> Total de registros:" + (dadosTransportCadastroIndividual != null ? dadosTransportCadastroIndividual.size() : 0));
+
 			
 			TelaPrincipal
 			.enviaLog("Importando e Convertendo Visita domiciliar");
 			List<DadoTransporteThrift> dadosTransportVisitaDomiciliar = visitaDomiciliarService
 					.buscaRegistros();
+			TelaPrincipal
+			.enviaLog("----> Total de registros:" + (dadosTransportVisitaDomiciliar != null ? dadosTransportVisitaDomiciliar.size() : 0));
+
 			
 			TelaPrincipal
 			.enviaLog("Importando e Convertendo Atendimento Individual");
 			List<DadoTransporteThrift> dadosTransportAtendimentoIndividual = atendimentoIndividualService
 					.buscaRegistros();
+			TelaPrincipal
+			.enviaLog("----> Total de registros:" + (dadosTransportAtendimentoIndividual != null ? dadosTransportAtendimentoIndividual.size() : 0));
+
 			
 			//TelaPrincipal
 			//.enviaLog("Importando e Convertendo Atendimento Odontologico");
 			//List<DadoTransporteThrift> dadosTransportAtendimentoOdontologico = atendimentoOdontologicoService
 			//		.buscaRegistros();
 			List<DadoTransporteThrift> dadosTransportAtendimentoOdontologico = new ArrayList<DadoTransporteThrift>();
+			//TelaPrincipal
+			//.enviaLog("----> Total de registros:" + (dadosTransportAtendimentoOdontologico != null ? dadosTransportAtendimentoOdontologico.size() : 0));
+
 			
 			
 			TelaPrincipal.enviaLog("Criando Arquivo Serializado");
