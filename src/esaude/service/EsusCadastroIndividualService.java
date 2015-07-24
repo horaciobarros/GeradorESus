@@ -152,8 +152,7 @@ public class EsusCadastroIndividualService {
 		dadosGerais.setCnesUnidadeSaudeIsSet(true);
 		dadosGerais.setCnsProfissional(cad.getCnsProfissional());
 		dadosGerais.setCnsProfissionalIsSet(true);
-		dadosGerais.setCodigoIbgeMunicipio(cad.getPProntuario().getPMunicipio()
-				.getCoMunicipio());
+		dadosGerais.setCodigoIbgeMunicipio(sisRegistro.getCidadeIbge());
 		dadosGerais.setCodigoIbgeMunicipioIsSet(true);
 		dadosGerais.setDataAtendimento(cad.getDataAtendimento().getTime());
 		dadosGerais.setDataAtendimentoIsSet(true);
@@ -172,14 +171,22 @@ public class EsusCadastroIndividualService {
 		identificacao.setDataNascimentoCidadaoIsSet(true);
 		identificacao.setNomeCidadao(cad.getPProntuario().getNomeSocial());
 		identificacao.setNomeCidadaoIsSet(true);
-		identificacao.setNomeMaeCidadao(cad.getPProntuario().getNoMae());
-		identificacao.setNomeMaeCidadaoIsSet(true);
+		if (cad.getpProntuario().getMaeDesconhecida() == 0) {
+			identificacao.setDesconheceNomeMae(false);
+			identificacao.setDesconheceNomeMaeIsSet(true);
+			identificacao.setNomeMaeCidadao(cad.getPProntuario().getNoMae());
+			identificacao.setNomeMaeCidadaoIsSet(true);
+		} else {
+			identificacao.setDesconheceNomeMae(true);
+			identificacao.setDesconheceNomeMaeIsSet(true);
+			
+		}
 		identificacao.setRacaCorCidadao(Long.valueOf(cad.getPProntuario()
 				.getPRacaCor().getCoRaca()));
 		identificacao.setRacaCorCidadaoIsSet(true);
 		Long sexo = new Long(0);
 		if (cad.getpProntuario().getCoSexo().equals("M")) {
-			sexo = Long.valueOf(2);
+			sexo = Long.valueOf(0);
 		} else {
 			sexo = Long.valueOf(1);
 		}
