@@ -26,12 +26,13 @@ import esaude.util.InformacoesEnvioDto;
 import esaude.util.ThriftSerializer;
 import esaude.view.TelaPrincipal;
 
-public class EsusAtendimentoIndividualService {
+public class EsusAtendimentoIndividualService extends MasterService{
 	static Logger log = Logger.getLogger(EsusAtendimentoIndividualService.class
 			.getName());
 	private EsusAtendimentoIndividualDao dao = new EsusAtendimentoIndividualDao();
 	private EsusRegistro esusRegistro = new EsusRegistro();
 	private SisRegistro sisRegistro = new SisRegistro();
+	private MasterService masterService = new MasterService();
 
 	public List<EsusAtendimentoIndividual> findNaoEnvidados() {
 		return dao.findNaoEnviados();
@@ -129,8 +130,10 @@ public class EsusAtendimentoIndividualService {
 			EsusAtendimentoIndividual cad) {
 		FichaAtendimentoIndividualMasterThrift c = new FichaAtendimentoIndividualMasterThrift();
 		try {
-			c.setUuidFicha(cad.getId().toString());
 			c.setUuidFichaIsSet(true);
+			c.setUuidFicha(masterService.gerarUuid(cad.getCnesUnidade()));
+			cad.setUuid(c.getUuidFicha());
+
 		} catch (Exception e) {
 
 		}

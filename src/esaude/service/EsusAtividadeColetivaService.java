@@ -33,6 +33,7 @@ public class EsusAtividadeColetivaService {
 	private EsusAtividadeColetivaDao dao = new EsusAtividadeColetivaDao();
 	private EsusRegistro esusRegistro = new EsusRegistro();
 	private SisRegistro sisRegistro = new SisRegistro();
+	private MasterService masterService = new MasterService();
 
 	public List<EsusAtividadeColetiva> findNaoEnvidados() {
 		return dao.findNaoEnviados();
@@ -133,7 +134,8 @@ public class EsusAtividadeColetivaService {
 			EsusAtividadeColetiva cad) {
 		FichaAtividadeColetivaThrift ficha = new FichaAtividadeColetivaThrift();
 
-		ficha.setUuidFicha(cad.getId().toString());
+		ficha.setUuidFicha(masterService.gerarUuid(cad.getCnesUnidade()));
+		cad.setUuid(ficha.getUuidFicha());
 
 		try {
 			List<EsusAtividadeColetivaParticipantes> participantes = dao

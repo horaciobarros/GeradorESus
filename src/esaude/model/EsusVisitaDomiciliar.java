@@ -68,8 +68,18 @@ public class EsusVisitaDomiciliar implements Serializable {
 
    @Column(name="dt_envio")
    private Date dtEnvio;
+   
+   @Column(name="uuid")
+   private String uuid;
 
-   public Long getId() { 
+
+   public String getUuid() {
+	return uuid;
+}
+public void setUuid(String uuid) {
+	this.uuid = uuid;
+}
+public Long getId() { 
       return id;
    }
    public void  setId(Long id) { 

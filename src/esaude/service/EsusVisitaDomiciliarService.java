@@ -30,6 +30,7 @@ public class EsusVisitaDomiciliarService {
 	private EsusVisitaDomiciliarDao dao = new EsusVisitaDomiciliarDao();
 	private EsusRegistro esusRegistro = new EsusRegistro();
 	private SisRegistro sisRegistro = new SisRegistro();
+	private MasterService masterService = new MasterService();
 
 	public List<EsusVisitaDomiciliar> findNaoEnvidados() {
 		return dao.findNaoEnviados();
@@ -124,7 +125,8 @@ public class EsusVisitaDomiciliarService {
 			EsusVisitaDomiciliar cad) {
 		FichaVisitaDomiciliarMasterThrift thrift = new FichaVisitaDomiciliarMasterThrift();
 
-		thrift.setUuidFicha(cad.getId().toString());
+		thrift.setUuidFicha(masterService.gerarUuid(cad.getCnesUnidade()));
+		cad.setUuid(thrift.getUuidFicha());
 		thrift.setUuidFichaIsSet(true);
 		thrift.setTpCdsOrigem(3);
 		thrift.setTpCdsOrigemIsSet(true);

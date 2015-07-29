@@ -27,7 +27,7 @@ import esaude.util.InformacoesEnvioDto;
 import esaude.util.ThriftSerializer;
 import esaude.view.TelaPrincipal;
 
-public class EsusCadastroIndividualService extends MasterService{
+public class EsusCadastroIndividualService {
 	static Logger log = Logger.getLogger(EsusCadastroIndividualService.class
 			.getName());
 	private EsusCadastroIndividualDao dao = new EsusCadastroIndividualDao();

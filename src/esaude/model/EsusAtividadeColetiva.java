@@ -66,7 +66,17 @@ public class EsusAtividadeColetiva implements Serializable {
    @Column(name="dt_envio")
    private Date dtEnvio;
    
-   private transient List<EsusAtividadeColetivaParticipantes> participantes;
+   @Column(name="uuid")
+   private String uuid;
+
+   
+   public String getUuid() {
+	return uuid;
+}
+public void setUuid(String uuid) {
+	this.uuid = uuid;
+}
+private transient List<EsusAtividadeColetivaParticipantes> participantes;
    
    private transient List<EsusAtividadeColetivaProfissional> profissionais;
 

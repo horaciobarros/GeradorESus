@@ -30,6 +30,7 @@ public class EsusCadastroDomiciliarService {
 	private EsusCadastroDomiciliarDao dao = new EsusCadastroDomiciliarDao();
 	private EsusRegistro esusRegistro = new EsusRegistro();
 	private SisRegistro sisRegistro = new SisRegistro();
+	private MasterService masterService = new MasterService();
 
 	public List<EsusCadastroDomiciliar> findNaoEnvidados() {
 		return dao.findNaoEnviados();
@@ -133,7 +134,8 @@ public class EsusCadastroDomiciliarService {
 			EsusCadastroDomiciliar cad) {
 		CadastroDomiciliarThrift cadastroDomiciliarThrift = new CadastroDomiciliarThrift();
 
-		cadastroDomiciliarThrift.setUuid(cad.getId().toString());
+		cadastroDomiciliarThrift.setUuid(masterService.gerarUuid(cad.getCnesUnidade()));
+		cad.setUuid(cadastroDomiciliarThrift.getUuid());
 
 		cadastroDomiciliarThrift.setAnimaisNoDomicilio(null);
 

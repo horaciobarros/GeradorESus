@@ -31,6 +31,7 @@ public class EsusAtendimentoOdontologicoService {
 	private EsusAtendimentoOdontologicoDao dao = new EsusAtendimentoOdontologicoDao();
 	private EsusRegistro esusRegistro = new EsusRegistro();
 	private SisRegistro sisRegistro = new SisRegistro();
+	private MasterService masterService = new MasterService();
 
 	public List<EsusAtendimentoOdontologico> findNaoEnvidados() {
 		return dao.findNaoEnviados();
@@ -128,7 +129,8 @@ public class EsusAtendimentoOdontologicoService {
 			EsusAtendimentoOdontologico cad) {
 		FichaAtendimentoOdontologicoMasterThrift c = new FichaAtendimentoOdontologicoMasterThrift();
 		try {
-			c.setUuidFicha(cad.getId().toString());
+			c.setUuidFicha(masterService.gerarUuid(cad.getCnesUnidade()));
+			cad.setUuid(c.getUuidFicha());
 			c.setUuidFichaIsSet(true);
 		} catch (Exception e) {
 			log.error("Erro no envio do UuidFicha");
