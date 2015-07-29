@@ -88,13 +88,13 @@ public class Controller {
 			.enviaLog("----> Total de registros:" + (dadosTransportAtendimentoIndividual != null ? dadosTransportAtendimentoIndividual.size() : 0));
 
 			
-			//TelaPrincipal
-			//.enviaLog("Importando e Convertendo Atendimento Odontologico");
-			//List<DadoTransporteThrift> dadosTransportAtendimentoOdontologico = atendimentoOdontologicoService
-			//		.buscaRegistros();
-			List<DadoTransporteThrift> dadosTransportAtendimentoOdontologico = new ArrayList<DadoTransporteThrift>();
-			//TelaPrincipal
-			//.enviaLog("----> Total de registros:" + (dadosTransportAtendimentoOdontologico != null ? dadosTransportAtendimentoOdontologico.size() : 0));
+			TelaPrincipal
+			.enviaLog("Importando e Convertendo Atendimento Odontologico");
+			List<DadoTransporteThrift> dadosTransportAtendimentoOdontologico = atendimentoOdontologicoService
+					.buscaRegistros();
+			//List<DadoTransporteThrift> dadosTransportAtendimentoOdontologico = new ArrayList<DadoTransporteThrift>();
+			TelaPrincipal
+			.enviaLog("----> Total de registros:" + (dadosTransportAtendimentoOdontologico != null ? dadosTransportAtendimentoOdontologico.size() : 0));
 
 			
 			

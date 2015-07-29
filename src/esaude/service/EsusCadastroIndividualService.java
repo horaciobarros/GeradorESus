@@ -27,12 +27,13 @@ import esaude.util.InformacoesEnvioDto;
 import esaude.util.ThriftSerializer;
 import esaude.view.TelaPrincipal;
 
-public class EsusCadastroIndividualService {
+public class EsusCadastroIndividualService extends MasterService{
 	static Logger log = Logger.getLogger(EsusCadastroIndividualService.class
 			.getName());
 	private EsusCadastroIndividualDao dao = new EsusCadastroIndividualDao();
 	private EsusRegistro esusRegistro = new EsusRegistro();
 	private SisRegistro sisRegistro = new SisRegistro();
+	private MasterService masterService = new MasterService();
 
 	public List<EsusCadastroIndividual> findNaoEnvidados() {
 		return dao.findNaoEnviados();
@@ -77,7 +78,7 @@ public class EsusCadastroIndividualService {
 					// Passo 3: coletar as informações do envio
 					informacoesEnvioDto.setTipoDadoSerializado(2l);
 					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
-					informacoesEnvioDto.setUuidDadoSerializado(cad.getId()
+					informacoesEnvioDto.setUuidDadoSerializado(cad.getUuid()
 							.toString());
 					informacoesEnvioDto.setIneDadoSerializado(cad
 							.getIneEquipe());
@@ -130,7 +131,8 @@ public class EsusCadastroIndividualService {
 			EsusCadastroIndividual cad) {
 		CadastroIndividualThrift c = new CadastroIndividualThrift();
 
-		c.setUuid(cad.getId().toString());
+		c.setUuid(masterService.gerarUuid(cad.getCnesUnidade()));
+		cad.setUuid(c.getUuid());
 
 		CondicoesDeSaudeThrift condicoesDeSaude = new CondicoesDeSaudeThrift();
 		condicoesDeSaude.setStatusEhDependenteAlcool(cad.getDependenteAlcool());

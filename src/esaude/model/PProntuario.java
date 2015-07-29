@@ -1,6 +1,7 @@
 package esaude.model; 
 
 import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import java.io.*;
 import java.util.*;
 
@@ -73,6 +78,7 @@ public class PProntuario implements Serializable {
    private String coSexo;
 
    @ManyToOne
+   @NotFound(action=NotFoundAction.IGNORE)
    @JoinColumn(name = "co_municipio_residencia")
    private PMunicipio pMunicipio;
 

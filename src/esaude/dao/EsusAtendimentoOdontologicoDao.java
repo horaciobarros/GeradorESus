@@ -28,7 +28,7 @@ public class EsusAtendimentoOdontologicoDao extends Dao {
 				.openSession()
 				.createQuery(
 						"from EsusAtendimentoOdontologico ao "
-								+ "where ai.stEnvio is null or ai.stEnvio=0");
+								+ "where ao.stEnvio is null or ao.stEnvio=0");
 		List<EsusAtendimentoOdontologico> lista = query.list();
 		tx.commit();
 		

@@ -44,10 +44,11 @@ public class EsusCadastroIndividualDao extends Dao {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		
-		Query query = session.createQuery("update EsusCadastroIndividual set stEnvio=:stEnvio, dtEnvio=:dtEnvio where id = :id");
+		Query query = session.createQuery("update EsusCadastroIndividual set stEnvio=:stEnvio, dtEnvio=:dtEnvio, uuid=:uuid where id = :id");
 		query.setInteger("stEnvio", 1);
 		query.setLong("id", entity.getId());
 		query.setDate("dtEnvio", entity.getDtEnvio());
+		query.setString("uuid", entity.getUuid());
 		query.executeUpdate();
 		session.beginTransaction().commit();
 		session.close();

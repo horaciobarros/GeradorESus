@@ -47,7 +47,7 @@ public class EsusAtividadeColetivaService {
 			JOptionPane.showMessageDialog(null, "Esus registro não encontrado");
 			throw e;
 		}
-		
+
 		SisRegistroService sisRegistroService = new SisRegistroService();
 		try {
 			sisRegistro = sisRegistroService.buscaSisRegistro();
@@ -55,8 +55,6 @@ public class EsusAtividadeColetivaService {
 			JOptionPane.showMessageDialog(null, "Sis registro não encontrado");
 			throw e;
 		}
-		
-		
 
 		log.info(new Date() + " -- Gerando Atividade Coletiva  -------");
 		TelaPrincipal.enviaLog(new Date()
@@ -78,7 +76,14 @@ public class EsusAtividadeColetivaService {
 							.serialize(thriftAtividadeColetiva);
 
 					// Passo 3: coletar as informaÃ§Ãµes do envio
-					informacoesEnvioDto.setTipoDadoSerializado(6L); // importante, aqui identifica qual tipo de ficha está sendo enviado 
+					informacoesEnvioDto.setTipoDadoSerializado(6L); // importante,
+																	// aqui
+																	// identifica
+																	// qual tipo
+																	// de ficha
+																	// está
+																	// sendo
+																	// enviado
 					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
 					informacoesEnvioDto.setUuidDadoSerializado(cad.getId()
 							.toString());
@@ -95,12 +100,12 @@ public class EsusAtividadeColetivaService {
 					cad.setDtEnvio(new Date());
 					cad.setStEnvio(Long.valueOf(1));
 					dao.atualiza(cad);
-					
-					log.info(new Date() + " -- Gerando atividade coletiva  --> "
-							+ cad.getId() + " - " + cad.getId());
-					System.out.println("Gerando atividade coletiva --> " + cad.getId()
-							);
 
+					log.info(new Date()
+							+ " -- Gerando atividade coletiva  --> "
+							+ cad.getId() + " - " + cad.getId());
+					System.out.println("Gerando atividade coletiva --> "
+							+ cad.getId());
 
 				} catch (JDBCConnectionException e) {
 					log.info(e.getMessage());
@@ -108,7 +113,7 @@ public class EsusAtividadeColetivaService {
 					TelaPrincipal.enviaLog(new Date() + " - " + e.getMessage());
 				} catch (Exception e) {
 					log.info(e.getMessage());
-					
+
 					e.printStackTrace();
 					TelaPrincipal.enviaLog(new Date() + " - " + e.getMessage());
 				}
@@ -127,33 +132,50 @@ public class EsusAtividadeColetivaService {
 	private FichaAtividadeColetivaThrift converterParaThrift(
 			EsusAtividadeColetiva cad) {
 		FichaAtividadeColetivaThrift ficha = new FichaAtividadeColetivaThrift();
-		
-		
+
 		ficha.setUuidFicha(cad.getId().toString());
-		
-		List<EsusAtividadeColetivaParticipantes> participantes = dao
-				.findParticipantes(cad.getId());
-		List<ParticipanteRowItemThrift> participantesThrift = converteParticipantes(participantes);
-		ficha.setParticipantes(participantesThrift);
 
-		List<EsusAtividadeColetivaProfissional> profissionais = dao
-				.findProfissionais(cad.getId());
-		List<ProfissionalCboRowItemThrift> profissionaisThrift = converteProfissionais(profissionais);
-		ficha.setProfissionais(profissionaisThrift);
+		try {
+			List<EsusAtividadeColetivaParticipantes> participantes = dao
+					.findParticipantes(cad.getId());
+			List<ParticipanteRowItemThrift> participantesThrift = converteParticipantes(participantes);
+			ficha.setParticipantes(participantesThrift);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
 
-		List<EsusAtividadeColetivaTemas> atividadeColetivaTemas = dao
-				.findTemas(cad.getId());
-		List<Long> temasParaReuniao = converteTemas(atividadeColetivaTemas);
-		ficha.setTemasParaReuniao(temasParaReuniao);
-		ficha.setTemasParaReuniaoIsSet(temasParaReuniao != null && temasParaReuniao.size() > 0);
+		try {
+			List<EsusAtividadeColetivaProfissional> profissionais = dao
+					.findProfissionais(cad.getId());
+			List<ProfissionalCboRowItemThrift> profissionaisThrift = converteProfissionais(profissionais);
+			ficha.setProfissionais(profissionaisThrift);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
 
-		List<EsusAtividadeColetivaPublico> atividadeColetivaPublico = dao
-				.findPublico(cad.getId());
-		List<Long> publico = convertePublico(atividadeColetivaPublico);
-		ficha.setPublicoAlvo(publico);
-		ficha.setPublicoAlvoIsSet(publico != null && publico.size() > 0);
+		try {
 
-		
+			List<EsusAtividadeColetivaTemas> atividadeColetivaTemas = dao
+					.findTemas(cad.getId());
+			List<Long> temasParaReuniao = converteTemas(atividadeColetivaTemas);
+			ficha.setTemasParaReuniao(temasParaReuniao);
+			ficha.setTemasParaReuniaoIsSet(temasParaReuniao != null
+					&& temasParaReuniao.size() > 0);
+			ficha.setTemasParaReuniao(temasParaReuniao);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+
+		try {
+			List<EsusAtividadeColetivaPublico> atividadeColetivaPublico = dao
+					.findPublico(cad.getId());
+			List<Long> publico = convertePublico(atividadeColetivaPublico);
+			ficha.setPublicoAlvo(publico);
+			ficha.setPublicoAlvoIsSet(publico != null && publico.size() > 0);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+
 		try {
 			ficha.setAtividadeTipo(cad.getEsusTipoatividadecoletiva().getId());
 			ficha.setAtividadeTipoIsSet(true);
@@ -191,9 +213,9 @@ public class EsusAtividadeColetivaService {
 			ficha.setResponsavelCnsIsSet(true);
 			ficha.setResponsavelNumIne(cad.getIneEquipe());
 			ficha.setResponsavelNumIneIsSet(true);
-			ficha.setTemasParaReuniao(temasParaReuniao);
-		} catch (Exception e) {
 			
+		} catch (Exception e) {
+
 		}
 
 		return ficha;
@@ -205,9 +227,9 @@ public class EsusAtividadeColetivaService {
 		for (EsusAtividadeColetivaPublico ap : atividadeColetivaPublico) {
 			lista.add(ap.getEsusPublicoalvo().getId());
 		}
-		
+
 		return lista;
-	
+
 	}
 
 	private List<Long> converteTemas(
@@ -237,8 +259,7 @@ public class EsusAtividadeColetivaService {
 
 	private List<ParticipanteRowItemThrift> converteParticipantes(
 			List<EsusAtividadeColetivaParticipantes> participantes) {
-		List
-		<ParticipanteRowItemThrift> lista = new ArrayList<ParticipanteRowItemThrift>();
+		List<ParticipanteRowItemThrift> lista = new ArrayList<ParticipanteRowItemThrift>();
 		for (EsusAtividadeColetivaParticipantes part : participantes) {
 			ParticipanteRowItemThrift item = new ParticipanteRowItemThrift();
 			item.setAbandonouGrupo(part.getAbandonouGrupo());
