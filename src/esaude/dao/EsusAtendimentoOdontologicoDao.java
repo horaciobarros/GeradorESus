@@ -8,6 +8,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import esaude.model.EsusAtendimentoOdontologico;
+import esaude.model.EsusAtendimentoOdontologicoEncam;
+import esaude.model.EsusAtendimentoOdontologicoVigilancia;
+import esaude.model.EsusCondutaencaminhamentoodonto;
+import esaude.model.EsusVigilanciaemsaudebucal;
 import esaude.util.HibernateUtil;
 
 public class EsusAtendimentoOdontologicoDao extends Dao {
@@ -27,7 +31,7 @@ public class EsusAtendimentoOdontologicoDao extends Dao {
 		Query query = sessionFactory
 				.openSession()
 				.createQuery(
-						"from EsusAtendimentoOdontologico ao "
+						"from EsusAtendimentoOdontologico ao left join fetch ao.esusTipodeconsultaodonto t left join fetch ao.esusTurno turno "
 								+ "where ao.stEnvio is null or ao.stEnvio=0");
 		List<EsusAtendimentoOdontologico> lista = query.list();
 		tx.commit();
@@ -48,6 +52,34 @@ public class EsusAtendimentoOdontologicoDao extends Dao {
 		query.executeUpdate();
 		session.beginTransaction().commit();
 		session.close();
+	}
+	
+	public List<EsusAtendimentoOdontologicoEncam> findEncaminhamentoOdontologico(EsusAtendimentoOdontologico cad) {
+		Transaction tx = session.beginTransaction();
+		Query query = sessionFactory
+				.openSession()
+				.createQuery(
+						"from EsusAtendimentoOdontologicoEncam e join fetch e.esusAtendimentoOdontologico ao "
+						+ "join fetch e.esusCondutaencaminhamentoodonto enc "
+								+ "where ao.id = " + cad.getId());
+		List<EsusAtendimentoOdontologicoEncam> lista = query.list();
+		tx.commit();
+		
+		return (List<EsusAtendimentoOdontologicoEncam>) lista;
+	}
+	
+	public List<EsusAtendimentoOdontologicoVigilancia> findVigilancia(EsusAtendimentoOdontologico cad) {
+		Transaction tx = session.beginTransaction();
+		Query query = sessionFactory
+				.openSession()
+				.createQuery(
+						"from EsusAtendimentoOdontologicoVigilancia v join fetch v.esusAtendimentoOdontologico ao "
+						+ "join fetch v.esusVigilanciaemsaudebucal vb "
+								+ "where ao.id = " + cad.getId());
+		List<EsusAtendimentoOdontologicoVigilancia> lista = query.list();
+		tx.commit();
+		
+		return (List<EsusAtendimentoOdontologicoVigilancia>) lista;
 	}
 	
 }

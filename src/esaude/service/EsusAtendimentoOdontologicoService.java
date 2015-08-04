@@ -18,7 +18,11 @@ import br.gov.saude.esus.cds.transport.generated.thrift.common.VariasLotacoesHea
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 import esaude.dao.EsusAtendimentoOdontologicoDao;
 import esaude.model.EsusAtendimentoOdontologico;
+import esaude.model.EsusAtendimentoOdontologicoEncam;
+import esaude.model.EsusAtendimentoOdontologicoVigilancia;
+import esaude.model.EsusCondutaencaminhamentoodonto;
 import esaude.model.EsusRegistro;
+import esaude.model.EsusVigilanciaemsaudebucal;
 import esaude.model.SisRegistro;
 import esaude.util.InformacoesEnvio;
 import esaude.util.InformacoesEnvioDto;
@@ -238,7 +242,8 @@ public class EsusAtendimentoOdontologicoService {
 			ficha.setTiposVigilanciaSaudeBucal(buscaTiposVigilanciaSaudeBucal(cad));
 			ficha.setTiposVigilanciaSaudeBucalIsSet(true);
 		} catch (Exception e) {
-			log.error("Erro no envio dos tipos vigil saude bucal. id:" + cad.getId());
+			log.error("Erro no envio dos tipos vigil saude bucal. id:" + cad.getId() + " " + e.getMessage());
+			e.printStackTrace();
 
 		}
 		
@@ -267,7 +272,13 @@ public class EsusAtendimentoOdontologicoService {
 		}
 		
 		try {
-			ficha.setSexo(cad.getEsusSexo().getId());
+			long sexo;
+			if (cad.getPProntuario().getCoSexo().equals("M")) {
+				sexo = 0;
+			} else  {
+				sexo = 1;
+			}
+			ficha.setSexo(sexo);
 			ficha.setSexoIsSet(true);
 		} catch (Exception e) {
 			log.error("Erro no envio do sexo. id:" + cad.getId());
@@ -282,8 +293,6 @@ public class EsusAtendimentoOdontologicoService {
 
 		}
 
-		
-
 		List<FichaAtendimentoOdontologicoChildThrift> fichas = new ArrayList<FichaAtendimentoOdontologicoChildThrift>();
 		fichas.add(ficha);
 
@@ -293,6 +302,7 @@ public class EsusAtendimentoOdontologicoService {
 
 	private List<ProcedimentoQuantidadeThrift> buscaOutrosSiaProcedimentos(
 			EsusAtendimentoOdontologico cad) {
+		
 		// não encontrada tabela correspondente. ver com cliente.
 		return null;
 	}
@@ -304,14 +314,20 @@ public class EsusAtendimentoOdontologicoService {
 	}
 
 	private List<Long> buscaTiposConsultaOdonto(EsusAtendimentoOdontologico cad) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Long> retorno = new ArrayList<Long>();
+		retorno.add(cad.getEsusTipodeconsultaodonto().getId());
+		return retorno;
 	}
 
 	private List<Long> buscaTiposVigilanciaSaudeBucal(
 			EsusAtendimentoOdontologico cad) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Long> retorno = new ArrayList<Long>();
+		
+		for (EsusAtendimentoOdontologicoVigilancia v : dao.findVigilancia(cad)) {
+			retorno.add(v.getEsusVigilanciaemsaudebucal().getId());
+		}
+		
+		return retorno;
 	}
 
 	private List<Long> buscaTiposFornecimOdonto(EsusAtendimentoOdontologico cad) {
@@ -320,8 +336,12 @@ public class EsusAtendimentoOdontologicoService {
 	}
 
 	private List<Long> buscaTiposEncamOdonto(EsusAtendimentoOdontologico cad) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Long> retorno = new ArrayList<Long>();
+		for (EsusAtendimentoOdontologicoEncam enc : dao.findEncaminhamentoOdontologico(cad)){
+			retorno.add(enc.getEsusCondutaencaminhamentoodonto().getId());
+		}
+		
+		return retorno;
 	}
 
 }
