@@ -16,12 +16,13 @@ import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 
 public class GeradorZip {
 	static Logger log = Logger.getLogger(GeradorZip.class.getName());
-
 	public void empacotaZir(
 			List<DadoTransporteThrift> dadosTransportCadastroDomiciliar, 
 			List<DadoTransporteThrift> dadosTransportAtividadeColetiva, 
 			List<DadoTransporteThrift> dadosTransportCadastroIndividual, List<DadoTransporteThrift> dadosTransportVisitaDomiciliar,
-			List<DadoTransporteThrift> dadosTransportAtendimentoIndividual, List<DadoTransporteThrift> dadosTransportAtendimentoOdontologico, String pathPadrao) {
+			List<DadoTransporteThrift> dadosTransportAtendimentoIndividual, List<DadoTransporteThrift> dadosTransportAtendimentoOdontologico, 
+			List<DadoTransporteThrift> dadosTransportProcedimento, 
+			String pathPadrao) {
 
 		final File f = new File(pathPadrao + "\\esaude_exportacao" + getInstante() + ".zip");
 		ZipOutputStream out = null;
@@ -38,6 +39,7 @@ public class GeradorZip {
 			geraEntradaEmArquivoZip(out, dadosTransportVisitaDomiciliar, "visita_domiciliar");
 			geraEntradaEmArquivoZip(out, dadosTransportAtendimentoIndividual, "atendimento_individual");
 			geraEntradaEmArquivoZip(out, dadosTransportAtendimentoOdontologico, "atendimento_odontologico");
+			geraEntradaEmArquivoZip(out, dadosTransportProcedimento, "ficha_procedimento");
 			
 			try {
 				out.closeEntry();

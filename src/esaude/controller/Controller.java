@@ -27,6 +27,7 @@ import esaude.service.EsusAtendimentoOdontologicoService;
 import esaude.service.EsusAtividadeColetivaService;
 import esaude.service.EsusCadastroDomiciliarService;
 import esaude.service.EsusCadastroIndividualService;
+import esaude.service.EsusFichaProcedimentoService;
 import esaude.service.EsusVisitaDomiciliarService;
 import esaude.util.GeradorZip;
 import esaude.view.TelaPrincipal;
@@ -41,6 +42,7 @@ public class Controller {
 	private EsusVisitaDomiciliarService visitaDomiciliarService = new EsusVisitaDomiciliarService();
 	private EsusAtendimentoIndividualService atendimentoIndividualService = new EsusAtendimentoIndividualService();
 	private EsusAtendimentoOdontologicoService atendimentoOdontologicoService = new EsusAtendimentoOdontologicoService();
+	private EsusFichaProcedimentoService fichaProcedimentoService = new EsusFichaProcedimentoService();
 	private GeradorZip geradorZip = new GeradorZip();
 	
 	String userHome = System.getProperty("user.dir");
@@ -95,13 +97,19 @@ public class Controller {
 			//List<DadoTransporteThrift> dadosTransportAtendimentoOdontologico = new ArrayList<DadoTransporteThrift>();
 			TelaPrincipal
 			.enviaLog("----> Total de registros:" + (dadosTransportAtendimentoOdontologico != null ? dadosTransportAtendimentoOdontologico.size() : 0));
+			
+			TelaPrincipal
+			.enviaLog("Importando e Convertendo Ficha Procedimento");
+			List<DadoTransporteThrift> dadosTransportProcedimento = fichaProcedimentoService
+					.buscaRegistros();
+			TelaPrincipal
+			.enviaLog("----> Total de registros:" + (dadosTransportProcedimento != null ? dadosTransportProcedimento.size() : 0));
 
-			
-			
+
 			TelaPrincipal.enviaLog("Criando Arquivo Serializado");
 			geradorZip.empacotaZir(dadosTransportCadastroDomiciliar, dadosTransportAtividadeColetiva, 
 					dadosTransportCadastroIndividual, dadosTransportVisitaDomiciliar, dadosTransportAtendimentoIndividual, dadosTransportAtendimentoOdontologico
-					, pathPadrao);
+					, dadosTransportProcedimento, pathPadrao);
 			TelaPrincipal.enviaLog("Processo Finalizado");
 		} catch (Exception e) {
 			log.error(new Date() + " " +  e.getStackTrace());
