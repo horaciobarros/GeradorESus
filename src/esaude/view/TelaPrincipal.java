@@ -124,6 +124,7 @@ public class TelaPrincipal extends JFrame {
 
 	private void enviar() {
 		this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		enviaLog("== Iniciando processamento de envio ===");
 		controller.geraArquivos();
 		this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 	}
