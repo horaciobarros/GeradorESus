@@ -102,22 +102,22 @@ public class TelaPrincipal extends JFrame {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(dataGeracao, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btEnviar)
+							.addComponent(btEnviar, GroupLayout.PREFERRED_SIZE, 171, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btCancelar))
 						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_contentPane.createSequentialGroup()
 					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(ldataGeracao)
 						.addComponent(dataGeracao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btEnviar)
-						.addComponent(btCancelar)))
+						.addComponent(btCancelar)
+						.addComponent(btEnviar)))
 		);
 		contentPane.setLayout(gl_contentPane);
 	}
@@ -133,7 +133,7 @@ public class TelaPrincipal extends JFrame {
 	}
 
 	private void cancelar() {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/YYYY");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Date dataGeracao;
 		try {
 			dataGeracao = sdf.parse(this.dataGeracao.getText());
