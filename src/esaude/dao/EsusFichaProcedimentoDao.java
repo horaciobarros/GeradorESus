@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 
 import esaude.model.EsusFichaProcedimento;
 import esaude.model.EsusFichaProcedimentoAtendimento;
+import esaude.model.EsusFichaProcedimentoAtendimentoProc;
 import esaude.util.HibernateUtil;
 
 public class EsusFichaProcedimentoDao extends Dao {
@@ -65,6 +66,20 @@ public class EsusFichaProcedimentoDao extends Dao {
 		
 		return (List<EsusFichaProcedimentoAtendimento>) lista;
 	}
+	
+	public List<EsusFichaProcedimentoAtendimentoProc> findProcedimentos(Long id) {
+		Transaction tx = session.beginTransaction();
+		Query query = sessionFactory
+				.openSession()
+				.createQuery(
+						"from EsusFichaProcedimentoAtendimentoProc fpap join fpa.esusFichaProcedimentoAtendimento fpa "
+								+ "where fpa.id = " + id);
+		List<EsusFichaProcedimentoAtendimentoProc> lista = query.list();
+		tx.commit();
+		
+		return (List<EsusFichaProcedimentoAtendimentoProc>) lista;
+	}
+
 
 	
 

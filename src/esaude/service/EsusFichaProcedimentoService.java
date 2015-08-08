@@ -16,6 +16,7 @@ import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 import esaude.dao.EsusFichaProcedimentoDao;
 import esaude.model.EsusFichaProcedimento;
 import esaude.model.EsusFichaProcedimentoAtendimento;
+import esaude.model.EsusFichaProcedimentoAtendimentoProc;
 import esaude.model.EsusRegistro;
 import esaude.model.SisRegistro;
 import esaude.util.InformacoesEnvio;
@@ -72,7 +73,7 @@ public class EsusFichaProcedimentoService extends MasterService{
 							.serialize(thriftFichaProcedimento);
 
 					// Passo 3: coletar as informações do envio
-					informacoesEnvioDto.setTipoDadoSerializado(4l);
+					informacoesEnvioDto.setTipoDadoSerializado(7l);
 					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
 					informacoesEnvioDto.setUuidDadoSerializado(cad.getId()
 							.toString());
@@ -225,10 +226,33 @@ public class EsusFichaProcedimentoService extends MasterService{
 			ficha.setStatusEscutaInicialOrientacao(f.getEscutaInicial());
 			ficha.setStatusEscutaInicialOrientacao(true);
 			
+			
+			ficha.setProcedimentos(findProcedimentos(f));
+			ficha.setProcedimentosIsSet(true);
+			
+			ficha.setOutrosSiaProcedimentos(findOutrosProcedimentos(f));
+			ficha.setOutrosSiaProcedimentosIsSet(true);
+			
 			fichas.add(ficha);	
 		}
 
 		return fichas;
+	}
+
+	private List<String> findOutrosProcedimentos(
+			EsusFichaProcedimentoAtendimento f) {
+		
+		return findProcedimentos(f); 
+	}
+
+	private List<String> findProcedimentos(EsusFichaProcedimentoAtendimento f) {
+		List<String> procs = new ArrayList<String>();
+		
+		for (EsusFichaProcedimentoAtendimentoProc proc : dao.findProcedimentos(f.getId())) {
+			procs.add(proc.getCoProcedimentoCiap());
+		}
+		
+		return procs;
 	}
 
 }

@@ -140,7 +140,7 @@ public class Controller {
 		nomes.add("EsusAtendimentoIndividual");
 		nomes.add("EsusFichaProcedimento");
 		nomes.add("EsusVisitaDomiciliar");
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/YYYY");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		TelaPrincipal.enviaLog("Cancelamento de geração do dia: " + sdf.format(dataGeracao) );
 		for (String nomeEntidade : nomes) {
 			masterService.cancelaEnvio(nomeEntidade, dataGeracao);
