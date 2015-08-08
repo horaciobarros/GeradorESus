@@ -156,7 +156,7 @@ public class EsusCadastroDomiciliarService {
 			condicaoMoradia.setSituacaoMoradiaPosseTerraIsSet(true);
 			
 		} catch (Exception e) {
-			log.info("Condição de moradia posse por terra null:" + cad.getId());
+			
 		}
 		try {
 			condicaoMoradia.setFormaEscoamentoBanheiro(cad
@@ -164,7 +164,7 @@ public class EsusCadastroDomiciliarService {
 			condicaoMoradia.setFormaEscoamentoBanheiroIsSet(true);
 			
 		} catch (Exception e) {
-			log.info("Condição de moradia forma escoamento banheiro:" + cad.getId());
+			
 		}
 
 		cadastroDomiciliarThrift.setCondicaoMoradia(condicaoMoradia);

@@ -13,6 +13,7 @@
 package esaude.controller;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +30,7 @@ import esaude.service.EsusCadastroDomiciliarService;
 import esaude.service.EsusCadastroIndividualService;
 import esaude.service.EsusFichaProcedimentoService;
 import esaude.service.EsusVisitaDomiciliarService;
+import esaude.service.MasterService;
 import esaude.util.GeradorZip;
 import esaude.view.TelaPrincipal;
 
@@ -47,6 +49,8 @@ public class Controller {
 	
 	String userHome = System.getProperty("user.dir");
 	String pathPadrao;
+	
+	private MasterService masterService = new MasterService();
 	
 	public void geraArquivos() {
 		
@@ -124,6 +128,24 @@ public class Controller {
 		pathPadrao = userHome + "\\gerador_esus";
 		File d1 = new File(pathPadrao);
         d1.mkdir();
+		
+	}
+	
+	public void cancelaEnvio(Date dataGeracao) throws Exception {
+		List<String> nomes = new ArrayList<String>();
+		nomes.add("EsusCadastroDomiciliar");
+		nomes.add("EsusCadastroIndividual");
+		nomes.add("EsusAtividadeColetiva");
+		nomes.add("EsusAtendimentoOdontologico");
+		nomes.add("EsusAtendimentoIndividual");
+		nomes.add("EsusFichaProcedimento");
+		nomes.add("EsusVisitaDomiciliar");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/YYYY");
+		TelaPrincipal.enviaLog("Cancelamento de geração do dia: " + sdf.format(dataGeracao) );
+		for (String nomeEntidade : nomes) {
+			masterService.cancelaEnvio(nomeEntidade, dataGeracao);
+			TelaPrincipal.enviaLog("cancelando -->" + nomeEntidade);
+		}
 		
 	}
 
