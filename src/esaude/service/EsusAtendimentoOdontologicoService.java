@@ -133,6 +133,7 @@ public class EsusAtendimentoOdontologicoService {
 			EsusAtendimentoOdontologico cad) {
 		FichaAtendimentoOdontologicoMasterThrift c = new FichaAtendimentoOdontologicoMasterThrift();
 		try {
+
 			c.setUuidFicha(masterService.gerarUuid(cad.getCnesUnidade()));
 			cad.setUuid(c.getUuidFicha());
 			c.setUuidFichaIsSet(true);
@@ -142,7 +143,7 @@ public class EsusAtendimentoOdontologicoService {
 
 		c.setTpCdsOrigem(3);
 		c.setTpCdsOrigemIsSet(true);
-
+		
 		try {
 			VariasLotacoesHeaderThrift vl = new VariasLotacoesHeaderThrift();
 			UnicaLotacaoHeaderThrift unicaLotacao = new UnicaLotacaoHeaderThrift();

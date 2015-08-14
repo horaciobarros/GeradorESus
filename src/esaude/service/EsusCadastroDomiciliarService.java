@@ -98,12 +98,13 @@ public class EsusCadastroDomiciliarService {
 					}
 
 					dados.add(dadoTransporteThrift);
-					log.info(new Date() + " -- Gerando cadastro Domiciliar --> "
+					log.info(new Date()
+							+ " -- Gerando cadastro Domiciliar --> "
 							+ cad.getId() + " - " + cad.getNuDomicilio()
 							+ " - " + cad.getNoLogradouro());
-					System.out.println("Gerando cadastro Domiciliar --> " + cad.getId()
-							+ " - " + cad.getNuDomicilio() + " - "
-							+ cad.getNoLogradouro());
+					System.out.println("Gerando cadastro Domiciliar --> "
+							+ cad.getId() + " - " + cad.getNuDomicilio()
+							+ " - " + cad.getNoLogradouro());
 
 					cad.setDtEnvio(new Date());
 					cad.setStEnvio(Long.valueOf(1));
@@ -134,7 +135,8 @@ public class EsusCadastroDomiciliarService {
 			EsusCadastroDomiciliar cad) {
 		CadastroDomiciliarThrift cadastroDomiciliarThrift = new CadastroDomiciliarThrift();
 
-		cadastroDomiciliarThrift.setUuid(masterService.gerarUuid(cad.getCnesUnidade()));
+		cadastroDomiciliarThrift.setUuid(masterService.gerarUuid(cad
+				.getCnesUnidade()));
 		cad.setUuid(cadastroDomiciliarThrift.getUuid());
 
 		cadastroDomiciliarThrift.setAnimaisNoDomicilio(null);
@@ -154,17 +156,17 @@ public class EsusCadastroDomiciliarService {
 			condicaoMoradia.setSituacaoMoradiaPosseTerra(cad
 					.getEsusCondicaodeposseeusodaterra().getId());
 			condicaoMoradia.setSituacaoMoradiaPosseTerraIsSet(true);
-			
+
 		} catch (Exception e) {
-			
+
 		}
 		try {
 			condicaoMoradia.setFormaEscoamentoBanheiro(cad
 					.getEsusFormadeescoamentodobanheiroousanitario().getId());
 			condicaoMoradia.setFormaEscoamentoBanheiroIsSet(true);
-			
+
 		} catch (Exception e) {
-			
+
 		}
 
 		cadastroDomiciliarThrift.setCondicaoMoradia(condicaoMoradia);
@@ -241,8 +243,10 @@ public class EsusCadastroDomiciliarService {
 		familias.add(familia);
 		cadastroDomiciliarThrift.setFamilias(familias);
 
-		cadastroDomiciliarThrift.setFichaAtualizada(true);
-		cadastroDomiciliarThrift.setFichaAtualizadaIsSet(true);
+		if (cad.getDtEnvio() != null) {
+			cadastroDomiciliarThrift.setFichaAtualizada(true);
+			cadastroDomiciliarThrift.setFichaAtualizadaIsSet(true);
+		}
 		if (cad.getQuantidadeAnimais() != null) {
 			cadastroDomiciliarThrift.setQuantosAnimaisNoDomicilio(Long
 					.toString(cad.getQuantidadeAnimais()));
