@@ -132,6 +132,17 @@ public class EsusCadastroIndividualService {
 		CadastroIndividualThrift c = new CadastroIndividualThrift();
 
 		c.setUuid(masterService.gerarUuid(cad.getCnesUnidade()));
+		c.setUuidIsSet(true);
+		if (cad.getUuid() != null) {
+			c.setFichaAtualizada(true);
+			c.setUuidFichaOriginadora(cad.getUuid());
+		} else {
+			c.setUuidFichaOriginadora(c.getUuid());
+			c.setFichaAtualizada(false);
+		}
+		c.setUuidFichaOriginadoraIsSet(true);
+		c.setFichaAtualizadaIsSet(true);
+
 		cad.setUuid(c.getUuid());
 
 		CondicoesDeSaudeThrift condicoesDeSaude = new CondicoesDeSaudeThrift();
@@ -227,9 +238,6 @@ public class EsusCadastroIndividualService {
 
 		c.setTpCdsOrigem(3);
 		c.setTpCdsOrigemIsSet(true);
-
-		c.setFichaAtualizada(cad.isFichaAtualizada());
-		c.setFichaAtualizadaIsSet(true);
 
 		return c;
 	}

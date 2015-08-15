@@ -137,6 +137,19 @@ public class EsusCadastroDomiciliarService {
 
 		cadastroDomiciliarThrift.setUuid(masterService.gerarUuid(cad
 				.getCnesUnidade()));
+		cadastroDomiciliarThrift.setUuidIsSet(true);
+		
+		if (cad.getUuid() != null) {
+			cadastroDomiciliarThrift.setFichaAtualizada(true);
+			cadastroDomiciliarThrift.setUuidFichaOriginadora(cad.getUuid());
+			
+		} else {
+			cadastroDomiciliarThrift.setFichaAtualizada(false);
+			cadastroDomiciliarThrift.setUuidFichaOriginadora(cadastroDomiciliarThrift.getUuid());
+		}
+		
+		cadastroDomiciliarThrift.setFichaAtualizadaIsSet(true);
+
 		cad.setUuid(cadastroDomiciliarThrift.getUuid());
 
 		cadastroDomiciliarThrift.setAnimaisNoDomicilio(null);
@@ -243,10 +256,6 @@ public class EsusCadastroDomiciliarService {
 		familias.add(familia);
 		cadastroDomiciliarThrift.setFamilias(familias);
 
-		if (cad.getDtEnvio() != null) {
-			cadastroDomiciliarThrift.setFichaAtualizada(true);
-			cadastroDomiciliarThrift.setFichaAtualizadaIsSet(true);
-		}
 		if (cad.getQuantidadeAnimais() != null) {
 			cadastroDomiciliarThrift.setQuantosAnimaisNoDomicilio(Long
 					.toString(cad.getQuantidadeAnimais()));
