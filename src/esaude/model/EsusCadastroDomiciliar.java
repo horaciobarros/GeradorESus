@@ -15,7 +15,6 @@ import java.util.*;
 @Entity 
 @Table(name="esus_cadastro_domiciliar")
 public class EsusCadastroDomiciliar implements Serializable {
-
    private static final long serialVersionUID = 1L;
 
    @Id
