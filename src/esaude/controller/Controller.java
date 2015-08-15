@@ -146,6 +146,8 @@ public class Controller {
 			masterService.cancelaEnvio(nomeEntidade, dataGeracao);
 			TelaPrincipal.enviaLog("cancelando -->" + nomeEntidade);
 		}
+		TelaPrincipal.enviaLog("--- Cancelamento finalizado --");
+		
 		
 	}
 

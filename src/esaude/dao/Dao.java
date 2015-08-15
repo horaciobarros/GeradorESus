@@ -23,7 +23,7 @@ public class Dao {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		
-		Query query = session.createQuery("update " + nomeEntidade + " set stEnvio = 0 "
+		Query query = session.createQuery("update " + nomeEntidade + " set stEnvio = 0, dtEnvio = null "
 				+ " where dtEnvio = :dtEnvio");
 		query.setDate("dtEnvio", dataGeracao);
 		query.executeUpdate();
