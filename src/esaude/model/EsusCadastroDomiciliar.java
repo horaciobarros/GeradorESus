@@ -144,16 +144,16 @@ public class EsusCadastroDomiciliar implements Serializable {
 	private Date dtEnvio;
 
 	@Column(name = "ficha_atualizada")
-	private boolean fichaAtulizada;
+	private Boolean fichaAtualizada;
 
 	
 
-	public boolean isFichaAtulizada() {
-		return fichaAtulizada;
+	public Boolean getFichaAtualizada() {
+		return fichaAtualizada;
 	}
 
-	public void setFichaAtulizada(boolean fichaAtulizada) {
-		this.fichaAtulizada = fichaAtulizada;
+	public void setFichaAtulizada(Boolean fichaAtualizada) {
+		this.fichaAtualizada = fichaAtualizada;
 	}
 
 	@Column(name = "uuid")
@@ -477,6 +477,14 @@ public class EsusCadastroDomiciliar implements Serializable {
 
 	public void setDtEnvio(Date dtEnvio) {
 		this.dtEnvio = dtEnvio;
+	}
+
+	public boolean isFichaAtualizada() {
+		if (this.fichaAtualizada == null) {
+			return false; 
+		} else {
+			return fichaAtualizada;
+		}
 	}
 
 }
