@@ -139,7 +139,7 @@ public class EsusCadastroDomiciliarService {
 				.getCnesUnidade()));
 		cadastroDomiciliarThrift.setUuidIsSet(true);
 		
-		if (cad.getUuid() != null) {
+		if (cad.isFichaAtulizada()) {
 			cadastroDomiciliarThrift.setFichaAtualizada(true);
 			cadastroDomiciliarThrift.setUuidFichaOriginadora(cad.getUuid());
 			
