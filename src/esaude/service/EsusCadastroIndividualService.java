@@ -133,7 +133,7 @@ public class EsusCadastroIndividualService {
 
 		c.setUuid(masterService.gerarUuid(cad.getCnesUnidade()));
 		c.setUuidIsSet(true);
-		if (cad.isFichaAtualizada()) {
+		if (cad.getDtEnvio() != null) {
 			c.setFichaAtualizada(true);
 			c.setUuidFichaOriginadora(cad.getUuid());
 		} else {
