@@ -18,6 +18,7 @@ import br.gov.saude.esus.cds.transport.generated.thrift.common.VariasLotacoesHea
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 import esaude.dao.EsusAtendimentoIndividualDao;
 import esaude.model.EsusAtendimentoIndividual;
+import esaude.model.EsusAtendimentoIndividualCiap;
 import esaude.model.EsusAtendimentoIndividualExames;
 import esaude.model.EsusRegistro;
 import esaude.model.SisRegistro;
@@ -245,6 +246,7 @@ public class EsusAtendimentoIndividualService extends MasterService{
 
 		try {
 			ProblemaCondicaoAvaliacaoAIThrift problema = new ProblemaCondicaoAvaliacaoAIThrift();
+			buscaCiap(cad, problema);
 			ficha.setProblemaCondicaoAvaliada(problema);
 			ficha.setProblemaCondicaoAvaliadaIsSet(true);
 		} catch (Exception e) {
@@ -255,6 +257,27 @@ public class EsusAtendimentoIndividualService extends MasterService{
 		fichas.add(ficha);
 
 		return fichas;
+	}
+
+	private void buscaCiap(EsusAtendimentoIndividual cad, ProblemaCondicaoAvaliacaoAIThrift problema)  {
+		
+		List<String> ciaps = new ArrayList<String>();
+		for (EsusAtendimentoIndividualCiap ciap : dao.findCiap(cad)) { 
+			ciaps.add(ciap.getCoCiap());
+			if (problema.getOutroCiap1() == null) {
+				problema.setOutroCiap1(ciap.getCoCiap());
+				problema.setOutroCiap1IsSet(true);
+			} else if (problema.getOutroCiap2() == null) {
+				problema.setOutroCiap2(ciap.getCoCiap());
+				problema.setOutroCiap2IsSet(true);
+			}
+			if (problema.getCid10() == null) {
+				problema.setCid10(ciap.getCoCid());
+				problema.setCid10IsSet(true);
+			}
+		}
+		problema.setCiaps(ciaps);
+		
 	}
 
 	private List<OutrosSiaThrift> buscaOutrosSia(EsusAtendimentoIndividual cad) {

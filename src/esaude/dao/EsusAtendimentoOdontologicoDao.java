@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import esaude.model.EsusAtendimentoOdontologico;
+import esaude.model.EsusAtendimentoOdontologicoCiap;
 import esaude.model.EsusAtendimentoOdontologicoEncam;
 import esaude.model.EsusAtendimentoOdontologicoVigilancia;
 import esaude.model.EsusCondutaencaminhamentoodonto;
@@ -80,6 +81,19 @@ public class EsusAtendimentoOdontologicoDao extends Dao {
 		tx.commit();
 		
 		return (List<EsusAtendimentoOdontologicoVigilancia>) lista;
+	}
+	
+	public List<EsusAtendimentoOdontologicoCiap> findCiap(EsusAtendimentoOdontologico cad) {
+		Transaction tx = session.beginTransaction();
+		Query query = sessionFactory
+				.openSession()
+				.createQuery(
+						"from EsusAtendimentoOdontologicoCiap c join fetch c.esusAtendimentoOdontologico ao "
+								+ "where ao.id = " + cad.getId());
+		List<EsusAtendimentoOdontologicoCiap> lista = query.list();
+		tx.commit();
+		
+		return (List<EsusAtendimentoOdontologicoCiap>) lista;
 	}
 	
 }

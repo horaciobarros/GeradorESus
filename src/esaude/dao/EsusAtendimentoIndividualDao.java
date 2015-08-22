@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import esaude.model.EsusAtendimentoIndividual;
+import esaude.model.EsusAtendimentoIndividualCiap;
 import esaude.model.EsusAtendimentoIndividualExames;
 import esaude.model.EsusAtendimentoIndividualExamesSia;
 import esaude.model.EsusExames;
@@ -73,6 +74,22 @@ public class EsusAtendimentoIndividualDao extends Dao {
 		tx.commit();
 		
 		return lista;
+	}
+	
+	public List<EsusAtendimentoIndividualCiap> findCiap(EsusAtendimentoIndividual cad) {
+		Transaction tx = session.beginTransaction();
+		Query query = sessionFactory
+				.openSession()
+				.createQuery(
+						"from EsusAtendimentoIndividualCiap e  "
+						+ " left outer join fetch e.esusAtendimentoIndividual  "
+								+ "where e.esusAtendimentoIndividual.id = " + cad.getId());
+		List<EsusAtendimentoIndividualCiap> lista = query.list();
+		tx.commit();
+		
+		return lista;
+		
+		
 	}
 
 

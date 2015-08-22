@@ -18,6 +18,7 @@ import br.gov.saude.esus.cds.transport.generated.thrift.common.VariasLotacoesHea
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 import esaude.dao.EsusAtendimentoOdontologicoDao;
 import esaude.model.EsusAtendimentoOdontologico;
+import esaude.model.EsusAtendimentoOdontologicoCiap;
 import esaude.model.EsusAtendimentoOdontologicoEncam;
 import esaude.model.EsusAtendimentoOdontologicoVigilancia;
 import esaude.model.EsusCondutaencaminhamentoodonto;
@@ -310,8 +311,16 @@ public class EsusAtendimentoOdontologicoService {
 
 	private List<ProcedimentoQuantidadeThrift> buscaProcedimentosRealizados(
 			EsusAtendimentoOdontologico cad) {
-		// não encontrada tabela correspondente. ver com cliente.
-		return null;
+		List<ProcedimentoQuantidadeThrift> procedimentos = new ArrayList<ProcedimentoQuantidadeThrift>();
+		for (EsusAtendimentoOdontologicoCiap ciap : dao.findCiap(cad)) {
+			ProcedimentoQuantidadeThrift procedimento = new ProcedimentoQuantidadeThrift();
+			procedimento.setCoMsProcedimento(ciap.getCoCiap());
+			procedimento.setCoMsProcedimentoIsSet(true);
+			procedimento.setQuantidade(Integer.parseInt(ciap.getQtd().toString()));
+			procedimento.setQuantidadeIsSet(true);
+			procedimentos.add(procedimento);
+		}
+		return procedimentos;
 	}
 
 	private List<Long> buscaTiposConsultaOdonto(EsusAtendimentoOdontologico cad) {
