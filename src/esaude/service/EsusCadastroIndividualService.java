@@ -184,7 +184,7 @@ public class EsusCadastroIndividualService {
 		identificacao.setDataNascimentoCidadaoIsSet(true);
 		identificacao.setNomeCidadao(cad.getPProntuario().getNomeSocial());
 		identificacao.setNomeCidadaoIsSet(true);
-		if (cad.getpProntuario().getMaeDesconhecida() == 0) {
+		if (!cad.getpProntuario().isDesconheceMae()) {
 			identificacao.setDesconheceNomeMae(false);
 			identificacao.setDesconheceNomeMaeIsSet(true);
 			identificacao.setNomeMaeCidadao(cad.getPProntuario().getNoMae());

@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.*;
 import java.util.*;
+import java.math.BigDecimal;
 
 @Entity 
 @Table(name="esus_visita_domiciliar")
@@ -68,18 +69,11 @@ public class EsusVisitaDomiciliar implements Serializable {
 
    @Column(name="dt_envio")
    private Date dtEnvio;
-   
+
    @Column(name="uuid")
    private String uuid;
 
-
-   public String getUuid() {
-	return uuid;
-}
-public void setUuid(String uuid) {
-	this.uuid = uuid;
-}
-public Long getId() { 
+   public Long getId() { 
       return id;
    }
    public void  setId(Long id) { 
@@ -188,4 +182,10 @@ public Long getId() {
       this.dtEnvio = dtEnvio;
    }
 
+   public String getUuid() { 
+      return uuid;
    }
+   public void  setUuid(String uuid) { 
+      this.uuid = uuid;
+   }
+}

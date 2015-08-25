@@ -41,10 +41,7 @@ public class EsusAtendimentoOdontologico implements Serializable {
 	@JoinColumn(name = "id_tipodeatendimento")
 	private EsusTipodeatendimento esusTipodeatendimento;
 
-	@ManyToOne
-	@JoinColumn(name = "id_sexo")
-	private EsusSexo esusSexo;
-
+	
 	@ManyToOne
 	@JoinColumn(name = "id_turno")
 	private EsusTurno esusTurno;
@@ -142,14 +139,6 @@ public class EsusAtendimentoOdontologico implements Serializable {
 	public void setEsusTipodeatendimento(
 			EsusTipodeatendimento esusTipodeatendimento) {
 		this.esusTipodeatendimento = esusTipodeatendimento;
-	}
-
-	public EsusSexo getEsusSexo() {
-		return esusSexo;
-	}
-
-	public void setEsusSexo(EsusSexo esusSexo) {
-		this.esusSexo = esusSexo;
 	}
 
 	public EsusTurno getEsusTurno() {

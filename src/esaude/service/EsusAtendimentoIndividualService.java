@@ -285,7 +285,7 @@ public class EsusAtendimentoIndividualService extends MasterService{
 		List<OutrosSiaThrift> lista = new ArrayList<OutrosSiaThrift>();
 		for (EsusAtendimentoIndividualExames aie : dao.findExames(cad)) {
 			OutrosSiaThrift outro = new OutrosSiaThrift();
-			outro.setCodigoExame(aie.getEsusExames().getCod());
+			outro.setCodigoExame(aie.getCoExame());
 			outro.setCodigoExameIsSet(true);
 			List<String> solicitadoAvaliados = new ArrayList<String>();
 			solicitadoAvaliados.add(aie.getStatus());

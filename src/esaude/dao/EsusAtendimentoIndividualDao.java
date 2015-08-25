@@ -67,7 +67,7 @@ public class EsusAtendimentoIndividualDao extends Dao {
 		Query query = sessionFactory
 				.openSession()
 				.createQuery(
-						"from EsusAtendimentoIndividualExames e  left outer join fetch e.esusExames"
+						"from EsusAtendimentoIndividualExames e "
 						+ " left outer join fetch e.esusAtendimentoIndividual  "
 								+ "where e.esusAtendimentoIndividual.id = " + cad.getId());
 		List<EsusAtendimentoIndividualExames> lista = query.list();
