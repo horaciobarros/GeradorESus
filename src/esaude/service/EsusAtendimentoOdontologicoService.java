@@ -261,7 +261,7 @@ public class EsusAtendimentoOdontologicoService {
 			ficha.setProcedimentosRealizados(buscaProcedimentosRealizados(cad));
 			ficha.setProcedimentosRealizadosIsSet(false);
 		} catch (Exception e) {
-			log.error("Erro no envio dos procedimentos. id:" + cad.getId());
+			log.error("Erro no envio dos procedimentos. id:" + cad.getId() + e.getMessage());
 
 		}
 

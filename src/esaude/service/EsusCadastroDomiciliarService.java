@@ -100,8 +100,7 @@ public class EsusCadastroDomiciliarService {
 					dados.add(dadoTransporteThrift);
 					log.info(new Date()
 							+ " -- Gerando cadastro Domiciliar --> "
-							+ cad.getId() + " - " + cad.getNuDomicilio()
-							+ " - " + cad.getNoLogradouro());
+							+ cad.getId());
 					System.out.println("Gerando cadastro Domiciliar --> "
 							+ cad.getId() + " - " + cad.getNuDomicilio()
 							+ " - " + cad.getNoLogradouro());

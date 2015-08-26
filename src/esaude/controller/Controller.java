@@ -15,6 +15,7 @@ package esaude.controller;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -35,8 +36,7 @@ import esaude.util.GeradorZip;
 import esaude.view.TelaPrincipal;
 
 public class Controller {
-	static Logger log = Logger.getLogger(Controller.class
-			.getName());
+	static Logger log = Logger.getLogger(Controller.class.getName());
 
 	private EsusCadastroDomiciliarService cadastroDomiciliarService = new EsusCadastroDomiciliarService();
 	private EsusAtividadeColetivaService atividadeColetivaService = new EsusAtividadeColetivaService();
@@ -46,14 +46,14 @@ public class Controller {
 	private EsusAtendimentoOdontologicoService atendimentoOdontologicoService = new EsusAtendimentoOdontologicoService();
 	private EsusFichaProcedimentoService fichaProcedimentoService = new EsusFichaProcedimentoService();
 	private GeradorZip geradorZip = new GeradorZip();
-	
+
 	String userHome = System.getProperty("user.dir");
 	String pathPadrao;
-	
+
 	private MasterService masterService = new MasterService();
-	
+
 	public void geraArquivos() {
-		
+
 		try {
 			criaPastas();
 			TelaPrincipal
@@ -61,76 +61,91 @@ public class Controller {
 			List<DadoTransporteThrift> dadosTransportCadastroDomiciliar = cadastroDomiciliarService
 					.buscaRegistros();
 			TelaPrincipal
-			.enviaLog("----> Total de registros:" + (dadosTransportCadastroDomiciliar != null ? dadosTransportCadastroDomiciliar.size() : 0));
+					.enviaLog("----> Total de registros:"
+							+ (dadosTransportCadastroDomiciliar != null ? dadosTransportCadastroDomiciliar
+									.size() : 0));
 
 			TelaPrincipal
-			.enviaLog("Importando e Convertendo Atividade Coletiva");
+					.enviaLog("Importando e Convertendo Atividade Coletiva");
 			List<DadoTransporteThrift> dadosTransportAtividadeColetiva = atividadeColetivaService
 					.buscaRegistros();
 			TelaPrincipal
-			.enviaLog("----> Total de registros:" + (dadosTransportAtividadeColetiva != null ? dadosTransportAtividadeColetiva.size() : 0));
+					.enviaLog("----> Total de registros:"
+							+ (dadosTransportAtividadeColetiva != null ? dadosTransportAtividadeColetiva
+									.size() : 0));
 
 			TelaPrincipal
-			.enviaLog("Importando e Convertendo Cadastro Individual");
+					.enviaLog("Importando e Convertendo Cadastro Individual");
 			List<DadoTransporteThrift> dadosTransportCadastroIndividual = cadastroIndividualService
 					.buscaRegistros();
 			TelaPrincipal
-			.enviaLog("----> Total de registros:" + (dadosTransportCadastroIndividual != null ? dadosTransportCadastroIndividual.size() : 0));
+					.enviaLog("----> Total de registros:"
+							+ (dadosTransportCadastroIndividual != null ? dadosTransportCadastroIndividual
+									.size() : 0));
 
-			
 			TelaPrincipal
-			.enviaLog("Importando e Convertendo Visita domiciliar");
+					.enviaLog("Importando e Convertendo Visita domiciliar");
 			List<DadoTransporteThrift> dadosTransportVisitaDomiciliar = visitaDomiciliarService
 					.buscaRegistros();
 			TelaPrincipal
-			.enviaLog("----> Total de registros:" + (dadosTransportVisitaDomiciliar != null ? dadosTransportVisitaDomiciliar.size() : 0));
+					.enviaLog("----> Total de registros:"
+							+ (dadosTransportVisitaDomiciliar != null ? dadosTransportVisitaDomiciliar
+									.size() : 0));
 
-			
 			TelaPrincipal
-			.enviaLog("Importando e Convertendo Atendimento Individual");
+					.enviaLog("Importando e Convertendo Atendimento Individual");
 			List<DadoTransporteThrift> dadosTransportAtendimentoIndividual = atendimentoIndividualService
 					.buscaRegistros();
 			TelaPrincipal
-			.enviaLog("----> Total de registros:" + (dadosTransportAtendimentoIndividual != null ? dadosTransportAtendimentoIndividual.size() : 0));
+					.enviaLog("----> Total de registros:"
+							+ (dadosTransportAtendimentoIndividual != null ? dadosTransportAtendimentoIndividual
+									.size() : 0));
 
-			
 			TelaPrincipal
-			.enviaLog("Importando e Convertendo Atendimento Odontologico");
+					.enviaLog("Importando e Convertendo Atendimento Odontologico");
 			List<DadoTransporteThrift> dadosTransportAtendimentoOdontologico = atendimentoOdontologicoService
 					.buscaRegistros();
-			//List<DadoTransporteThrift> dadosTransportAtendimentoOdontologico = new ArrayList<DadoTransporteThrift>();
+			// List<DadoTransporteThrift> dadosTransportAtendimentoOdontologico
+			// = new ArrayList<DadoTransporteThrift>();
 			TelaPrincipal
-			.enviaLog("----> Total de registros:" + (dadosTransportAtendimentoOdontologico != null ? dadosTransportAtendimentoOdontologico.size() : 0));
-			
+					.enviaLog("----> Total de registros:"
+							+ (dadosTransportAtendimentoOdontologico != null ? dadosTransportAtendimentoOdontologico
+									.size() : 0));
+
 			TelaPrincipal
-			.enviaLog("Importando e Convertendo Ficha Procedimento");
+					.enviaLog("Importando e Convertendo Ficha Procedimento");
 			List<DadoTransporteThrift> dadosTransportProcedimento = fichaProcedimentoService
 					.buscaRegistros();
 			TelaPrincipal
-			.enviaLog("----> Total de registros:" + (dadosTransportProcedimento != null ? dadosTransportProcedimento.size() : 0));
-
+					.enviaLog("----> Total de registros:"
+							+ (dadosTransportProcedimento != null ? dadosTransportProcedimento
+									.size() : 0));
 
 			TelaPrincipal.enviaLog("Criando Arquivo Serializado");
-			geradorZip.empacotaZir(dadosTransportCadastroDomiciliar, dadosTransportAtividadeColetiva, 
-					dadosTransportCadastroIndividual, dadosTransportVisitaDomiciliar, dadosTransportAtendimentoIndividual, dadosTransportAtendimentoOdontologico
-					, dadosTransportProcedimento, pathPadrao);
+			geradorZip.empacotaZir(dadosTransportCadastroDomiciliar,
+					dadosTransportAtividadeColetiva,
+					dadosTransportCadastroIndividual,
+					dadosTransportVisitaDomiciliar,
+					dadosTransportAtendimentoIndividual,
+					dadosTransportAtendimentoOdontologico,
+					dadosTransportProcedimento, pathPadrao);
 			TelaPrincipal.enviaLog("Processo Finalizado");
 		} catch (Exception e) {
-			log.error(new Date() + " " +  e.getStackTrace());
-			JOptionPane
-					.showMessageDialog(null, "Erro grave: " + e.getStackTrace());
-			TelaPrincipal.enviaLog(new Date()+" - "+e.getStackTrace());
+			log.error(new Date() + " " + e.getStackTrace());
+			JOptionPane.showMessageDialog(null,
+					"Erro grave: " + e.getStackTrace());
+			TelaPrincipal.enviaLog(new Date() + " - " + e.getStackTrace());
 		}
 	}
 
 	private void criaPastas() {
-		
+
 		pathPadrao = userHome + "\\gerador_esus";
 		File d1 = new File(pathPadrao);
-        d1.mkdir();
-		
+		d1.mkdir();
+
 	}
-	
+
 	public void cancelaEnvio(Date dataGeracao) throws Exception {
 		List<String> nomes = new ArrayList<String>();
 		nomes.add("EsusCadastroDomiciliar");
@@ -141,14 +156,34 @@ public class Controller {
 		nomes.add("EsusFichaProcedimento");
 		nomes.add("EsusVisitaDomiciliar");
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		TelaPrincipal.enviaLog("Cancelamento de geração do dia: " + sdf.format(dataGeracao) );
+		TelaPrincipal.enviaLog("Cancelamento de geração do dia: "
+				+ sdf.format(dataGeracao));
 		for (String nomeEntidade : nomes) {
 			masterService.cancelaEnvio(nomeEntidade, dataGeracao);
 			TelaPrincipal.enviaLog("cancelando -->" + nomeEntidade);
 		}
-		TelaPrincipal.enviaLog("--- Cancelamento finalizado --");
-		
-		
+		try {
+			pathPadrao = userHome + "\\gerador_esus";
+			File folder = new File(pathPadrao);
+			Calendar c = Calendar.getInstance();
+			c.setTime(dataGeracao);
+			String data = "_" + c.get(Calendar.DAY_OF_MONTH) + "_"
+					+ (c.get(Calendar.MONTH) + 1) + "_" + c.get(Calendar.YEAR);
+			String arquivoSerExcluido = "esaude_exportacao" + data;
+			if (folder.isDirectory()) {
+				File[] sun = folder.listFiles();
+				for (File toDelete : sun) {
+					if (toDelete.getPath().contains(arquivoSerExcluido)) {
+						toDelete.delete();
+					}
+				}
+			}
+			TelaPrincipal.enviaLog("--- Cancelamento finalizado --");
+		} catch (Exception e) {
+			TelaPrincipal.enviaLog("--- Erro no cancelamento --");
+			e.printStackTrace();
+		}
+
 	}
 
 }

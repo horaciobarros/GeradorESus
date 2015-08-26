@@ -140,7 +140,7 @@ public class TelaPrincipal extends JFrame {
 			dataGeracao = sdf.parse(this.dataGeracao.getText());
 			controller.cancelaEnvio(dataGeracao);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Erro no cancelamento:" + e.getStackTrace());
+			JOptionPane.showMessageDialog(null, "Erro no cancelamento");
 		}
 		
 	}
