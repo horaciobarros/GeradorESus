@@ -70,7 +70,7 @@ public class InformacoesEnvio {
 			dadoTransporteThrift.setNumLote(numLote == null ? 0l : numLote);
 
 			VersaoThrift versaoThrift = new VersaoThrift();
-			versaoThrift.setMajor(1);
+			versaoThrift.setMajor(2);
 			versaoThrift.setMinor(0);
 			versaoThrift.setRevision(0);
 			dadoTransporteThrift.setVersao(versaoThrift);

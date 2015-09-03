@@ -110,13 +110,13 @@ public class EsusCadastroDomiciliarService {
 					dao.atualiza(cad);
 
 				} catch (JDBCConnectionException e) {
-					log.info(e.getMessage());
+					log.info("Erro de conexão");
 					e.printStackTrace();
-					TelaPrincipal.enviaLog(new Date() + " - " + e.getMessage());
+					TelaPrincipal.enviaLog(new Date() + " - Erro de conexão" + e.getStackTrace());
 				} catch (Exception e) {
-					log.info(e.getMessage());
+					log.info("Erro na gravação do registro - " + e.getStackTrace());
 					e.printStackTrace();
-					TelaPrincipal.enviaLog(new Date() + " - " + e.getMessage());
+					TelaPrincipal.enviaLog(new Date() + " - " + e.getStackTrace());
 				}
 			}
 
