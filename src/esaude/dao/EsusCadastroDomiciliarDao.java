@@ -27,8 +27,8 @@ public class EsusCadastroDomiciliarDao extends Dao {
 		Transaction tx = session
 				.beginTransaction();
 		Query query = sessionFactory.openSession().createQuery(
-				"from EsusCadastroDomiciliar cd join fetch cd.esusSituacaodemoradia "
-				+ "join fetch cd.esusAbastecimentodeagua where cd.stEnvio is null or cd.stEnvio=0");
+				"from EsusCadastroDomiciliar cd left join fetch cd.esusSituacaodemoradia "
+				+ "left join fetch cd.esusAbastecimentodeagua where cd.stEnvio is null or cd.stEnvio=0");
 		List<EsusCadastroDomiciliar> lista = query.list();
 		tx.commit();
 

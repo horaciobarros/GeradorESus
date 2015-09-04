@@ -112,11 +112,14 @@ public class EsusCadastroDomiciliarService {
 				} catch (JDBCConnectionException e) {
 					log.info("Erro de conexão");
 					e.printStackTrace();
-					TelaPrincipal.enviaLog(new Date() + " - Erro de conexão" + e.getStackTrace());
+					TelaPrincipal.enviaLog(new Date() + " - Erro de conexão"
+							+ e.getStackTrace());
 				} catch (Exception e) {
-					log.info("Erro na gravação do registro - " + e.getStackTrace());
+					log.info("Erro na gravação do registro - "
+							+ e.getStackTrace());
 					e.printStackTrace();
-					TelaPrincipal.enviaLog(new Date() + " - " + e.getStackTrace());
+					TelaPrincipal.enviaLog(new Date() + " - "
+							+ e.getStackTrace());
 				}
 			}
 
@@ -137,16 +140,17 @@ public class EsusCadastroDomiciliarService {
 		cadastroDomiciliarThrift.setUuid(masterService.gerarUuid(cad
 				.getCnesUnidade()));
 		cadastroDomiciliarThrift.setUuidIsSet(true);
-		
+
 		if (cad.getDtEnvio() != null) {
 			cadastroDomiciliarThrift.setFichaAtualizada(true);
 			cadastroDomiciliarThrift.setUuidFichaOriginadora(cad.getUuid());
-			
+
 		} else {
 			cadastroDomiciliarThrift.setFichaAtualizada(false);
-			cadastroDomiciliarThrift.setUuidFichaOriginadora(cadastroDomiciliarThrift.getUuid());
+			cadastroDomiciliarThrift
+					.setUuidFichaOriginadora(cadastroDomiciliarThrift.getUuid());
 		}
-		
+
 		cadastroDomiciliarThrift.setFichaAtualizadaIsSet(true);
 
 		cad.setUuid(cadastroDomiciliarThrift.getUuid());
@@ -154,23 +158,44 @@ public class EsusCadastroDomiciliarService {
 		cadastroDomiciliarThrift.setAnimaisNoDomicilio(null);
 
 		CondicaoMoradiaThrift condicaoMoradia = new CondicaoMoradiaThrift();
-		condicaoMoradia.setAbastecimentoAgua(cad.getEsusAbastecimentodeagua()
-				.getId());
-		condicaoMoradia.setAbastecimentoAguaIsSet(true);
-		condicaoMoradia.setDestinoLixo(cad.getEsusDestinodolixo().getId());
-		condicaoMoradia.setDestinoLixoIsSet(true);
-		condicaoMoradia.setLocalizacao(cad.getEsusLocalizacaodamoradia()
-				.getId());
-		condicaoMoradia.setLocalizacaoIsSet(true);
-		condicaoMoradia.setNuMoradores(cad.getQuantidadeMoradores().toString());
-		condicaoMoradia.setNuMoradoresIsSet(true);
+		try {
+			condicaoMoradia.setAbastecimentoAgua(cad
+					.getEsusAbastecimentodeagua().getId());
+			condicaoMoradia.setAbastecimentoAguaIsSet(true);
+		} catch (Exception e) {
+			condicaoMoradia.setAbastecimentoAguaIsSet(false);
+		}
+		try {
+			condicaoMoradia.setDestinoLixo(cad.getEsusDestinodolixo().getId());
+			condicaoMoradia.setDestinoLixoIsSet(true);
+		} catch (Exception e) {
+			condicaoMoradia.setDestinoLixoIsSet(false);
+		}
+
+		try {
+
+			condicaoMoradia.setLocalizacao(cad.getEsusLocalizacaodamoradia()
+					.getId());
+			condicaoMoradia.setLocalizacaoIsSet(true);
+		} catch (Exception e) {
+			condicaoMoradia.setLocalizacaoIsSet(false);
+		}
+
+		try {
+			condicaoMoradia.setNuMoradores(cad.getQuantidadeMoradores()
+					.toString());
+			condicaoMoradia.setNuMoradoresIsSet(true);
+		} catch (Exception e) {
+			condicaoMoradia.setNuMoradoresIsSet(false);
+		}
+
 		try {
 			condicaoMoradia.setSituacaoMoradiaPosseTerra(cad
 					.getEsusCondicaodeposseeusodaterra().getId());
 			condicaoMoradia.setSituacaoMoradiaPosseTerraIsSet(true);
 
 		} catch (Exception e) {
-
+			condicaoMoradia.setSituacaoMoradiaPosseTerraIsSet(false);
 		}
 		try {
 			condicaoMoradia.setFormaEscoamentoBanheiro(cad
@@ -178,6 +203,7 @@ public class EsusCadastroDomiciliarService {
 			condicaoMoradia.setFormaEscoamentoBanheiroIsSet(true);
 
 		} catch (Exception e) {
+			condicaoMoradia.setFormaEscoamentoBanheiroIsSet(false);
 
 		}
 
@@ -212,7 +238,7 @@ public class EsusCadastroDomiciliarService {
 		endereco.setCodigoIbgeMunicipio(cad.getCoMunicipio());
 		endereco.setCodigoIbgeMunicipioIsSet(true);
 		endereco.setComplemento(cad.getDsComplemento());
-		endereco.setComplementoIsSet(false);
+		endereco.setComplementoIsSet(true);
 		endereco.setNomeLogradouro(cad.getNoLogradouro());
 		endereco.setNomeLogradouroIsSet(true);
 		endereco.setNumero(cad.getNuDomicilio());
@@ -221,11 +247,17 @@ public class EsusCadastroDomiciliarService {
 		}
 		endereco.setNumeroIsSet(true);
 		endereco.setTelReferencial(cad.getNuFoneReferencia());
-		endereco.setTelReferencialIsSet(false);
+		endereco.setTelReferencialIsSet(true);
 		endereco.setTelResidencial(cad.getNuFoneResidencia());
-		endereco.setTelResidencialIsSet(false);
-		endereco.setTipoLogradouroNumeroDne(cad.getTpLogradouro().toString());
-		endereco.setTipoLogradouroNumeroDneIsSet(false);
+		endereco.setTelResidencialIsSet(true);
+		try {
+			endereco.setTipoLogradouroNumeroDne(cad.getTpLogradouro()
+					.toString());
+			endereco.setTipoLogradouroNumeroDneIsSet(true);
+		} catch (Exception e) {
+			endereco.setTipoLogradouroNumeroDneIsSet(false);
+		}
+
 		cadastroDomiciliarThrift.setEnderecoLocalPermanencia(endereco);
 
 		FamiliaRowThrift familia = new FamiliaRowThrift();
