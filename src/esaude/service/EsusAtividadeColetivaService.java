@@ -86,8 +86,7 @@ public class EsusAtividadeColetivaService {
 																	// sendo
 																	// enviado
 					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
-					informacoesEnvioDto.setUuidDadoSerializado(cad.getId()
-							.toString());
+					informacoesEnvioDto.setUuidDadoSerializado(thriftAtividadeColetiva.getUuidFicha());
 					informacoesEnvioDto.setIneDadoSerializado(cad
 							.getIneEquipe());
 					informacoesEnvioDto.setCnesDadoSerializado(cad

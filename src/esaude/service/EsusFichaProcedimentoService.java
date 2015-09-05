@@ -75,8 +75,7 @@ public class EsusFichaProcedimentoService extends MasterService{
 					// Passo 3: coletar as informações do envio
 					informacoesEnvioDto.setTipoDadoSerializado(7l);
 					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
-					informacoesEnvioDto.setUuidDadoSerializado(cad.getId()
-							.toString());
+					informacoesEnvioDto.setUuidDadoSerializado(thriftFichaProcedimento.getUuidFicha());
 					informacoesEnvioDto.setCnesDadoSerializado(cad
 							.getCnesUnidade());
 

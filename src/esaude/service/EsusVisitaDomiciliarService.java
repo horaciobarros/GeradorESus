@@ -73,8 +73,7 @@ public class EsusVisitaDomiciliarService {
 
 					informacoesEnvioDto.setTipoDadoSerializado(8l);
 					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
-					informacoesEnvioDto.setUuidDadoSerializado(cad.getId()
-							.toString());
+					informacoesEnvioDto.setUuidDadoSerializado(thriftVisitaDomiciliar.getUuidFicha());
 					if (cad.getId() == null) {
 						log.info("UuidDadoSerializado inexistente para o cbo: "
 								+ cad.getCboProfissional());

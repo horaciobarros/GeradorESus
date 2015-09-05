@@ -78,8 +78,7 @@ public class EsusAtendimentoIndividualService extends MasterService{
 					// Passo 3: coletar as informações do envio
 					informacoesEnvioDto.setTipoDadoSerializado(4l);
 					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
-					informacoesEnvioDto.setUuidDadoSerializado(cad.getId()
-							.toString());
+					informacoesEnvioDto.setUuidDadoSerializado(thriftAtendimentoIndividual.getUuidFicha());
 					informacoesEnvioDto.setCnesDadoSerializado(cad
 							.getCnesUnidade());
 

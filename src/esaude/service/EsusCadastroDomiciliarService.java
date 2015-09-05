@@ -75,8 +75,7 @@ public class EsusCadastroDomiciliarService {
 					// Passo 3: coletar as informações do envio
 					informacoesEnvioDto.setTipoDadoSerializado(3l);
 					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
-					informacoesEnvioDto.setUuidDadoSerializado(cad.getId()
-							.toString());
+					informacoesEnvioDto.setUuidDadoSerializado(thriftCadastroDomiciliar.getUuid());
 					if (cad.getId() == null) {
 						log.info("UuidDadoSerializado inexistente para o endere�o: "
 								+ cad.getDsComplemento());

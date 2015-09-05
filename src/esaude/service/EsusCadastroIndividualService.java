@@ -78,8 +78,7 @@ public class EsusCadastroIndividualService {
 					// Passo 3: coletar as informações do envio
 					informacoesEnvioDto.setTipoDadoSerializado(2l);
 					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
-					informacoesEnvioDto.setUuidDadoSerializado(cad.getId()
-							.toString());
+					informacoesEnvioDto.setUuidDadoSerializado(thriftCadastroIndividual.getUuid());
 					informacoesEnvioDto.setIneDadoSerializado(cad
 							.getIneEquipe());
 					informacoesEnvioDto.setCnesDadoSerializado(cad
