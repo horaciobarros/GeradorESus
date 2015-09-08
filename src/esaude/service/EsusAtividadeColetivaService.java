@@ -134,6 +134,7 @@ public class EsusAtividadeColetivaService {
 		FichaAtividadeColetivaThrift ficha = new FichaAtividadeColetivaThrift();
 
 		ficha.setUuidFicha(masterService.gerarUuid(cad.getCnesUnidade()));
+		ficha.setUuidFichaIsSet(true);
 		cad.setUuid(ficha.getUuidFicha());
 
 		try {

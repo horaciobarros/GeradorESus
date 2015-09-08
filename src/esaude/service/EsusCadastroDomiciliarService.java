@@ -157,7 +157,8 @@ public class EsusCadastroDomiciliarService {
 		cad.setUuid(cadastroDomiciliarThrift.getUuid());
 
 		cadastroDomiciliarThrift.setAnimaisNoDomicilio(null);
-
+		cadastroDomiciliarThrift.setAnimaisNoDomicilioIsSet(true);
+		
 		CondicaoMoradiaThrift condicaoMoradia = new CondicaoMoradiaThrift();
 		try {
 			condicaoMoradia.setAbastecimentoAgua(cad
