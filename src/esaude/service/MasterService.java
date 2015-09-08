@@ -10,7 +10,7 @@ public class MasterService {
 	Dao dao = new Dao();
 	protected String gerarUuid(String cnesUnidade) {
 		
-		String retorno = cnesUnidade.substring(0, 6) + "-" + UUID.randomUUID().toString();
+		String retorno = cnesUnidade.substring(0, 7) + "-" + UUID.randomUUID();
 		return retorno;
 	}
 	
@@ -19,6 +19,5 @@ public class MasterService {
 		dao.cancelaEnvio(nomeEntidade, dataGeracao);
 		
 	}
-
 
 }

@@ -56,7 +56,7 @@ public class TelaPrincipal extends JFrame {
 
 		setIconImage(Toolkit.getDefaultToolkit().getImage(
 				TelaPrincipal.class.getResource("/imagens/network.png")));
-		setTitle("Exportador de dados para o e-SUS - v2.0.3");
+		setTitle("Exportador de dados para o e-SUS - v2.0.4");
 		setBounds(100, 100, 646, 346);
 		this.contentPane = new JPanel();
 		this.contentPane.setBackground(Color.WHITE);
@@ -65,7 +65,6 @@ public class TelaPrincipal extends JFrame {
 
 		this.ldataGeracao = new JLabel("Data de Geração do Arquivo:");
 		this.dataGeracao = new JTextField(100);
-		this.dataGeracao.setEditable(false);
 		this.dataGeracao.setText(new SimpleDateFormat("dd/MM/yyyy")
 				.format(new Date(System.currentTimeMillis())));
 				this.btEnviar = new JButton("GERAR ARQUIVO THRIFT");
