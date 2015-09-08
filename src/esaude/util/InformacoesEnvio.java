@@ -53,7 +53,6 @@ public class InformacoesEnvio {
 			remetente.setFone(esusRegistro.getRemFone());
 			remetente.setNomeOuRazaoSocial(esusRegistro.getRemRazaosocial());
 			remetente.setUuidInstalacao(esusRegistro.getRemUuidinstalacao());
-			remetente.setCpfOuCnpj(esusRegistro.getRemRazaosocial());
 			dadoTransporteThrift.setRemetente(remetente);
 
 			// Opcionais;
