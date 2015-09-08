@@ -10,7 +10,7 @@ public class MasterService {
 	Dao dao = new Dao();
 	protected String gerarUuid(String cnesUnidade) {
 		
-		String retorno = ""+UUID.randomUUID();
+		String retorno = cnesUnidade.substring(0, 7)+""+UUID.randomUUID();
 		return retorno;
 	}
 	
