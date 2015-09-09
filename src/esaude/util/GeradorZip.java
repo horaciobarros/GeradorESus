@@ -1,6 +1,7 @@
 package esaude.util;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -49,6 +50,7 @@ public class GeradorZip {
 				e.printStackTrace();
 				
 			}
+			
 		}
 	}
 
@@ -75,7 +77,6 @@ public class GeradorZip {
 			
 			}
 		}
-
 		
 	}
 
@@ -85,6 +86,8 @@ public class GeradorZip {
 				"_" + c.get(Calendar.MINUTE) + "_" + c.get(Calendar.SECOND);
 		return data;
 	}
+	
+
 
 	
 

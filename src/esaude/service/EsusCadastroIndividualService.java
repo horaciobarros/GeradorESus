@@ -94,8 +94,8 @@ public class EsusCadastroIndividualService {
 					dados.add(dadoTransporteThrift);
 					
 					log.info(new Date() + " -- Gerando cadastro Individual --> "
-							+ cad.getId() + " - " + cad.getId());
-					System.out.println("Gerando cadastro Individual --> " + cad.getId()
+							+ cad.getId() + " - " + thriftCadastroIndividual.getUuid());
+					System.out.println("Gerando cadastro Individual --> " + cad.getId() + " --- " + thriftCadastroIndividual.getUuid()
 							);
 
 

@@ -93,7 +93,7 @@ public class EsusAtendimentoIndividualService extends MasterService{
 
 					log.info(new Date()
 							+ " -- Gerando atendimento Individual --> "
-							+ cad.getId() + " - " + cad.getId());
+							+ cad.getId() + " - " + thriftAtendimentoIndividual.getUuidFicha());
 					System.out.println("Gerando atendimento Individual --> "
 							+ cad.getId());
 

@@ -96,7 +96,7 @@ public class EsusAtendimentoOdontologicoService {
 
 					log.info(new Date()
 							+ " -- Gerando cadastro Odontologico --> "
-							+ cad.getId() + " - " + cad.getId());
+							+ cad.getId() + " - " + thriftAtendimentoOdontologico.getUuidFicha());
 					System.out.println("Gerando cadastro Odontologico --> "
 							+ cad.getId());
 

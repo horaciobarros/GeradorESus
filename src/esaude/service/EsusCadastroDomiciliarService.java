@@ -99,10 +99,9 @@ public class EsusCadastroDomiciliarService {
 					dados.add(dadoTransporteThrift);
 					log.info(new Date()
 							+ " -- Gerando cadastro Domiciliar --> "
-							+ cad.getId());
+							+ cad.getId() + " --- " + thriftCadastroDomiciliar.getUuid());
 					System.out.println("Gerando cadastro Domiciliar --> "
-							+ cad.getId() + " - " + cad.getNuDomicilio()
-							+ " - " + cad.getNoLogradouro());
+							+ cad.getId() + " - " + thriftCadastroDomiciliar.getUuid());
 
 					cad.setDtEnvio(new Date());
 					cad.setStEnvio(Long.valueOf(1));

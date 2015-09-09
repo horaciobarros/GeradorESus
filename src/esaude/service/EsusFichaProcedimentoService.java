@@ -90,7 +90,7 @@ public class EsusFichaProcedimentoService extends MasterService{
 
 					log.info(new Date()
 							+ " -- Gerando Ficha Procedimento --> "
-							+ cad.getId() + " - " + cad.getId());
+							+ cad.getId() + " - " + thriftFichaProcedimento.getUuidFicha());
 					System.out.println("Gerando Ficha Procedimento --> "
 							+ cad.getId());
 

@@ -94,7 +94,7 @@ public class EsusVisitaDomiciliarService {
 					dao.atualiza(cad);
 					
 					log.info(new Date() + " -- Gerando visita domiciliar  --> "
-							+ cad.getId() + " - " + cad.getId());
+							+ cad.getId() + " - " + thriftVisitaDomiciliar.getUuidFicha());
 					System.out.println("Gerando visita domiciliar --> " + cad.getId()
 							);
 

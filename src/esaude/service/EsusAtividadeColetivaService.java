@@ -103,7 +103,7 @@ public class EsusAtividadeColetivaService {
 
 					log.info(new Date()
 							+ " -- Gerando atividade coletiva  --> "
-							+ cad.getId() + " - " + cad.getId());
+							+ cad.getId() + " - " + thriftAtividadeColetiva.getUuidFicha());
 					System.out.println("Gerando atividade coletiva --> "
 							+ cad.getId());
 
