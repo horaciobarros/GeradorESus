@@ -34,13 +34,13 @@ public class GeradorZip {
 		}
 		if (out != null) {
 			
-			geraEntradaEmArquivoZip(out, dadosTransportCadastroDomiciliar, "cadastro_domiciliar");
-			geraEntradaEmArquivoZip(out, dadosTransportAtividadeColetiva, "atividade_coletiva");
 			geraEntradaEmArquivoZip(out, dadosTransportCadastroIndividual, "cadastro_individual");
-			geraEntradaEmArquivoZip(out, dadosTransportVisitaDomiciliar, "visita_domiciliar");
+			geraEntradaEmArquivoZip(out, dadosTransportCadastroDomiciliar, "cadastro_domiciliar");
 			geraEntradaEmArquivoZip(out, dadosTransportAtendimentoIndividual, "atendimento_individual");
 			geraEntradaEmArquivoZip(out, dadosTransportAtendimentoOdontologico, "atendimento_odontologico");
+			geraEntradaEmArquivoZip(out, dadosTransportAtividadeColetiva, "atividade_coletiva");
 			geraEntradaEmArquivoZip(out, dadosTransportProcedimento, "ficha_procedimento");
+			geraEntradaEmArquivoZip(out, dadosTransportVisitaDomiciliar, "visita_domiciliar");	
 			
 			try {
 				out.closeEntry();
@@ -59,8 +59,7 @@ public class GeradorZip {
 		for (DadoTransporteThrift dado : dadosTransport) {
 			byte[] data;
 			try {
-				String entryName = nomeArquivo + "_"
-						+ ZipWriter.resolveZipEntry(dado);
+				String entryName = ZipWriter.resolveZipEntry(dado);
 				out.putNextEntry(new ZipEntry(entryName));
 				data = ThriftSerializer.serialize(dado);
 				out.write(data);

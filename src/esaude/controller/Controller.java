@@ -56,23 +56,6 @@ public class Controller {
 
 		try {
 			criaPastas();
-			TelaPrincipal
-					.enviaLog("Importando e Convertendo Cadastro Domiciliar");
-			List<DadoTransporteThrift> dadosTransportCadastroDomiciliar = cadastroDomiciliarService
-					.buscaRegistros();
-			TelaPrincipal
-					.enviaLog("----> Total de registros:"
-							+ (dadosTransportCadastroDomiciliar != null ? dadosTransportCadastroDomiciliar
-									.size() : 0));
-
-			TelaPrincipal
-					.enviaLog("Importando e Convertendo Atividade Coletiva");
-			List<DadoTransporteThrift> dadosTransportAtividadeColetiva = atividadeColetivaService
-					.buscaRegistros();
-			TelaPrincipal
-					.enviaLog("----> Total de registros:"
-							+ (dadosTransportAtividadeColetiva != null ? dadosTransportAtividadeColetiva
-									.size() : 0));
 
 			TelaPrincipal
 					.enviaLog("Importando e Convertendo Cadastro Individual");
@@ -84,12 +67,12 @@ public class Controller {
 									.size() : 0));
 
 			TelaPrincipal
-					.enviaLog("Importando e Convertendo Visita domiciliar");
-			List<DadoTransporteThrift> dadosTransportVisitaDomiciliar = visitaDomiciliarService
+					.enviaLog("Importando e Convertendo Cadastro Domiciliar");
+			List<DadoTransporteThrift> dadosTransportCadastroDomiciliar = cadastroDomiciliarService
 					.buscaRegistros();
 			TelaPrincipal
 					.enviaLog("----> Total de registros:"
-							+ (dadosTransportVisitaDomiciliar != null ? dadosTransportVisitaDomiciliar
+							+ (dadosTransportCadastroDomiciliar != null ? dadosTransportCadastroDomiciliar
 									.size() : 0));
 
 			TelaPrincipal
@@ -105,11 +88,18 @@ public class Controller {
 					.enviaLog("Importando e Convertendo Atendimento Odontologico");
 			List<DadoTransporteThrift> dadosTransportAtendimentoOdontologico = atendimentoOdontologicoService
 					.buscaRegistros();
-			// List<DadoTransporteThrift> dadosTransportAtendimentoOdontologico
-			// = new ArrayList<DadoTransporteThrift>();
 			TelaPrincipal
 					.enviaLog("----> Total de registros:"
 							+ (dadosTransportAtendimentoOdontologico != null ? dadosTransportAtendimentoOdontologico
+									.size() : 0));
+
+			TelaPrincipal
+					.enviaLog("Importando e Convertendo Atividade Coletiva");
+			List<DadoTransporteThrift> dadosTransportAtividadeColetiva = atividadeColetivaService
+					.buscaRegistros();
+			TelaPrincipal
+					.enviaLog("----> Total de registros:"
+							+ (dadosTransportAtividadeColetiva != null ? dadosTransportAtividadeColetiva
 									.size() : 0));
 
 			TelaPrincipal
@@ -119,6 +109,15 @@ public class Controller {
 			TelaPrincipal
 					.enviaLog("----> Total de registros:"
 							+ (dadosTransportProcedimento != null ? dadosTransportProcedimento
+									.size() : 0));
+
+			TelaPrincipal
+					.enviaLog("Importando e Convertendo Visita Domiciliar");
+			List<DadoTransporteThrift> dadosTransportVisitaDomiciliar = visitaDomiciliarService
+					.buscaRegistros();
+			TelaPrincipal
+					.enviaLog("----> Total de registros:"
+							+ (dadosTransportVisitaDomiciliar != null ? dadosTransportVisitaDomiciliar
 									.size() : 0));
 
 			TelaPrincipal.enviaLog("Criando Arquivo Serializado");

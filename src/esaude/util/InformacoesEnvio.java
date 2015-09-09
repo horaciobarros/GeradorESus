@@ -1,15 +1,12 @@
 package esaude.util;
 
-import javax.swing.JOptionPane;
-
 import org.apache.log4j.Logger;
 
-import esaude.model.EsusRegistro;
-import esaude.service.EsusCadastroDomiciliarService;
-import esaude.service.EsusRegistroServiceImpl;
 import br.gov.saude.esus.transport.common.api.configuracaodestino.VersaoThrift;
 import br.gov.saude.esus.transport.common.generated.thrift.DadoInstalacaoThrift;
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
+import esaude.model.EsusRegistro;
+import esaude.service.EsusCadastroDomiciliarService;
 
 public class InformacoesEnvio {
 	static Logger log = Logger.getLogger(EsusCadastroDomiciliarService.class
@@ -65,8 +62,9 @@ public class InformacoesEnvio {
 					.setIneDadoSerializado(ineDadoSerializado == null ? ""
 							: ineDadoSerializado);
 
-			Long numLote = informacoesEnvioDto.getNumLote();
-			dadoTransporteThrift.setNumLote(numLote == null ? 0l : numLote);
+
+			long numLote = 1;
+			dadoTransporteThrift.setNumLote(numLote);
 
 			VersaoThrift versaoThrift = new VersaoThrift();
 			versaoThrift.setMajor(2);
