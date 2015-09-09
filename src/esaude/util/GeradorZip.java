@@ -59,7 +59,8 @@ public class GeradorZip {
 		for (DadoTransporteThrift dado : dadosTransport) {
 			byte[] data;
 			try {
-				String entryName = ZipWriter.resolveZipEntry(dado);
+				String entryName = nomeArquivo + "_"
+						+ ZipWriter.resolveZipEntry(dado);
 				out.putNextEntry(new ZipEntry(entryName));
 				data = ThriftSerializer.serialize(dado);
 				out.write(data);

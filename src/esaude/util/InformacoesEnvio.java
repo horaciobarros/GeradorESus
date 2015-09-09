@@ -24,15 +24,19 @@ public class InformacoesEnvio {
 			// Obrigatóos;
 			dadoTransporteThrift.setUuidDadoSerializado(informacoesEnvioDto
 					.getUuidDadoSerializado());
+			dadoTransporteThrift.setUuidDadoSerializadoIsSet(true);
 
 			dadoTransporteThrift.setTipoDadoSerializado(informacoesEnvioDto
 					.getTipoDadoSerializado());
+			dadoTransporteThrift.setTipoDadoSerializadoIsSet(true);
 
 			dadoTransporteThrift.setCnesDadoSerializado(informacoesEnvioDto
 					.getCnesDadoSerializado());
+			dadoTransporteThrift.setCnesDadoSerializadoIsSet(true);
 
 			dadoTransporteThrift.setDadoSerializado(informacoesEnvioDto
 					.getDadoSerializado());
+			dadoTransporteThrift.setDadoSerializadoIsSet(true);
 
 			DadoInstalacaoThrift originadora = new DadoInstalacaoThrift();
 			originadora.setContraChave(esusRegistro.getOrigContrachave());
@@ -42,6 +46,7 @@ public class InformacoesEnvio {
 			originadora.setNomeOuRazaoSocial(esusRegistro.getOrigRazaosocial());
 			originadora.setUuidInstalacao(esusRegistro.getOrigUuidinstalacao());
 			dadoTransporteThrift.setOriginadora(originadora);
+			dadoTransporteThrift.setOriginadoraIsSet(true);
 
 			DadoInstalacaoThrift remetente = new DadoInstalacaoThrift();
 			remetente.setContraChave(esusRegistro.getRemContrachave());
@@ -51,26 +56,31 @@ public class InformacoesEnvio {
 			remetente.setNomeOuRazaoSocial(esusRegistro.getRemRazaosocial());
 			remetente.setUuidInstalacao(esusRegistro.getRemUuidinstalacao());
 			dadoTransporteThrift.setRemetente(remetente);
+			dadoTransporteThrift.setRemetenteIsSet(true);
 
 			// Opcionais;
 			String codIbge = informacoesEnvioDto.getCodIbge();
 			dadoTransporteThrift.setCodIbge(codIbge == null ? "" : codIbge);
-
+			dadoTransporteThrift.setCodIbgeIsSet(true);
+			
 			String ineDadoSerializado = informacoesEnvioDto
 					.getIneDadoSerializado();
 			dadoTransporteThrift
 					.setIneDadoSerializado(ineDadoSerializado == null ? ""
 							: ineDadoSerializado);
+			dadoTransporteThrift.setIneDadoSerializadoIsSet(true);
 
 
-			long numLote = 1;
+			long numLote = 2; 
 			dadoTransporteThrift.setNumLote(numLote);
-
+			dadoTransporteThrift.setNumLoteIsSet(true);
+			
 			VersaoThrift versaoThrift = new VersaoThrift();
 			versaoThrift.setMajor(2);
 			versaoThrift.setMinor(0);
 			versaoThrift.setRevision(0);
 			dadoTransporteThrift.setVersao(versaoThrift);
+			dadoTransporteThrift.setVersaoIsSet(true);
 		} catch (Exception e) {
 			log.error(e);
 		}

@@ -170,6 +170,7 @@ public class EsusCadastroIndividualService {
 		dadosGerais.setDataAtendimentoIsSet(true);
 		dadosGerais.setIneEquipe(cad.getIneEquipe());
 		dadosGerais.setIneEquipeIsSet(true);
+		dadosGerais.setMicroarea(cad.getMicroarea());
 		dadosGerais.setMicroareaIsSet(true);
 		c.setDadosGerais(dadosGerais);
 		c.setDadosGeraisIsSet(true);
@@ -196,15 +197,16 @@ public class EsusCadastroIndividualService {
 		identificacao.setRacaCorCidadao(Long.valueOf(cad.getPProntuario()
 				.getPRacaCor().getCoRaca()));
 		identificacao.setRacaCorCidadaoIsSet(true);
-		Long sexo = new Long(0);
+		long sexo = 0;
 		if (cad.getpProntuario().getCoSexo().equals("M")) {
-			sexo = Long.valueOf(0);
+			sexo = 0;
 		} else {
-			sexo = Long.valueOf(1);
+			sexo = 1;
 		}
 		identificacao.setSexoCidadao(sexo);
 		identificacao.setSexoCidadaoIsSet(true);
 		c.setIdentificacaoUsuarioCidadao(identificacao);
+		c.setIdentificacaoUsuarioCidadaoIsSet(true);
 
 		InformacoesSocioDemograficasThrift informacoesSocioDemograficas = new InformacoesSocioDemograficasThrift();
 		List<Long> deficiencias = buscaDeficienciasCidadao(cad);
@@ -213,13 +215,12 @@ public class EsusCadastroIndividualService {
 		informacoesSocioDemograficas.setStatusFrequentaEscola(cad
 				.getFrequentaEscola());
 		informacoesSocioDemograficas.setStatusFrequentaEscolaIsSet(true);
-		informacoesSocioDemograficas
-				.setStatusTemAlgumaDeficiencia(deficiencias != null
-						&& deficiencias.size() >= 0);
+		informacoesSocioDemograficas.setStatusTemAlgumaDeficiencia(deficiencias != null	&& deficiencias.size() >= 0);
 		informacoesSocioDemograficas
 				.setStatusTemAlgumaDeficienciaIsSet(deficiencias != null
 						&& deficiencias.size() >= 0);
 		c.setInformacoesSocioDemograficas(informacoesSocioDemograficas);
+		c.setInformacoesSocioDemograficasIsSet(true);
 
 		EmSituacaoDeRuaThrift emSituacaoDeRua = new EmSituacaoDeRuaThrift();
 		emSituacaoDeRua.setStatusSituacaoRua(cad.getEmSituacaoRua());
@@ -234,6 +235,7 @@ public class EsusCadastroIndividualService {
 
 		}
 		c.setEmSituacaoDeRua(emSituacaoDeRua);
+		c.setEmSituacaoDeRuaIsSet(true);
 
 		c.setTpCdsOrigem(3);
 		c.setTpCdsOrigemIsSet(true);
