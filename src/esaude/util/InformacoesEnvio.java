@@ -40,21 +40,33 @@ public class InformacoesEnvio {
 
 			DadoInstalacaoThrift originadora = new DadoInstalacaoThrift();
 			originadora.setContraChave(esusRegistro.getOrigContrachave());
+			originadora.setContraChaveIsSet(true);
 			originadora.setCpfOuCnpj(esusRegistro.getOrigCnpjcpf());
+			originadora.setCpfOuCnpjIsSet(true);
 			originadora.setEmail(esusRegistro.getOrigEmail());
+			originadora.setEmailIsSet(true);
 			originadora.setFone(esusRegistro.getOrigFone());
+			originadora.setFoneIsSet(true);
 			originadora.setNomeOuRazaoSocial(esusRegistro.getOrigRazaosocial());
+			originadora.setNomeOuRazaoSocialIsSet(true);
 			originadora.setUuidInstalacao(esusRegistro.getOrigUuidinstalacao());
+			originadora.setUuidInstalacaoIsSet(true);
 			dadoTransporteThrift.setOriginadora(originadora);
 			dadoTransporteThrift.setOriginadoraIsSet(true);
 
 			DadoInstalacaoThrift remetente = new DadoInstalacaoThrift();
 			remetente.setContraChave(esusRegistro.getRemContrachave());
+			remetente.setContraChaveIsSet(true);
 			remetente.setCpfOuCnpj(esusRegistro.getRemCnpjcpf());
+			remetente.setCpfOuCnpjIsSet(true);
 			remetente.setEmail(esusRegistro.getRemEmail());
+			remetente.setEmailIsSet(true);
 			remetente.setFone(esusRegistro.getRemFone());
+			remetente.setFoneIsSet(true);
 			remetente.setNomeOuRazaoSocial(esusRegistro.getRemRazaosocial());
+			remetente.setNomeOuRazaoSocialIsSet(true);
 			remetente.setUuidInstalacao(esusRegistro.getRemUuidinstalacao());
+			remetente.setUuidInstalacaoIsSet(true);
 			dadoTransporteThrift.setRemetente(remetente);
 			dadoTransporteThrift.setRemetenteIsSet(true);
 
