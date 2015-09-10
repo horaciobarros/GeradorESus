@@ -121,7 +121,7 @@ public class Controller {
 									.size() : 0));
 
 			TelaPrincipal.enviaLog("Criando Arquivo Serializado");
-			geradorZip.empacotaZir(dadosTransportCadastroDomiciliar,
+			geradorZip.empacotaZip(dadosTransportCadastroDomiciliar,
 					dadosTransportAtividadeColetiva,
 					dadosTransportCadastroIndividual,
 					dadosTransportVisitaDomiciliar,

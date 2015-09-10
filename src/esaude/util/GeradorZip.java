@@ -17,7 +17,7 @@ import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 
 public class GeradorZip {
 	static Logger log = Logger.getLogger(GeradorZip.class.getName());
-	public void empacotaZir(
+	public void empacotaZip(
 			List<DadoTransporteThrift> dadosTransportCadastroDomiciliar, 
 			List<DadoTransporteThrift> dadosTransportAtividadeColetiva, 
 			List<DadoTransporteThrift> dadosTransportCadastroIndividual, List<DadoTransporteThrift> dadosTransportVisitaDomiciliar,
