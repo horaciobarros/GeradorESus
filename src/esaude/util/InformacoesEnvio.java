@@ -83,16 +83,21 @@ public class InformacoesEnvio {
 			dadoTransporteThrift.setIneDadoSerializadoIsSet(true);
 
 
-			long numLote = 2; 
+			long numLote = 1; 
 			dadoTransporteThrift.setNumLote(numLote);
 			dadoTransporteThrift.setNumLoteIsSet(true);
 			
 			VersaoThrift versaoThrift = new VersaoThrift();
 			versaoThrift.setMajor(2);
+			versaoThrift.setMajorIsSet(true);
 			versaoThrift.setMinor(0);
+			versaoThrift.setMinorIsSet(true);
 			versaoThrift.setRevision(0);
+			versaoThrift.setRevisionIsSet(true);
+			
 			dadoTransporteThrift.setVersao(versaoThrift);
 			dadoTransporteThrift.setVersaoIsSet(true);
+			
 		} catch (Exception e) {
 			log.error(e);
 		}

@@ -84,6 +84,7 @@ public class EsusAtendimentoOdontologicoService {
 					informacoesEnvioDto.setUuidDadoSerializado(thriftAtendimentoOdontologico.getUuidFicha());
 					informacoesEnvioDto.setCnesDadoSerializado(cad
 							.getCnesUnidade());
+					informacoesEnvioDto.setCodIbge(sisRegistro.getCidadeIbge());
 
 					// Passo 4: preencher o thrift de transporte com as
 					// informadosçõeso

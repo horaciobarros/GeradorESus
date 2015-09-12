@@ -83,6 +83,7 @@ public class EsusCadastroIndividualService {
 							.getIneEquipe());
 					informacoesEnvioDto.setCnesDadoSerializado(cad
 							.getCnesUnidade());
+					informacoesEnvioDto.setCodIbge(sisRegistro.getCidadeIbge());
 
 					// Passo 4: preencher o thrift de transporte com as
 					// informadosçõeso
@@ -94,8 +95,8 @@ public class EsusCadastroIndividualService {
 					dados.add(dadoTransporteThrift);
 					
 					log.info(new Date() + " -- Gerando cadastro Individual --> "
-							+ cad.getId() + " - " + thriftCadastroIndividual.getUuid());
-					System.out.println("Gerando cadastro Individual --> " + cad.getId() + " --- " + thriftCadastroIndividual.getUuid()
+							+ cad.getId() + " - " + cad.getId());
+					System.out.println("Gerando cadastro Individual --> " + cad.getId()
 							);
 
 
@@ -141,7 +142,7 @@ public class EsusCadastroIndividualService {
 		}
 		c.setUuidFichaOriginadoraIsSet(true);
 		c.setFichaAtualizadaIsSet(true);
-
+		
 		cad.setUuid(c.getUuid());
 
 		CondicoesDeSaudeThrift condicoesDeSaude = new CondicoesDeSaudeThrift();
@@ -170,13 +171,14 @@ public class EsusCadastroIndividualService {
 		dadosGerais.setDataAtendimentoIsSet(true);
 		dadosGerais.setIneEquipe(cad.getIneEquipe());
 		dadosGerais.setIneEquipeIsSet(true);
-		try{
+		if (cad.getMicroarea() != null){
 			dadosGerais.setMicroarea(cad.getMicroarea());
+			dadosGerais.setMicroareaIsSet(true);
 		}
-		catch(Exception e){
-			log.error(e.getMessage(), e);
+		else{
+			dadosGerais.setMicroareaIsSet(false);
 		}
-		dadosGerais.setMicroareaIsSet(true);
+	
 		c.setDadosGerais(dadosGerais);
 		c.setDadosGeraisIsSet(true);
 
@@ -202,16 +204,15 @@ public class EsusCadastroIndividualService {
 		identificacao.setRacaCorCidadao(Long.valueOf(cad.getPProntuario()
 				.getPRacaCor().getCoRaca()));
 		identificacao.setRacaCorCidadaoIsSet(true);
-		long sexo = 0;
+		Long sexo = new Long(0);
 		if (cad.getpProntuario().getCoSexo().equals("M")) {
-			sexo = 0;
+			sexo = Long.valueOf(0);
 		} else {
-			sexo = 1;
+			sexo = Long.valueOf(1);
 		}
 		identificacao.setSexoCidadao(sexo);
 		identificacao.setSexoCidadaoIsSet(true);
 		c.setIdentificacaoUsuarioCidadao(identificacao);
-		c.setIdentificacaoUsuarioCidadaoIsSet(true);
 
 		InformacoesSocioDemograficasThrift informacoesSocioDemograficas = new InformacoesSocioDemograficasThrift();
 		List<Long> deficiencias = buscaDeficienciasCidadao(cad);
@@ -220,12 +221,13 @@ public class EsusCadastroIndividualService {
 		informacoesSocioDemograficas.setStatusFrequentaEscola(cad
 				.getFrequentaEscola());
 		informacoesSocioDemograficas.setStatusFrequentaEscolaIsSet(true);
-		informacoesSocioDemograficas.setStatusTemAlgumaDeficiencia(deficiencias != null	&& deficiencias.size() >= 0);
+		informacoesSocioDemograficas
+				.setStatusTemAlgumaDeficiencia(deficiencias != null
+						&& deficiencias.size() >= 0);
 		informacoesSocioDemograficas
 				.setStatusTemAlgumaDeficienciaIsSet(deficiencias != null
 						&& deficiencias.size() >= 0);
 		c.setInformacoesSocioDemograficas(informacoesSocioDemograficas);
-		c.setInformacoesSocioDemograficasIsSet(true);
 
 		EmSituacaoDeRuaThrift emSituacaoDeRua = new EmSituacaoDeRuaThrift();
 		emSituacaoDeRua.setStatusSituacaoRua(cad.getEmSituacaoRua());
@@ -240,7 +242,6 @@ public class EsusCadastroIndividualService {
 
 		}
 		c.setEmSituacaoDeRua(emSituacaoDeRua);
-		c.setEmSituacaoDeRuaIsSet(true);
 
 		c.setTpCdsOrigem(3);
 		c.setTpCdsOrigemIsSet(true);

@@ -82,7 +82,7 @@ public class EsusVisitaDomiciliarService {
 							.getIneEquipe());
 					informacoesEnvioDto.setCnesDadoSerializado(cad
 							.getCnesUnidade());
-
+					informacoesEnvioDto.setCodIbge(sisRegistro.getCidadeIbge());
 					DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio
 							.getInfoInstalacao(informacoesEnvioDto,
 									esusRegistro);

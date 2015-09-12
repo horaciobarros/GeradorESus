@@ -91,6 +91,7 @@ public class EsusAtividadeColetivaService {
 							.getIneEquipe());
 					informacoesEnvioDto.setCnesDadoSerializado(cad
 							.getCnesUnidade());
+					informacoesEnvioDto.setCodIbge(sisRegistro.getCidadeIbge());
 
 					DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio
 							.getInfoInstalacao(informacoesEnvioDto,
