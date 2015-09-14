@@ -17,6 +17,7 @@ import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 
 public class GeradorZip {
 	static Logger log = Logger.getLogger(GeradorZip.class.getName());
+	private int totalGeralFichas = 0;
 	public void empacotaZip(
 			List<DadoTransporteThrift> dadosTransportCadastroDomiciliar, 
 			List<DadoTransporteThrift> dadosTransportAtividadeColetiva, 
@@ -41,7 +42,7 @@ public class GeradorZip {
 			geraEntradaEmArquivoZip(out, dadosTransportAtividadeColetiva, "atividade_coletiva");
 			geraEntradaEmArquivoZip(out, dadosTransportProcedimento, "ficha_procedimento");
 			geraEntradaEmArquivoZip(out, dadosTransportVisitaDomiciliar, "visita_domiciliar");	
-			
+			log.warn("Total Geral de fichas enviadas: " + totalGeralFichas);
 			try {
 				out.closeEntry();
 				out.close();
@@ -51,12 +52,14 @@ public class GeradorZip {
 				
 			}
 			
+			
 		}
 	}
 
 	private void geraEntradaEmArquivoZip(ZipOutputStream out,
 			List<DadoTransporteThrift> dadosTransport, String nomeArquivo) {
 		for (DadoTransporteThrift dado : dadosTransport) {
+			log.warn("Empacotando ficha: " + dado.getUuidDadoSerializado() + " - " + dado.getDadoSerializado() + " - " + dado.getOriginadora().getCpfOuCnpj());
 			byte[] data;
 			try {
 				String entryName = nomeArquivo + "_"
@@ -64,6 +67,7 @@ public class GeradorZip {
 				out.putNextEntry(new ZipEntry(entryName));
 				data = ThriftSerializer.serialize(dado);
 				out.write(data);
+				totalGeralFichas++;
 			} catch (FileNotFoundException e1) {
 				log.error(e1);
 				e1.printStackTrace();
