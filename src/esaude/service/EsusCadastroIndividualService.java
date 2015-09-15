@@ -78,7 +78,9 @@ public class EsusCadastroIndividualService {
 					// Passo 3: coletar as informações do envio
 					informacoesEnvioDto.setTipoDadoSerializado(2l);
 					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
-					informacoesEnvioDto.setUuidDadoSerializado(thriftCadastroIndividual.getUuid());
+					informacoesEnvioDto
+							.setUuidDadoSerializado(thriftCadastroIndividual
+									.getUuid());
 					informacoesEnvioDto.setIneDadoSerializado(cad
 							.getIneEquipe());
 					informacoesEnvioDto.setCnesDadoSerializado(cad
@@ -93,12 +95,12 @@ public class EsusCadastroIndividualService {
 									esusRegistro);
 
 					dados.add(dadoTransporteThrift);
-					
-					log.info(new Date() + " -- Gerando cadastro Individual --> "
-							+ cad.getId() + " - " + cad.getId());
-					System.out.println("Gerando cadastro Individual --> " + cad.getId()
-							);
 
+					log.info(new Date()
+							+ " -- Gerando cadastro Individual --> "
+							+ cad.getId() + " - " + cad.getId());
+					System.out.println("Gerando cadastro Individual --> "
+							+ cad.getId());
 
 					cad.setDtEnvio(new Date());
 					cad.setStEnvio(Long.valueOf(1));
@@ -142,7 +144,7 @@ public class EsusCadastroIndividualService {
 		}
 		c.setUuidFichaOriginadoraIsSet(true);
 		c.setFichaAtualizadaIsSet(true);
-		
+
 		cad.setUuid(c.getUuid());
 
 		CondicoesDeSaudeThrift condicoesDeSaude = new CondicoesDeSaudeThrift();
@@ -171,14 +173,13 @@ public class EsusCadastroIndividualService {
 		dadosGerais.setDataAtendimentoIsSet(true);
 		dadosGerais.setIneEquipe(cad.getIneEquipe());
 		dadosGerais.setIneEquipeIsSet(true);
-		if (cad.getMicroarea() != null){
+		if (cad.getMicroarea() != null) {
 			dadosGerais.setMicroarea(cad.getMicroarea());
 			dadosGerais.setMicroareaIsSet(true);
-		}
-		else{
+		} else {
 			dadosGerais.setMicroareaIsSet(false);
 		}
-	
+
 		c.setDadosGerais(dadosGerais);
 		c.setDadosGeraisIsSet(true);
 
@@ -189,8 +190,12 @@ public class EsusCadastroIndividualService {
 		identificacao.setDataNascimentoCidadao(cad.getPProntuario()
 				.getDtNascimento().getTime());
 		identificacao.setDataNascimentoCidadaoIsSet(true);
-		identificacao.setNomeCidadao(cad.getPProntuario().getNomeSocial());
-		identificacao.setNomeCidadaoIsSet(true);
+		try {
+			identificacao.setNomeCidadao(cad.getPProntuario().getNomeSocial());
+			identificacao.setNomeCidadaoIsSet(true);
+		} catch (Exception e) {
+			identificacao.setNomeCidadaoIsSet(false);
+		}
 		if (!cad.getpProntuario().isDesconheceMae()) {
 			identificacao.setDesconheceNomeMae(false);
 			identificacao.setDesconheceNomeMaeIsSet(true);
@@ -199,19 +204,41 @@ public class EsusCadastroIndividualService {
 		} else {
 			identificacao.setDesconheceNomeMae(true);
 			identificacao.setDesconheceNomeMaeIsSet(true);
-			
+
 		}
-		identificacao.setRacaCorCidadao(Long.valueOf(cad.getPProntuario()
-				.getPRacaCor().getCoRaca()));
-		identificacao.setRacaCorCidadaoIsSet(true);
-		Long sexo = new Long(0);
-		if (cad.getpProntuario().getCoSexo().equals("M")) {
-			sexo = Long.valueOf(0);
-		} else {
-			sexo = Long.valueOf(1);
+
+		try {
+			identificacao.setRacaCorCidadao(Long.valueOf(cad.getPProntuario()
+					.getPRacaCor().getCoRaca()));
+			identificacao.setRacaCorCidadaoIsSet(true);
+		} catch (Exception e) {
+			identificacao.setRacaCorCidadaoIsSet(false);
 		}
-		identificacao.setSexoCidadao(sexo);
-		identificacao.setSexoCidadaoIsSet(true);
+
+		try {
+			Long sexo = new Long(0);
+			if (cad.getpProntuario().getCoSexo().equals("M")) {
+				sexo = Long.valueOf(0);
+			} else {
+				sexo = Long.valueOf(1);
+			}
+			identificacao.setSexoCidadao(sexo);
+			identificacao.setSexoCidadaoIsSet(true);
+		} catch (Exception e) {
+			identificacao.setSexoCidadaoIsSet(false);
+		}
+
+		try {
+			identificacao.setNacionalidadeCidadao(Long.valueOf(cad
+					.getpProntuario().getPNacionalidade().getCoPais()));
+			identificacao.setNacionalidadeCidadaoIsSet(true);
+		} catch (Exception e) {
+			identificacao.setNacionalidadeCidadaoIsSet(false);
+		}
+		
+		identificacao.setNomeSocialCidadao(cad.getPProntuario().getNomeSocial());
+		identificacao.setNomeSocialCidadaoIsSet(true);
+
 		c.setIdentificacaoUsuarioCidadao(identificacao);
 
 		InformacoesSocioDemograficasThrift informacoesSocioDemograficas = new InformacoesSocioDemograficasThrift();
