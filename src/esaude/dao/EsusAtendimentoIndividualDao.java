@@ -10,8 +10,10 @@ import org.hibernate.Transaction;
 
 import esaude.model.EsusAtendimentoIndividual;
 import esaude.model.EsusAtendimentoIndividualCiap;
+import esaude.model.EsusAtendimentoIndividualCondicaoaval;
 import esaude.model.EsusAtendimentoIndividualExames;
 import esaude.model.EsusAtendimentoIndividualExamesSia;
+import esaude.model.EsusCondicaoavaliada;
 import esaude.model.EsusExames;
 import esaude.util.HibernateUtil;
 
@@ -88,6 +90,27 @@ public class EsusAtendimentoIndividualDao extends Dao {
 		tx.commit();
 		
 		return lista;
+		
+		
+	}
+	
+	public List<EsusCondicaoavaliada> findCondicaoAvaliada(EsusAtendimentoIndividual cad) {
+		Transaction tx = session.beginTransaction();
+		Query query = sessionFactory
+				.openSession()
+				.createQuery(
+						"from EsusAtendimentoIndividualCondicaoaval e  "
+						+ " left outer join fetch e.esusAtendimentoIndividual  "
+						+ " left outer join fetch e.esusCondicaoavaliada  "
+								+ "where e.esusAtendimentoIndividual.id = " + cad.getId());
+		List<EsusAtendimentoIndividualCondicaoaval> lista = query.list();
+		tx.commit();
+		List<EsusCondicaoavaliada> listaAux = new ArrayList<EsusCondicaoavaliada>();
+		for (EsusAtendimentoIndividualCondicaoaval e : lista) {
+			listaAux.add(e.getEsusCondicaoavaliada());
+		}
+		
+		return listaAux;
 		
 		
 	}

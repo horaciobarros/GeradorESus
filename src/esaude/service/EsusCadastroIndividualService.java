@@ -98,7 +98,7 @@ public class EsusCadastroIndividualService {
 
 					log.info(new Date()
 							+ " -- Gerando cadastro Individual --> "
-							+ cad.getId() + " - " + cad.getId());
+							+ cad.getId() + " - " + cad.getUuid());
 					System.out.println("Gerando cadastro Individual --> "
 							+ cad.getId());
 
@@ -155,8 +155,14 @@ public class EsusCadastroIndividualService {
 		condicoesDeSaude.setStatusEhDependenteOutrasDrogasIsSet(true);
 		condicoesDeSaude.setStatusEhFumante(cad.getEstaFumante());
 		condicoesDeSaude.setStatusEhFumanteIsSet(true);
-		condicoesDeSaude.setStatusEhGestante(cad.getEstaGestante());
-		condicoesDeSaude.setStatusEhGestanteIsSet(true);
+		if (cad.getEstaGestante()) {
+			condicoesDeSaude.setStatusEhGestante(true);
+			condicoesDeSaude.setStatusEhGestanteIsSet(true);
+		} else {
+			condicoesDeSaude.setStatusEhGestante(false);
+			condicoesDeSaude.setStatusEhGestanteIsSet(true);
+			
+		}
 		condicoesDeSaude.setStatusTemDiabetes(cad.getDiabete());
 		condicoesDeSaude.setStatusTemDiabetesIsSet(true);
 		c.setCondicoesDeSaude(condicoesDeSaude);
@@ -191,7 +197,7 @@ public class EsusCadastroIndividualService {
 				.getDtNascimento().getTime());
 		identificacao.setDataNascimentoCidadaoIsSet(true);
 		try {
-			identificacao.setNomeCidadao(cad.getPProntuario().getNomeSocial());
+			identificacao.setNomeCidadao(cad.getPProntuario().getNoUsuario());
 			identificacao.setNomeCidadaoIsSet(true);
 		} catch (Exception e) {
 			identificacao.setNomeCidadaoIsSet(false);
@@ -210,6 +216,9 @@ public class EsusCadastroIndividualService {
 		try {
 			identificacao.setRacaCorCidadao(Long.valueOf(cad.getPProntuario()
 					.getPRacaCor().getCoRaca()));
+			if (cad.getPProntuario().getPRacaCor().getCoRaca().equals("99")) {
+				identificacao.setRacaCorCidadao(1L);
+			}
 			identificacao.setRacaCorCidadaoIsSet(true);
 		} catch (Exception e) {
 			identificacao.setRacaCorCidadaoIsSet(false);
@@ -229,14 +238,21 @@ public class EsusCadastroIndividualService {
 		}
 
 		try {
-			identificacao.setNacionalidadeCidadao(Long.valueOf(cad
-					.getpProntuario().getPNacionalidade().getCoPais()));
+			if (cad.getpProntuario().getPNacionalidade().getCoPais() == null) {
+				identificacao.setNacionalidadeCidadao(Long.valueOf(1l));
+			} else if (!cad.getpProntuario().getPNacionalidade().getCoPais().equals("010")) {
+					identificacao.setNacionalidadeCidadao(Long.valueOf(3l));
+			} else {
+				identificacao.setNacionalidadeCidadao(Long.valueOf(1l));
+			}
 			identificacao.setNacionalidadeCidadaoIsSet(true);
 		} catch (Exception e) {
-			identificacao.setNacionalidadeCidadaoIsSet(false);
+			identificacao.setNacionalidadeCidadao(Long.valueOf(1l));
+			identificacao.setNacionalidadeCidadaoIsSet(true);
 		}
-		
-		identificacao.setNomeSocialCidadao(cad.getPProntuario().getNomeSocial());
+
+		identificacao
+				.setNomeSocialCidadao(cad.getPProntuario().getNoUsuario());
 		identificacao.setNomeSocialCidadaoIsSet(true);
 
 		c.setIdentificacaoUsuarioCidadao(identificacao);

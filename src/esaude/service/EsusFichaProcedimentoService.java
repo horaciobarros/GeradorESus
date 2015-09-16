@@ -152,6 +152,8 @@ public class EsusFichaProcedimentoService extends MasterService{
 			unicaLotacao.setProfissionalCNSIsSet(true);
 			unicaLotacao.setDataAtendimento(cad.getDtAtendimento().getTime());
 			unicaLotacao.setDataAtendimentoIsSet(true);
+			unicaLotacao.setCodigoIbgeMunicipio(sisRegistro.getCidadeIbge());
+			unicaLotacao.setCodigoIbgeMunicipioIsSet(true);
 			c.setHeaderTransport(unicaLotacao);
 		} catch (Exception e) {
 

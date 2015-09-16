@@ -59,7 +59,7 @@ public class GeradorZip {
 	private void geraEntradaEmArquivoZip(ZipOutputStream out,
 			List<DadoTransporteThrift> dadosTransport, String nomeArquivo) {
 		for (DadoTransporteThrift dado : dadosTransport) {
-			log.warn("Empacotando ficha: " + dado.getUuidDadoSerializado() + " - " + dado.getDadoSerializado() + " - " + dado.getOriginadora().getCpfOuCnpj());
+			log.warn(getInstante() +  " Empacotando ficha: " + dado.getUuidDadoSerializado() + " - " + dado.getDadoSerializado() + " - " + dado.getOriginadora().getCpfOuCnpj());
 			byte[] data;
 			try {
 				String entryName = nomeArquivo + "_"
@@ -87,7 +87,7 @@ public class GeradorZip {
 	private String getInstante() {
 		Calendar c = Calendar.getInstance(); 
 		String data = "_" + c.get(Calendar.DAY_OF_MONTH) + "_" + (c.get(Calendar.MONTH)+1) + "_" + c.get(Calendar.YEAR) + 
-				"_" + c.get(Calendar.MINUTE) + "_" + c.get(Calendar.SECOND);
+				"_" + c.get(Calendar.HOUR_OF_DAY) + "_" + c.get(Calendar.MINUTE) + "_" + c.get(Calendar.SECOND);
 		return data;
 	}
 	

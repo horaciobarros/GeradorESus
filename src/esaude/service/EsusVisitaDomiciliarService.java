@@ -73,7 +73,9 @@ public class EsusVisitaDomiciliarService {
 
 					informacoesEnvioDto.setTipoDadoSerializado(8l);
 					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
-					informacoesEnvioDto.setUuidDadoSerializado(thriftVisitaDomiciliar.getUuidFicha());
+					informacoesEnvioDto
+							.setUuidDadoSerializado(thriftVisitaDomiciliar
+									.getUuidFicha());
 					if (cad.getId() == null) {
 						log.info("UuidDadoSerializado inexistente para o cbo: "
 								+ cad.getCboProfissional());
@@ -92,12 +94,12 @@ public class EsusVisitaDomiciliarService {
 					cad.setDtEnvio(new Date());
 					cad.setStEnvio(Long.valueOf(1));
 					dao.atualiza(cad);
-					
-					log.info(new Date() + " -- Gerando visita domiciliar  --> "
-							+ cad.getId() + " - " + thriftVisitaDomiciliar.getUuidFicha());
-					System.out.println("Gerando visita domiciliar --> " + cad.getId()
-							);
 
+					log.info(new Date() + " -- Gerando visita domiciliar  --> "
+							+ cad.getId() + " - "
+							+ thriftVisitaDomiciliar.getUuidFicha());
+					System.out.println("Gerando visita domiciliar --> "
+							+ cad.getId());
 
 				} catch (JDBCConnectionException e) {
 					log.info(e.getMessage());
@@ -154,13 +156,29 @@ public class EsusVisitaDomiciliarService {
 			child.setDtNascimento(cad.getDtNascimento().getTime());
 			child.setDtNascimentoIsSet(true);
 		} catch (Exception e) {
+			child.setDtNascimentoIsSet(false);
 			log.info("Dt nascimento não informada: " + cad.getId());
 		}
-		List<EsusVisitaDomiciliarMotivovisita> motivosVisita = dao
-				.findMotivos(cad.getId());
-		List<Long> motivos = converteMotivos(motivosVisita);
+
+		List<Long> motivos = new ArrayList<Long>();
+		try {
+			List<EsusVisitaDomiciliarMotivovisita> motivosVisita = dao
+					.findMotivos(cad.getId());
+			motivos = converteMotivos(motivosVisita);
+
+			if (motivos == null || motivos.size() == 0) {
+				motivos = new ArrayList<Long>();
+				motivos.add(29l);
+			}
+
+		} catch (Exception e) {
+			motivos = new ArrayList<Long>();
+			motivos.add(29l);
+
+		}
 		child.setMotivosVisita(motivos);
 		child.setMotivosVisitaIsSet(true);
+
 		child.setNumCartaoSus(cad.getNumCartaosus());
 		child.setNumCartaoSusIsSet(true);
 		try {

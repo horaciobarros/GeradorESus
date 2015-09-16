@@ -156,6 +156,8 @@ public class EsusAtendimentoOdontologicoService {
 			unicaLotacao.setProfissionalCNSIsSet(true);
 			unicaLotacao.setDataAtendimento(cad.getDtAtendimento().getTime());
 			unicaLotacao.setDataAtendimentoIsSet(true);
+			unicaLotacao.setCodigoIbgeMunicipio(sisRegistro.getCidadeIbge());
+			unicaLotacao.setCodigoIbgeMunicipioIsSet(true);
 			vl.setLotacaoForm(unicaLotacao);
 			c.setHeaderTransport(vl);
 		} catch (Exception e) {
@@ -211,9 +213,14 @@ public class EsusAtendimentoOdontologicoService {
 
 		try {
 			ficha.setTipoAtendimento(cad.getEsusTipodeatendimento().getId());
+			if (cad.getEsusTipodeatendimento() == null) {
+				ficha.setTipoAtendimento(11l);
+			}
 			ficha.setTipoAtendimentoIsSet(true);
 		} catch (Exception e) {
 			log.error("Erro no envio do tipo de atendimento. id:" + cad.getId());
+			ficha.setTipoAtendimento(11l);
+			ficha.setTipoAtendimentoIsSet(true);
 		}
 
 		try {
@@ -240,13 +247,22 @@ public class EsusAtendimentoOdontologicoService {
 
 		}
 		
+		List<Long> tiposVigilanciaSaudeBucal = new ArrayList<Long>();
 		try {
-			ficha.setTiposVigilanciaSaudeBucal(buscaTiposVigilanciaSaudeBucal(cad));
-			ficha.setTiposVigilanciaSaudeBucalIsSet(true);
+			tiposVigilanciaSaudeBucal = buscaTiposVigilanciaSaudeBucal(cad);			
+			if (tiposVigilanciaSaudeBucal != null) {
+				ficha.setTiposVigilanciaSaudeBucal(tiposVigilanciaSaudeBucal);
+			} else {
+				tiposVigilanciaSaudeBucal = new ArrayList<Long>();
+				tiposVigilanciaSaudeBucal.add(99l);
+				ficha.setTiposVigilanciaSaudeBucal(tiposVigilanciaSaudeBucal);
+				ficha.setTiposVigilanciaSaudeBucalIsSet(true);
+			}
 		} catch (Exception e) {
 			log.error("Erro no envio dos tipos vigil saude bucal. id:" + cad.getId() + " " + e.getMessage());
-			e.printStackTrace();
-
+			tiposVigilanciaSaudeBucal.add(99l);
+			ficha.setTiposVigilanciaSaudeBucal(tiposVigilanciaSaudeBucal);
+			ficha.setTiposVigilanciaSaudeBucalIsSet(true);
 		}
 		
 		try {

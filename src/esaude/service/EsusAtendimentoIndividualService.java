@@ -19,7 +19,9 @@ import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 import esaude.dao.EsusAtendimentoIndividualDao;
 import esaude.model.EsusAtendimentoIndividual;
 import esaude.model.EsusAtendimentoIndividualCiap;
+import esaude.model.EsusAtendimentoIndividualCondicaoaval;
 import esaude.model.EsusAtendimentoIndividualExames;
+import esaude.model.EsusCondicaoavaliada;
 import esaude.model.EsusRegistro;
 import esaude.model.SisRegistro;
 import esaude.util.InformacoesEnvio;
@@ -157,6 +159,8 @@ public class EsusAtendimentoIndividualService extends MasterService{
 			unicaLotacao.setProfissionalCNSIsSet(true);
 			unicaLotacao.setDataAtendimento(cad.getDtAtendimento().getTime());
 			unicaLotacao.setDataAtendimentoIsSet(true);
+			unicaLotacao.setCodigoIbgeMunicipio(sisRegistro.getCidadeIbge());
+			unicaLotacao.setCodigoIbgeMunicipioIsSet(true);
 			vl.setLotacaoForm(unicaLotacao);
 			c.setHeaderTransport(vl);
 		} catch (Exception e) {
@@ -188,7 +192,7 @@ public class EsusAtendimentoIndividualService extends MasterService{
 					.getAlturaacompanhamento().doubleValue());
 			ficha.setAlturaAcompanhamentoNutricionalIsSet(true);
 		} catch (Exception e) {
-
+			ficha.setAlturaAcompanhamentoNutricionalIsSet(false);
 		}
 
 		try {
@@ -246,12 +250,25 @@ public class EsusAtendimentoIndividualService extends MasterService{
 
 		try {
 			ProblemaCondicaoAvaliacaoAIThrift problema = new ProblemaCondicaoAvaliacaoAIThrift();
-			buscaCiap(cad, problema);
+			buscaCondicaoAvaliada(cad, problema);
 			ficha.setProblemaCondicaoAvaliada(problema);
 			ficha.setProblemaCondicaoAvaliadaIsSet(true);
 		} catch (Exception e) {
 
 		}
+		try {
+			Long sexo = new Long(0);
+			if (cad.getPProntuario().getCoSexo().equals("M")) {
+				sexo = Long.valueOf(0);
+			} else {
+				sexo = Long.valueOf(1);
+			}
+			ficha.setSexo(sexo);
+			ficha.setSexoIsSet(true);
+		} catch (Exception e) {
+			ficha.setSexoIsSet(false);
+		}
+
 
 		List<FichaAtendimentoIndividualChildThrift> fichas = new ArrayList<FichaAtendimentoIndividualChildThrift>();
 		fichas.add(ficha);
@@ -295,5 +312,23 @@ public class EsusAtendimentoIndividualService extends MasterService{
 
 		return lista;
 	}
+	
+	private void buscaCondicaoAvaliada(EsusAtendimentoIndividual cad, ProblemaCondicaoAvaliacaoAIThrift problema)  {
+		
+		List<String> ciaps = new ArrayList<String>();
+		for (EsusCondicaoavaliada condicao : dao.findCondicaoAvaliada(cad)) { 
+			ciaps.add(condicao.getCod());
+			if (problema.getOutroCiap1() == null) {
+				problema.setOutroCiap1(condicao.getCod());
+				problema.setOutroCiap1IsSet(true);
+			} else if (problema.getOutroCiap2() == null) {
+				problema.setOutroCiap2(condicao.getCod());
+				problema.setOutroCiap2IsSet(true);
+			}
+		}
+		problema.setCiaps(ciaps);
+		
+	}
+
 
 }
