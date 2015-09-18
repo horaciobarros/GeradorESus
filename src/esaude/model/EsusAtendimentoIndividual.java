@@ -1,7 +1,6 @@
 package esaude.model; 
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,10 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
 import java.io.*;
-import java.math.BigDecimal;
 import java.util.*;
+import java.math.BigDecimal;
 
 @Entity 
 @Table(name="esus_atendimento_individual")
@@ -31,7 +29,6 @@ public class EsusAtendimentoIndividual implements Serializable {
 
    @Column(name="cns_profissional")
    private String cnsProfissional;
-
 
    @Column(name="cbo_profissional")
    private String cboProfissional;
@@ -104,18 +101,14 @@ public class EsusAtendimentoIndividual implements Serializable {
 
    @Column(name="dt_envio")
    private Date dtEnvio;
-   
+
+   @Column(name="cid10")
+   private String cid10;
+
    @Column(name="uuid")
    private String uuid;
 
-
-   public String getUuid() {
-	return uuid;
-}
-public void setUuid(String uuid) {
-	this.uuid = uuid;
-}
-public Long getId() { 
+   public Long getId() { 
       return id;
    }
    public void  setId(Long id) { 
@@ -225,6 +218,7 @@ public Long getId() {
       this.atencaodomicmodalidade = atencaodomicmodalidade;
    }
 
+
    public  EsusPraticasintegrativascomplementares  getEsusPraticasintegrativascomplementares() { 
       return esusPraticasintegrativascomplementares;
    }
@@ -295,5 +289,17 @@ public Long getId() {
       this.dtEnvio = dtEnvio;
    }
 
-   
+   public String getCid10() { 
+      return cid10;
+   }
+   public void  setCid10(String cid10) { 
+      this.cid10 = cid10;
+   }
+
+   public String getUuid() { 
+      return uuid;
+   }
+   public void  setUuid(String uuid) { 
+      this.uuid = uuid;
+   }
 }

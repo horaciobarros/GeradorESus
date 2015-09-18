@@ -35,26 +35,27 @@ public class EsusAtendimentoIndividualDao extends Dao {
 				.openSession()
 				.createQuery(
 						"from EsusAtendimentoIndividual ai  left outer join fetch ai.pProntuario pp "
-						+ " left outer join fetch pp.pNacionalidade pn "
-						+ " left outer join fetch pp.pMunicipio pm "
-						+ " left outer join fetch ai.esusLocaldeatendimento "
-						+ " left outer join fetch ai.esusTurno "
-						+ " left outer join fetch ai.esusTipodeatendimento "
-						+ " left outer join fetch ai.esusAleitamentomaterno "
-						+ " left outer join fetch ai.esusPraticasintegrativascomplementares "
+								+ " left outer join fetch pp.pNacionalidade pn "
+								+ " left outer join fetch pp.pMunicipio pm "
+								+ " left outer join fetch ai.esusLocaldeatendimento "
+								+ " left outer join fetch ai.esusTurno "
+								+ " left outer join fetch ai.esusTipodeatendimento "
+								+ " left outer join fetch ai.esusAleitamentomaterno "
+								+ " left outer join fetch ai.esusPraticasintegrativascomplementares "
 								+ "where ai.stEnvio is null or ai.stEnvio=0");
 		List<EsusAtendimentoIndividual> lista = query.list();
 		tx.commit();
-		
+
 		return (List<EsusAtendimentoIndividual>) lista;
 	}
 
 	public void atualiza(EsusAtendimentoIndividual entity) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		
-		Query query = session.createQuery("update EsusAtendimentoIndividual set stEnvio=:stEnvio"
-				+ ", dtEnvio=:dtEnvio, uuid=:uuid where id = :id");
+
+		Query query = session
+				.createQuery("update EsusAtendimentoIndividual set stEnvio=:stEnvio"
+						+ ", dtEnvio=:dtEnvio, uuid=:uuid where id = :id");
 		query.setInteger("stEnvio", 1);
 		query.setLong("id", entity.getId());
 		query.setDate("dtEnvio", entity.getDtEnvio());
@@ -63,57 +64,68 @@ public class EsusAtendimentoIndividualDao extends Dao {
 		session.beginTransaction().commit();
 		session.close();
 	}
-	
-	public List<EsusAtendimentoIndividualExames> findExames(EsusAtendimentoIndividual cad) {
+
+	public List<EsusAtendimentoIndividualExames> findExames(
+			EsusAtendimentoIndividual cad) {
 		Transaction tx = session.beginTransaction();
 		Query query = sessionFactory
 				.openSession()
 				.createQuery(
 						"from EsusAtendimentoIndividualExames e "
-						+ " left outer join fetch e.esusAtendimentoIndividual  "
-								+ "where e.esusAtendimentoIndividual.id = " + cad.getId());
+								+ " left outer join fetch e.esusAtendimentoIndividual  "
+								+ "where e.esusAtendimentoIndividual.id = "
+								+ cad.getId());
 		List<EsusAtendimentoIndividualExames> lista = query.list();
 		tx.commit();
-		
+
 		return lista;
 	}
-	
-	public List<EsusAtendimentoIndividualCiap> findCiap(EsusAtendimentoIndividual cad) {
+
+	public List<EsusAtendimentoIndividualCiap> findCiap(
+			EsusAtendimentoIndividual cad) {
 		Transaction tx = session.beginTransaction();
 		Query query = sessionFactory
 				.openSession()
 				.createQuery(
 						"from EsusAtendimentoIndividualCiap e  "
-						+ " left outer join fetch e.esusAtendimentoIndividual  "
-								+ "where e.esusAtendimentoIndividual.id = " + cad.getId());
+								+ " left outer join fetch e.esusAtendimentoIndividual  "
+								+ "where e.esusAtendimentoIndividual.id = "
+								+ cad.getId());
 		List<EsusAtendimentoIndividualCiap> lista = query.list();
 		tx.commit();
-		
+
 		return lista;
-		
-		
+
 	}
-	
-	public List<EsusCondicaoavaliada> findCondicaoAvaliada(EsusAtendimentoIndividual cad) {
+
+	public List<EsusCondicaoavaliada> findCondicaoAvaliada(
+			EsusAtendimentoIndividual cad) {
 		Transaction tx = session.beginTransaction();
 		Query query = sessionFactory
 				.openSession()
 				.createQuery(
 						"from EsusAtendimentoIndividualCondicaoaval e  "
-						+ " left outer join fetch e.esusAtendimentoIndividual  "
-						+ " left outer join fetch e.esusCondicaoavaliada  "
-								+ "where e.esusAtendimentoIndividual.id = " + cad.getId());
-		List<EsusAtendimentoIndividualCondicaoaval> lista = query.list();
-		tx.commit();
-		List<EsusCondicaoavaliada> listaAux = new ArrayList<EsusCondicaoavaliada>();
-		for (EsusAtendimentoIndividualCondicaoaval e : lista) {
-			listaAux.add(e.getEsusCondicaoavaliada());
+								+ " left outer join fetch e.esusAtendimentoIndividual  "
+								+ " left outer join fetch e.esusCondicaoavaliada  "
+								+ "where e.esusAtendimentoIndividual.id = "
+								+ cad.getId());
+		try {
+			List<EsusAtendimentoIndividualCondicaoaval> lista = query.list();
+			tx.commit();
+			List<EsusCondicaoavaliada> listaAux = new ArrayList<EsusCondicaoavaliada>();
+			for (EsusAtendimentoIndividualCondicaoaval e : lista) {
+				listaAux.add(e.getEsusCondicaoavaliada());
+			}
+			return listaAux;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+			
+			
 		}
-		
-		return listaAux;
-		
-		
-	}
 
+
+
+	}
 
 }

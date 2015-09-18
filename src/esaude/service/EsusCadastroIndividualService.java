@@ -155,12 +155,12 @@ public class EsusCadastroIndividualService {
 		condicoesDeSaude.setStatusEhDependenteOutrasDrogasIsSet(true);
 		condicoesDeSaude.setStatusEhFumante(cad.getEstaFumante());
 		condicoesDeSaude.setStatusEhFumanteIsSet(true);
-		if (cad.getEstaGestante()) {
+		if (!cad.getpProntuario().getCoSexo().equals("M") && cad.getEstaGestante()) {
 			condicoesDeSaude.setStatusEhGestante(true);
 			condicoesDeSaude.setStatusEhGestanteIsSet(true);
 		} else {
 			condicoesDeSaude.setStatusEhGestante(false);
-			condicoesDeSaude.setStatusEhGestanteIsSet(true);
+			condicoesDeSaude.setStatusEhGestanteIsSet(false);
 			
 		}
 		condicoesDeSaude.setStatusTemDiabetes(cad.getDiabete());
