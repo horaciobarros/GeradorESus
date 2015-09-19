@@ -153,7 +153,7 @@ public class EsusVisitaDomiciliarService {
 		child.setDesfecho(cad.getEsusDesfecho().getId());
 		child.setDesfechoIsSet(true);
 		try {
-			child.setDtNascimento(cad.getDtNascimento().getTime());
+			child.setDtNascimento(cad.getPProntuario().getDtNascimento().getTime());
 			child.setDtNascimentoIsSet(true);
 		} catch (Exception e) {
 			child.setDtNascimentoIsSet(false);

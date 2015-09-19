@@ -232,7 +232,12 @@ public class EsusAtendimentoOdontologicoService {
 		}
 
 		try {
-			ficha.setTiposEncamOdonto(buscaTiposEncamOdonto(cad));
+			List<Long> tiposEncamOdonto = buscaTiposEncamOdonto(cad);
+			
+			if (ficha.getTiposEncamOdonto() == null || ficha.getTiposEncamOdonto().size() == 0) {
+				tiposEncamOdonto.add(11l);
+			}
+			ficha.setTiposEncamOdonto(tiposEncamOdonto);
 			ficha.setTiposEncamOdontoIsSet(true);
 		} catch (Exception e) {
 			log.error("Erro no envio dos tipos de encam odonto. id:" + cad.getId());
@@ -250,8 +255,9 @@ public class EsusAtendimentoOdontologicoService {
 		List<Long> tiposVigilanciaSaudeBucal = new ArrayList<Long>();
 		try {
 			tiposVigilanciaSaudeBucal = buscaTiposVigilanciaSaudeBucal(cad);			
-			if (tiposVigilanciaSaudeBucal != null) {
+			if (tiposVigilanciaSaudeBucal != null && tiposVigilanciaSaudeBucal.size() != 0) {
 				ficha.setTiposVigilanciaSaudeBucal(tiposVigilanciaSaudeBucal);
+				ficha.setTiposVigilanciaSaudeBucalIsSet(true);
 			} else {
 				tiposVigilanciaSaudeBucal = new ArrayList<Long>();
 				tiposVigilanciaSaudeBucal.add(99l);

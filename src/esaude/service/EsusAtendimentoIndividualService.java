@@ -252,10 +252,6 @@ public class EsusAtendimentoIndividualService extends MasterService {
 			if (problema.getCiaps().size() == 0) {
 				log.error("id: " + cad.getId() + " Problema condição avaliada não informada:" + problema.getCid10());
 			} else {
-				if (problema.getCid10() == null) {
-					problema.setCid10(problema.getOutroCiap1());
-					problema.setCid10IsSet(true);
-				}
 			}
 			ficha.setProblemaCondicaoAvaliada(problema);
 			ficha.setProblemaCondicaoAvaliadaIsSet(true);
@@ -294,10 +290,6 @@ public class EsusAtendimentoIndividualService extends MasterService {
 			} else if (problema.getOutroCiap2() == null) {
 				problema.setOutroCiap2(ciap.getCoCiap());
 				problema.setOutroCiap2IsSet(true);
-			}
-			if (problema.getCid10() == null) {
-				problema.setCid10(ciap.getCoCid());
-				problema.setCid10IsSet(true);
 			}
 		}
 		problema.setCiaps(ciaps);
@@ -349,8 +341,6 @@ public class EsusAtendimentoIndividualService extends MasterService {
 			problema = new ProblemaCondicaoAvaliacaoAIThrift();
 			problema.setOutroCiap1(cad.getCid10());
 			problema.setOutroCiap1IsSet(true);
-			problema.setCid10(cad.getCid10());
-			problema.setCid10IsSet(true);
 			ciaps.add(cad.getCid10());
 			problema.setCiaps(ciaps);
 			problema.setCiapsIsSet(true);
