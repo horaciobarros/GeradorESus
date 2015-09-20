@@ -2,14 +2,19 @@ package esaude.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
@@ -206,6 +211,9 @@ public class PProntuario implements Serializable {
 
 	@Column(name = "dt_alteracao")
 	private Date dtAlteracao;
+	
+	@Transient
+    private List<PProntuarioCns> filhos;
 
 	public Boolean getDesconheceMae() {
 		return desconheceMae;
@@ -696,6 +704,21 @@ public class PProntuario implements Serializable {
 			return false;
 		}
 		return getDesconheceMae();
+	}
+
+	public List<PProntuarioCns> getFilhos() {
+		return filhos;
+	}
+
+	public void setFilhos(List<PProntuarioCns> filhos) {
+		this.filhos = filhos;
+	}
+	
+	public String getCoNumeroCartao() {
+		if (this.filhos != null && this.filhos.size() > 0) {
+			return filhos.get(0).getCoNumeroCartao();
+		}
+		return null;
 	}
 
 }

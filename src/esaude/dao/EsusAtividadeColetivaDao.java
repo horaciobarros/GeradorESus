@@ -1,5 +1,6 @@
 package esaude.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -10,9 +11,11 @@ import org.hibernate.Transaction;
 import br.gov.saude.esus.cds.transport.generated.thrift.atividadecoletiva.ParticipanteRowItemThrift;
 import esaude.model.EsusAtividadeColetiva;
 import esaude.model.EsusAtividadeColetivaParticipantes;
+import esaude.model.EsusAtividadeColetivaPraticatemas;
 import esaude.model.EsusAtividadeColetivaProfissional;
 import esaude.model.EsusAtividadeColetivaPublico;
 import esaude.model.EsusAtividadeColetivaTemas;
+import esaude.model.EsusPraticastemasparasaude;
 import esaude.model.PProntuario;
 import esaude.util.HibernateUtil;
 
@@ -100,6 +103,23 @@ public class EsusAtividadeColetivaDao extends Dao {
 						+ id);
 		List<EsusAtividadeColetivaPublico> lista = query.list();
 		tx.commit();
+
+		return lista;
+	}
+	
+	public List<EsusPraticastemasparasaude> findPraticas(Long id) {
+		Transaction tx = session.beginTransaction();
+		Query query = sessionFactory.openSession().createQuery(
+				"from EsusAtividadeColetivaPraticatemas ap  join fetch ap.esusPraticastemasparasaude ps "
+				+ "join fetch ap.esusAtividadeColetiva ac where ap.esusAtividadeColetiva.id = "
+						+ id);
+		List<EsusAtividadeColetivaPraticatemas> listaAux = query.list();
+		List<EsusPraticastemasparasaude> lista = new ArrayList<EsusPraticastemasparasaude>();
+		tx.commit();
+		
+		for (EsusAtividadeColetivaPraticatemas item : listaAux) {
+			lista.add(item.getEsusPraticastemasparasaude());
+		}
 
 		return lista;
 	}

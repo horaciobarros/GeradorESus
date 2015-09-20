@@ -80,8 +80,7 @@ public class HibernateUtil {
 				configuration
 						.addAnnotatedClass(esaude.model.PNacionalidade.class);
 				configuration.addAnnotatedClass(esaude.model.PRacaCor.class);
-				configuration
-						.addAnnotatedClass(esaude.model.EsusTipoatividadecoletiva.class);
+				
 				configuration
 				.addAnnotatedClass(esaude.model.EsusCadastroIndividual.class);
 				
@@ -210,7 +209,16 @@ public class HibernateUtil {
 				
 				configuration
 				.addAnnotatedClass(esaude.model.EsusCondicaoavaliada.class);
-			
+				
+				configuration
+				.addAnnotatedClass(esaude.model.EsusPraticastemasparasaude.class);
+				
+				configuration
+				.addAnnotatedClass(esaude.model.EsusAtividadeColetivaPraticatemas.class);
+				
+				configuration
+				.addAnnotatedClass(esaude.model.PProntuarioCns.class);
+				
 				
 				SessionFactory sessionFactory = configuration.configure(file)
 						.buildSessionFactory();

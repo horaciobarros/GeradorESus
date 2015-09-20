@@ -153,34 +153,48 @@ public class EsusVisitaDomiciliarService {
 		child.setDesfecho(cad.getEsusDesfecho().getId());
 		child.setDesfechoIsSet(true);
 		try {
-			child.setDtNascimento(cad.getPProntuario().getDtNascimento().getTime());
-			child.setDtNascimentoIsSet(true);
+			if (cad.getPProntuario().getDtNascimento().getTime() < 0) {
+				log.info("Dt nascimento negativa: " + cad.getId());
+			}
+			child.setDtNascimento(cad.getPProntuario().getDtNascimento()
+					.getTime());
+			if (child.getDtNascimento() == 0) {
+				child.setDtNascimentoIsSet(false);
+				log.info("Dt nascimento não informada: " + cad.getId());
+			} else {
+				child.setDtNascimentoIsSet(true);
+			}
 		} catch (Exception e) {
 			child.setDtNascimentoIsSet(false);
 			log.info("Dt nascimento não informada: " + cad.getId());
 		}
 
-		List<Long> motivos = new ArrayList<Long>();
-		try {
-			List<EsusVisitaDomiciliarMotivovisita> motivosVisita = dao
-					.findMotivos(cad.getId());
-			motivos = converteMotivos(motivosVisita);
+		if (child.getDesfecho() == 2 || child.getDesfecho() == 3) {
+			child.setMotivosVisitaIsSet(false);
+		} else {
+			List<Long> motivos = new ArrayList<Long>();
+			try {
+				List<EsusVisitaDomiciliarMotivovisita> motivosVisita = dao
+						.findMotivos(cad.getId());
+				motivos = converteMotivos(motivosVisita);
 
-			if (motivos == null || motivos.size() == 0) {
+				if (motivos == null || motivos.size() == 0) {
+					motivos = new ArrayList<Long>();
+					motivos.add(29l);
+				}
+
+			} catch (Exception e) {
 				motivos = new ArrayList<Long>();
 				motivos.add(29l);
+
 			}
-
-		} catch (Exception e) {
-			motivos = new ArrayList<Long>();
-			motivos.add(29l);
-
+			child.setMotivosVisita(motivos);
+			child.setMotivosVisitaIsSet(true);
 		}
-		child.setMotivosVisita(motivos);
-		child.setMotivosVisitaIsSet(true);
 
-		child.setNumCartaoSus(cad.getNumCartaosus());
-		child.setNumCartaoSusIsSet(true);
+		
+		child.setNumCartaoSusIsSet(false);
+
 		try {
 			child.setNumProntuario(cad.getPProntuario().getCoProntuario()
 					.toString());

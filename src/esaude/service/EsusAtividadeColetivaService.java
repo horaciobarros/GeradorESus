@@ -19,6 +19,7 @@ import esaude.model.EsusAtividadeColetivaParticipantes;
 import esaude.model.EsusAtividadeColetivaProfissional;
 import esaude.model.EsusAtividadeColetivaPublico;
 import esaude.model.EsusAtividadeColetivaTemas;
+import esaude.model.EsusPraticastemasparasaude;
 import esaude.model.EsusRegistro;
 import esaude.model.EsusTemasparareuniao;
 import esaude.model.SisRegistro;
@@ -86,7 +87,9 @@ public class EsusAtividadeColetivaService {
 																	// sendo
 																	// enviado
 					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
-					informacoesEnvioDto.setUuidDadoSerializado(thriftAtividadeColetiva.getUuidFicha());
+					informacoesEnvioDto
+							.setUuidDadoSerializado(thriftAtividadeColetiva
+									.getUuidFicha());
 					informacoesEnvioDto.setIneDadoSerializado(cad
 							.getIneEquipe());
 					informacoesEnvioDto.setCnesDadoSerializado(cad
@@ -104,7 +107,8 @@ public class EsusAtividadeColetivaService {
 
 					log.info(new Date()
 							+ " -- Gerando atividade coletiva  --> "
-							+ cad.getId() + " - " + thriftAtividadeColetiva.getUuidFicha());
+							+ cad.getId() + " - "
+							+ thriftAtividadeColetiva.getUuidFicha());
 					System.out.println("Gerando atividade coletiva --> "
 							+ cad.getId());
 
@@ -157,16 +161,30 @@ public class EsusAtividadeColetivaService {
 		}
 
 		try {
-
-			List<EsusAtividadeColetivaTemas> atividadeColetivaTemas = dao
-					.findTemas(cad.getId());
-			List<Long> temasParaReuniao = converteTemas(atividadeColetivaTemas);
-			ficha.setTemasParaReuniao(temasParaReuniao);
-			ficha.setTemasParaReuniaoIsSet(temasParaReuniao != null
-					&& temasParaReuniao.size() > 0);
-			ficha.setTemasParaReuniao(temasParaReuniao);
+			ficha.setAtividadeTipo(cad.getEsusTipoatividadecoletiva().getId());
+			ficha.setAtividadeTipoIsSet(true);
 		} catch (Exception e) {
-			log.error(e.getMessage());
+
+		}
+
+		if (ficha.getAtividadeTipo() != 4 && ficha.getAtividadeTipo() != 5
+				&& ficha.getAtividadeTipo() != 6
+				&& ficha.getAtividadeTipo() != 7) {
+			try {
+
+				List<EsusAtividadeColetivaTemas> atividadeColetivaTemas = dao
+						.findTemas(cad.getId());
+				List<Long> temasParaReuniao = converteTemas(atividadeColetivaTemas);
+				ficha.setTemasParaReuniao(temasParaReuniao);
+				ficha.setTemasParaReuniaoIsSet(temasParaReuniao != null
+						&& temasParaReuniao.size() > 0);
+				ficha.setTemasParaReuniao(temasParaReuniao);
+				ficha.setTemasParaReuniaoIsSet(true);
+			} catch (Exception e) {
+				log.error(e.getMessage());
+			}
+		} else {
+			ficha.setTemasParaReuniaoIsSet(false);
 		}
 
 		try {
@@ -177,13 +195,6 @@ public class EsusAtividadeColetivaService {
 			ficha.setPublicoAlvoIsSet(publico != null && publico.size() > 0);
 		} catch (Exception e) {
 			log.error(e.getMessage());
-		}
-
-		try {
-			ficha.setAtividadeTipo(cad.getEsusTipoatividadecoletiva().getId());
-			ficha.setAtividadeTipoIsSet(true);
-		} catch (Exception e) {
-
 		}
 
 		try {
@@ -216,12 +227,32 @@ public class EsusAtividadeColetivaService {
 			ficha.setResponsavelCnsIsSet(true);
 			ficha.setResponsavelNumIne(cad.getIneEquipe());
 			ficha.setResponsavelNumIneIsSet(true);
-			
+
 		} catch (Exception e) {
 
 		}
+		
+		List<Long> praticaTemasParaSaude = new ArrayList<Long>();
+		praticaTemasParaSaude = convertePraticaTemasSaude(dao.findPraticas(cad.getId()));
+		if (praticaTemasParaSaude != null && praticaTemasParaSaude.size() > 0) {
+			ficha.setPraticasTemasParaSaude(praticaTemasParaSaude);
+			ficha.setPraticasTemasParaSaudeIsSet(true);
+		} else {
+			ficha.setPraticasTemasParaSaudeIsSet(false);
+		}
+		
 
 		return ficha;
+	}
+
+	private List<Long> convertePraticaTemasSaude(
+			List<EsusPraticastemasparasaude> praticas) {
+		List<Long> lista = new ArrayList<Long>();
+		
+		for (EsusPraticastemasparasaude pratica : praticas) {
+			lista.add(pratica.getId());
+		}
+		return lista;
 	}
 
 	private List<Long> convertePublico(
@@ -271,8 +302,15 @@ public class EsusAtividadeColetivaService {
 			item.setAvaliacaoAlteradaIsSet(true);
 			item.setCessouHabitoFumar(part.getCessouHabitoFumar());
 			item.setCessouHabitoFumarIsSet(true);
-			item.setCns(part.getPProntuario().getCertidaoNova()); // obrigatório
-			item.setCnsIsSet(true);
+			
+			try {
+				dao.ativaCns(part.getPProntuario());
+				item.setCns(part.getPProntuario().getCoNumeroCartao());
+				item.setCnsIsSet(true);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 			lista.add(item);
 		}
 		return lista;
