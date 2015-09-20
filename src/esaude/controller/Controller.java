@@ -134,6 +134,7 @@ public class Controller {
 			JOptionPane.showMessageDialog(null,
 					"Erro grave: " + e.getStackTrace());
 			TelaPrincipal.enviaLog(new Date() + " - " + e.getStackTrace());
+			e.printStackTrace();
 		}
 	}
 

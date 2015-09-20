@@ -2,7 +2,9 @@ package esaude.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JOptionPane;
 
@@ -58,6 +60,7 @@ public class EsusCadastroDomiciliarService {
 				+ " -- Gerando Cadastro domiciliar -------");
 
 		List<DadoTransporteThrift> dados = new ArrayList<DadoTransporteThrift>();
+		mapeiaSituacaoMoradia();
 		try {
 
 			for (EsusCadastroDomiciliar cad : dao.findNaoEnviados()) {
@@ -102,7 +105,7 @@ public class EsusCadastroDomiciliarService {
 							+ " -- Gerando cadastro Domiciliar --> "
 							+ cad.getId() + " --- " + thriftCadastroDomiciliar.getUuid());
 					System.out.println("Gerando cadastro Domiciliar --> "
-							+ cad.getId() + " - " + thriftCadastroDomiciliar.getUuid());
+							+ cad.getId() + " - " + thriftCadastroDomiciliar.getUuid()+" - "+cad.getUuid());
 
 					cad.setDtEnvio(new Date());
 					cad.setStEnvio(Long.valueOf(1));
@@ -148,13 +151,14 @@ public class EsusCadastroDomiciliarService {
 			cadastroDomiciliarThrift.setFichaAtualizada(false);
 			cadastroDomiciliarThrift
 					.setUuidFichaOriginadora(cadastroDomiciliarThrift.getUuid());
+			cad.setUuid(cadastroDomiciliarThrift.getUuid());
 			
 		}
 
 		cadastroDomiciliarThrift.setFichaAtualizadaIsSet(true);
 		cadastroDomiciliarThrift.setUuidFichaOriginadoraIsSet(true);
 		
-		cad.setUuid(cadastroDomiciliarThrift.getUuid());
+		
 
 		cadastroDomiciliarThrift.setAnimaisNoDomicilio(null);
 		cadastroDomiciliarThrift.setAnimaisNoDomicilioIsSet(true);
@@ -192,12 +196,13 @@ public class EsusCadastroDomiciliarService {
 		}
 
 		try {
-			condicaoMoradia.setSituacaoMoradiaPosseTerra(cad
-					.getEsusCondicaodeposseeusodaterra().getId());
+			condicaoMoradia.setSituacaoMoradiaPosseTerra(situacaoMoradia.get(cad
+					.getEsusCondicaodeposseeusodaterra().getId()));
 			condicaoMoradia.setSituacaoMoradiaPosseTerraIsSet(true);
 
 		} catch (Exception e) {
-			condicaoMoradia.setSituacaoMoradiaPosseTerraIsSet(false);
+			condicaoMoradia.setSituacaoMoradiaPosseTerra(82);
+			condicaoMoradia.setSituacaoMoradiaPosseTerraIsSet(true);
 		}
 		try {
 			condicaoMoradia.setFormaEscoamentoBanheiro(cad
@@ -253,13 +258,14 @@ public class EsusCadastroDomiciliarService {
 		endereco.setTelResidencial(cad.getNuFoneResidencia());
 		endereco.setTelResidencialIsSet(true);
 		try {
-			endereco.setTipoLogradouroNumeroDne(cad.getTpLogradouro()
-					.toString());
+			endereco.setTipoLogradouroNumeroDne("081");
 			endereco.setTipoLogradouroNumeroDneIsSet(true);
 		} catch (Exception e) {
-			endereco.setTipoLogradouroNumeroDneIsSet(false);
+			endereco.setTipoLogradouroNumeroDne("081");
+			endereco.setTipoLogradouroNumeroDneIsSet(true);
 		}
-
+		endereco.setNumeroDneUf(cad.getCoUf()+"");
+		endereco.setNumeroDneUfIsSet(true);
 		cadastroDomiciliarThrift.setEnderecoLocalPermanencia(endereco);
 
 		FamiliaRowThrift familia = new FamiliaRowThrift();
@@ -268,7 +274,7 @@ public class EsusCadastroDomiciliarService {
 					.getQtMembrosFamilia())));
 			familia.setNumeroMembrosFamiliaIsSet(true);
 		}
-		familia.setNumeroCnsResponsavel(cad.getCnesUnidade());
+		familia.setNumeroCnsResponsavel(cad.getCnsProfissional());
 		familia.setNumeroCnsResponsavelIsSet(true);
 		if (cad.getIdProntuarioResponsavel() != null) {
 			familia.setNumeroProntuario(Long.toString(cad
@@ -292,9 +298,22 @@ public class EsusCadastroDomiciliarService {
 		if (cad.getQuantidadeAnimais() != null) {
 			cadastroDomiciliarThrift.setQuantosAnimaisNoDomicilio(Long
 					.toString(cad.getQuantidadeAnimais()));
+			cadastroDomiciliarThrift.setQuantosAnimaisNoDomicilioIsSet(true);
+			
+			if (cad.getQuantidadeAnimais()>0){
+				cadastroDomiciliarThrift.setStAnimaisNoDomicilio(true);
+			}
+			else{
+				cadastroDomiciliarThrift.setStAnimaisNoDomicilio(false);
+			}
+			cadastroDomiciliarThrift.setStAnimaisNoDomicilioIsSet(true);// ?? TODO
 		}
-		cadastroDomiciliarThrift.setStAnimaisNoDomicilioIsSet(false);// ?? TODO
-		cadastroDomiciliarThrift.setStAnimaisNoDomicilio(false);// ?? TODO
+		else{
+			cadastroDomiciliarThrift.setQuantosAnimaisNoDomicilioIsSet(false);
+			cadastroDomiciliarThrift.setStAnimaisNoDomicilioIsSet(false);// ?? TODO
+		}
+
+		
 		cadastroDomiciliarThrift
 				.setStatusTermoRecusaCadastroDomiciliarAtencaoBasicaIsSet(false);
 		cadastroDomiciliarThrift
@@ -306,4 +325,16 @@ public class EsusCadastroDomiciliarService {
 		return cadastroDomiciliarThrift;
 	}
 
+	Map<Long,Long> situacaoMoradia;
+	public void mapeiaSituacaoMoradia(){
+		situacaoMoradia = new HashMap<Long,Long>();
+		situacaoMoradia.put(Long.valueOf("101"), Long.valueOf("75"));
+		situacaoMoradia.put(Long.valueOf("102"), Long.valueOf("76"));
+		situacaoMoradia.put(Long.valueOf("103"), Long.valueOf("77"));
+		situacaoMoradia.put(Long.valueOf("104"), Long.valueOf("78"));
+		situacaoMoradia.put(Long.valueOf("105"), Long.valueOf("79"));
+		situacaoMoradia.put(Long.valueOf("106"), Long.valueOf("80"));
+		situacaoMoradia.put(Long.valueOf("107"), Long.valueOf("81"));
+		situacaoMoradia.put(Long.valueOf("108"), Long.valueOf("82"));
+	}
 }
