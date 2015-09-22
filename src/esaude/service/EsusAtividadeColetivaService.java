@@ -217,30 +217,42 @@ public class EsusAtividadeColetivaService {
 			ficha.setCodigoIbgeMunicipio(sisRegistro.getCidadeIbge());
 			ficha.setDtAtividadeColetiva(cad.getDtAtividade().getTime());
 			ficha.setDtAtividadeColetivaIsSet(true);
-			ficha.setInep(cad.getInep());
-			ficha.setInepIsSet(true);
+			try {
+				ficha.setInep(cad.getInep());
+				ficha.setInepIsSet(true);
+			} catch (Exception e) {
+
+			}
 			ficha.setLocalAtividade(cad.getLocalAtividade());
 			ficha.setLocalAtividadeIsSet(true);
 			ficha.setTbCdsOrigem(3);
 			ficha.setTbCdsOrigemIsSet(true);
 			ficha.setResponsavelCns(cad.getCnsResponsavel());
+			if (ficha.getResponsavelCns() == null
+					|| ficha.getResponsavelCns().isEmpty()) {
+				log.error("id:" + cad.getId() + "Sem cns do profissional");
+				ficha.setResponsavelCnsIsSet(false);
+			} else {
+				ficha.setResponsavelCnsIsSet(true);
+			}
+
 			ficha.setResponsavelCnsIsSet(true);
 			ficha.setResponsavelNumIne(cad.getIneEquipe());
 			ficha.setResponsavelNumIneIsSet(true);
 
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
-		
+
 		List<Long> praticaTemasParaSaude = new ArrayList<Long>();
-		praticaTemasParaSaude = convertePraticaTemasSaude(dao.findPraticas(cad.getId()));
+		praticaTemasParaSaude = convertePraticaTemasSaude(dao.findPraticas(cad
+				.getId()));
 		if (praticaTemasParaSaude != null && praticaTemasParaSaude.size() > 0) {
 			ficha.setPraticasTemasParaSaude(praticaTemasParaSaude);
 			ficha.setPraticasTemasParaSaudeIsSet(true);
 		} else {
 			ficha.setPraticasTemasParaSaudeIsSet(false);
 		}
-		
 
 		return ficha;
 	}
@@ -248,7 +260,7 @@ public class EsusAtividadeColetivaService {
 	private List<Long> convertePraticaTemasSaude(
 			List<EsusPraticastemasparasaude> praticas) {
 		List<Long> lista = new ArrayList<Long>();
-		
+
 		for (EsusPraticastemasparasaude pratica : praticas) {
 			lista.add(pratica.getId());
 		}
@@ -282,7 +294,13 @@ public class EsusAtividadeColetivaService {
 		for (EsusAtividadeColetivaProfissional prof : profissionais) {
 			ProfissionalCboRowItemThrift item = new ProfissionalCboRowItemThrift();
 			item.setCns(prof.getCnsProfissional());
-			item.setCnsIsSet(true);
+			if (item.getCns() == null || item.getCns().isEmpty()) {
+				log.error("id:" + prof.getEsusAtividadeColetiva().getId()
+						+ "Sem cns do profissional");
+				item.setCnsIsSet(false);
+			} else {
+				item.setCnsIsSet(true);
+			}
 			item.setCodigoCbo2002(prof.getCbo());
 			item.setCodigoCbo2002IsSet(true);
 			lista.add(item);
@@ -302,7 +320,7 @@ public class EsusAtividadeColetivaService {
 			item.setAvaliacaoAlteradaIsSet(true);
 			item.setCessouHabitoFumar(part.getCessouHabitoFumar());
 			item.setCessouHabitoFumarIsSet(true);
-			
+
 			try {
 				dao.ativaCns(part.getPProntuario());
 				item.setCns(part.getPProntuario().getCoNumeroCartao());
@@ -310,7 +328,7 @@ public class EsusAtividadeColetivaService {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 			lista.add(item);
 		}
 		return lista;

@@ -250,11 +250,13 @@ public class EsusAtendimentoIndividualService extends MasterService {
 			ProblemaCondicaoAvaliacaoAIThrift problema = new ProblemaCondicaoAvaliacaoAIThrift();
 			problema = buscaCondicaoAvaliada(cad, problema);
 			if (problema.getCiaps().size() == 0) {
+				ficha.setProblemaCondicaoAvaliadaIsSet(false);
 				log.error("id: " + cad.getId() + " Problema condição avaliada não informada:" + problema.getCid10());
 			} else {
+				ficha.setProblemaCondicaoAvaliada(problema);
+				ficha.setProblemaCondicaoAvaliadaIsSet(true);
 			}
-			ficha.setProblemaCondicaoAvaliada(problema);
-			ficha.setProblemaCondicaoAvaliadaIsSet(true);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
