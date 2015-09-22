@@ -339,15 +339,6 @@ public class EsusAtendimentoIndividualService extends MasterService {
 			problema = buscaCiap(cad, problema);
 		}
 		
-		if (problema.getCiaps().size() == 0 && cad.getCid10() != null) {
-			problema = new ProblemaCondicaoAvaliacaoAIThrift();
-			problema.setOutroCiap1(cad.getCid10());
-			problema.setOutroCiap1IsSet(true);
-			ciaps.add(cad.getCid10());
-			problema.setCiaps(ciaps);
-			problema.setCiapsIsSet(true);
-			
-		}
 		return problema;
 
 	}
