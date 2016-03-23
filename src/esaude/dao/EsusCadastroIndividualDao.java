@@ -33,6 +33,7 @@ public class EsusCadastroIndividualDao extends Dao {
 						"from EsusCadastroIndividual ci  left outer join fetch ci.pProntuario pp "
 						+ " left outer join fetch pp.pNacionalidade pn "
 						+ " left outer join fetch pp.pMunicipio pm "
+						+ " left outer join fetch ci.esusMotivosaida "
 								+ "where ci.stEnvio is null or ci.stEnvio=0");
 		//query.setMaxResults(1);
 		List<EsusCadastroIndividual> lista = query.list();

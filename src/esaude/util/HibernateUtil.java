@@ -219,6 +219,9 @@ public class HibernateUtil {
 				configuration
 				.addAnnotatedClass(esaude.model.PProntuarioCns.class);
 				
+				configuration
+				.addAnnotatedClass(esaude.model.EsusMotivosaida.class);
+				
 				
 				SessionFactory sessionFactory = configuration.configure(file)
 						.buildSessionFactory();

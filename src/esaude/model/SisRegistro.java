@@ -47,8 +47,6 @@ public class SisRegistro implements Serializable {
    @Column(name="cep")
    private String cep;
 
-   @Column(name="caminho_conn_sql")
-   private String caminhoConnSql;
 
    public Long getId() { 
       return id;
@@ -113,11 +111,5 @@ public class SisRegistro implements Serializable {
       this.cep = cep;
    }
 
-   public String getCaminhoConnSql() { 
-      return caminhoConnSql;
-   }
-   public void  setCaminhoConnSql(String caminhoConnSql) { 
-      this.caminhoConnSql = caminhoConnSql;
-   }
 
 }

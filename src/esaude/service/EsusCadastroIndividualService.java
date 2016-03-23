@@ -155,7 +155,7 @@ public class EsusCadastroIndividualService {
 		condicoesDeSaude.setStatusEhDependenteOutrasDrogasIsSet(true);
 		condicoesDeSaude.setStatusEhFumante(cad.getEstaFumante());
 		condicoesDeSaude.setStatusEhFumanteIsSet(true);
-		if (!cad.getpProntuario().getCoSexo().equals("M") && cad.getEstaGestante()) {
+		if (!cad.getPProntuario().getCoSexo().equals("M") && cad.getEstaGestante()) {
 			condicoesDeSaude.setStatusEhGestante(true);
 			condicoesDeSaude.setStatusEhGestanteIsSet(true);
 		} else {
@@ -202,7 +202,7 @@ public class EsusCadastroIndividualService {
 		} catch (Exception e) {
 			identificacao.setNomeCidadaoIsSet(false);
 		}
-		if (!cad.getpProntuario().isDesconheceMae()) {
+		if (!cad.getPProntuario().isDesconheceMae()) {
 			identificacao.setDesconheceNomeMae(false);
 			identificacao.setDesconheceNomeMaeIsSet(true);
 			identificacao.setNomeMaeCidadao(cad.getPProntuario().getNoMae());
@@ -226,7 +226,7 @@ public class EsusCadastroIndividualService {
 
 		try {
 			Long sexo = new Long(0);
-			if (cad.getpProntuario().getCoSexo().equals("M")) {
+			if (cad.getPProntuario().getCoSexo().equals("M")) {
 				sexo = Long.valueOf(0);
 			} else {
 				sexo = Long.valueOf(1);
@@ -238,9 +238,9 @@ public class EsusCadastroIndividualService {
 		}
 
 		try {
-			if (cad.getpProntuario().getPNacionalidade().getCoPais() == null) {
+			if (cad.getPProntuario().getPNacionalidade().getCoPais() == null) {
 				identificacao.setNacionalidadeCidadao(Long.valueOf(1l));
-			} else if (!cad.getpProntuario().getPNacionalidade().getCoPais().equals("010")) {
+			} else if (!cad.getPProntuario().getPNacionalidade().getCoPais().equals("010")) {
 					identificacao.setNacionalidadeCidadao(Long.valueOf(3l));
 			} else {
 				identificacao.setNacionalidadeCidadao(Long.valueOf(1l));
@@ -270,6 +270,8 @@ public class EsusCadastroIndividualService {
 		informacoesSocioDemograficas
 				.setStatusTemAlgumaDeficienciaIsSet(deficiencias != null
 						&& deficiencias.size() >= 0);
+		informacoesSocioDemograficas.setMotivoSaidaCidadao(cad.getEsusMotivosaida().getId());
+		informacoesSocioDemograficas.setMotivoSaidaCidadaoIsSet(true);
 		c.setInformacoesSocioDemograficas(informacoesSocioDemograficas);
 
 		EmSituacaoDeRuaThrift emSituacaoDeRua = new EmSituacaoDeRuaThrift();

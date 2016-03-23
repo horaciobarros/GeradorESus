@@ -99,7 +99,7 @@ public class EsusCadastroDomiciliar implements Serializable {
 	private EsusTipodeacessoaodomicilio esusTipodeacessoaodomicilio;
 
 	@Column(name = "energia_eletrica")
-	private boolean energiaEletrica;
+	private Boolean energiaEletrica;
 
 	@ManyToOne
 	@JoinColumn(name = "id_materialpredominanteconst")
