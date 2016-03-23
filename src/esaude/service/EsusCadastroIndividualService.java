@@ -28,8 +28,7 @@ import esaude.util.ThriftSerializer;
 import esaude.view.TelaPrincipal;
 
 public class EsusCadastroIndividualService {
-	static Logger log = Logger.getLogger(EsusCadastroIndividualService.class
-			.getName());
+	static Logger log = Logger.getLogger(EsusCadastroIndividualService.class.getName());
 	private EsusCadastroIndividualDao dao = new EsusCadastroIndividualDao();
 	private EsusRegistro esusRegistro = new EsusRegistro();
 	private SisRegistro sisRegistro = new SisRegistro();
@@ -57,8 +56,7 @@ public class EsusCadastroIndividualService {
 		}
 
 		log.info(new Date() + " -- Gerando Cadastro individual -------");
-		TelaPrincipal.enviaLog(new Date()
-				+ " -- Gerando Cadastro individual -------");
+		TelaPrincipal.enviaLog(new Date() + " -- Gerando Cadastro individual -------");
 
 		List<DadoTransporteThrift> dados = new ArrayList<DadoTransporteThrift>();
 		try {
@@ -72,35 +70,26 @@ public class EsusCadastroIndividualService {
 					byte[] dadoSerializado;
 
 					// Passo 2: serializar o thrift
-					dadoSerializado = ThriftSerializer
-							.serialize(thriftCadastroIndividual);
+					dadoSerializado = ThriftSerializer.serialize(thriftCadastroIndividual);
 
 					// Passo 3: coletar as informações do envio
 					informacoesEnvioDto.setTipoDadoSerializado(2l);
 					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
-					informacoesEnvioDto
-							.setUuidDadoSerializado(thriftCadastroIndividual
-									.getUuid());
-					informacoesEnvioDto.setIneDadoSerializado(cad
-							.getIneEquipe());
-					informacoesEnvioDto.setCnesDadoSerializado(cad
-							.getCnesUnidade());
+					informacoesEnvioDto.setUuidDadoSerializado(thriftCadastroIndividual.getUuid());
+					informacoesEnvioDto.setIneDadoSerializado(cad.getIneEquipe());
+					informacoesEnvioDto.setCnesDadoSerializado(cad.getCnesUnidade());
 					informacoesEnvioDto.setCodIbge(sisRegistro.getCidadeIbge());
 
 					// Passo 4: preencher o thrift de transporte com as
 					// informadosçõeso
 					// coletadas;
-					DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio
-							.getInfoInstalacao(informacoesEnvioDto,
-									esusRegistro);
+					DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio.getInfoInstalacao(informacoesEnvioDto,
+							esusRegistro);
 
 					dados.add(dadoTransporteThrift);
 
-					log.info(new Date()
-							+ " -- Gerando cadastro Individual --> "
-							+ cad.getId() + " - " + cad.getUuid());
-					System.out.println("Gerando cadastro Individual --> "
-							+ cad.getId());
+					log.info(new Date() + " -- Gerando cadastro Individual --> " + cad.getId() + " - " + cad.getUuid());
+					System.out.println("Gerando cadastro Individual --> " + cad.getId());
 
 					cad.setDtEnvio(new Date());
 					cad.setStEnvio(Long.valueOf(1));
@@ -129,8 +118,7 @@ public class EsusCadastroIndividualService {
 		return dados;
 	}
 
-	private CadastroIndividualThrift converterParaThrift(
-			EsusCadastroIndividual cad) {
+	private CadastroIndividualThrift converterParaThrift(EsusCadastroIndividual cad) {
 		CadastroIndividualThrift c = new CadastroIndividualThrift();
 
 		c.setUuid(masterService.gerarUuid(cad.getCnesUnidade()));
@@ -150,8 +138,7 @@ public class EsusCadastroIndividualService {
 		CondicoesDeSaudeThrift condicoesDeSaude = new CondicoesDeSaudeThrift();
 		condicoesDeSaude.setStatusEhDependenteAlcool(cad.getDependenteAlcool());
 		condicoesDeSaude.setStatusEhDependenteAlcoolIsSet(true);
-		condicoesDeSaude.setStatusEhDependenteOutrasDrogas(cad
-				.getDependenteDroga());
+		condicoesDeSaude.setStatusEhDependenteOutrasDrogas(cad.getDependenteDroga());
 		condicoesDeSaude.setStatusEhDependenteOutrasDrogasIsSet(true);
 		condicoesDeSaude.setStatusEhFumante(cad.getEstaFumante());
 		condicoesDeSaude.setStatusEhFumanteIsSet(true);
@@ -161,7 +148,7 @@ public class EsusCadastroIndividualService {
 		} else {
 			condicoesDeSaude.setStatusEhGestante(false);
 			condicoesDeSaude.setStatusEhGestanteIsSet(false);
-			
+
 		}
 		condicoesDeSaude.setStatusTemDiabetes(cad.getDiabete());
 		condicoesDeSaude.setStatusTemDiabetesIsSet(true);
@@ -190,11 +177,9 @@ public class EsusCadastroIndividualService {
 		c.setDadosGeraisIsSet(true);
 
 		IdentificacaoUsuarioCidadaoThrift identificacao = new IdentificacaoUsuarioCidadaoThrift();
-		identificacao.setCodigoIbgeMunicipioNascimento(cad.getPProntuario()
-				.getCoMunicipioNasc());
+		identificacao.setCodigoIbgeMunicipioNascimento(cad.getPProntuario().getCoMunicipioNasc());
 		identificacao.setCodigoIbgeMunicipioNascimentoIsSet(true);
-		identificacao.setDataNascimentoCidadao(cad.getPProntuario()
-				.getDtNascimento().getTime());
+		identificacao.setDataNascimentoCidadao(cad.getPProntuario().getDtNascimento().getTime());
 		identificacao.setDataNascimentoCidadaoIsSet(true);
 		try {
 			identificacao.setNomeCidadao(cad.getPProntuario().getNoUsuario());
@@ -214,8 +199,7 @@ public class EsusCadastroIndividualService {
 		}
 
 		try {
-			identificacao.setRacaCorCidadao(Long.valueOf(cad.getPProntuario()
-					.getPRacaCor().getCoRaca()));
+			identificacao.setRacaCorCidadao(Long.valueOf(cad.getPProntuario().getPRacaCor().getCoRaca()));
 			if (cad.getPProntuario().getPRacaCor().getCoRaca().equals("99")) {
 				identificacao.setRacaCorCidadao(1L);
 			}
@@ -241,7 +225,7 @@ public class EsusCadastroIndividualService {
 			if (cad.getPProntuario().getPNacionalidade().getCoPais() == null) {
 				identificacao.setNacionalidadeCidadao(Long.valueOf(1l));
 			} else if (!cad.getPProntuario().getPNacionalidade().getCoPais().equals("010")) {
-					identificacao.setNacionalidadeCidadao(Long.valueOf(3l));
+				identificacao.setNacionalidadeCidadao(Long.valueOf(3l));
 			} else {
 				identificacao.setNacionalidadeCidadao(Long.valueOf(1l));
 			}
@@ -251,8 +235,7 @@ public class EsusCadastroIndividualService {
 			identificacao.setNacionalidadeCidadaoIsSet(true);
 		}
 
-		identificacao
-				.setNomeSocialCidadao(cad.getPProntuario().getNoUsuario());
+		identificacao.setNomeSocialCidadao(cad.getPProntuario().getNoUsuario());
 		identificacao.setNomeSocialCidadaoIsSet(true);
 
 		c.setIdentificacaoUsuarioCidadao(identificacao);
@@ -261,24 +244,22 @@ public class EsusCadastroIndividualService {
 		List<Long> deficiencias = buscaDeficienciasCidadao(cad);
 		informacoesSocioDemograficas.setDeficienciasCidadao(deficiencias);
 		informacoesSocioDemograficas.setDeficienciasCidadaoIsSet(true);
-		informacoesSocioDemograficas.setStatusFrequentaEscola(cad
-				.getFrequentaEscola());
+		informacoesSocioDemograficas.setStatusFrequentaEscola(cad.getFrequentaEscola());
 		informacoesSocioDemograficas.setStatusFrequentaEscolaIsSet(true);
+		informacoesSocioDemograficas.setStatusTemAlgumaDeficiencia(deficiencias != null && deficiencias.size() >= 0);
 		informacoesSocioDemograficas
-				.setStatusTemAlgumaDeficiencia(deficiencias != null
-						&& deficiencias.size() >= 0);
-		informacoesSocioDemograficas
-				.setStatusTemAlgumaDeficienciaIsSet(deficiencias != null
-						&& deficiencias.size() >= 0);
-		informacoesSocioDemograficas.setMotivoSaidaCidadao(cad.getEsusMotivosaida().getId());
-		informacoesSocioDemograficas.setMotivoSaidaCidadaoIsSet(true);
-		c.setInformacoesSocioDemograficas(informacoesSocioDemograficas);
+				.setStatusTemAlgumaDeficienciaIsSet(deficiencias != null && deficiencias.size() >= 0);
+		if (cad.getEsusMotivosaida() != null) {
+			informacoesSocioDemograficas.setMotivoSaidaCidadao(cad.getEsusMotivosaida().getId());
+			informacoesSocioDemograficas.setMotivoSaidaCidadaoIsSet(true);
+		} else {
+			informacoesSocioDemograficas.setMotivoSaidaCidadaoIsSet(false);
+		}
 
 		EmSituacaoDeRuaThrift emSituacaoDeRua = new EmSituacaoDeRuaThrift();
 		emSituacaoDeRua.setStatusSituacaoRua(cad.getEmSituacaoRua());
 		emSituacaoDeRua.setStatusSituacaoRuaIsSet(true);
-		emSituacaoDeRua.setGrauParentescoFamiliarFrequentado(cad
-				.getGrauParentescoFamiliarFreq());
+		emSituacaoDeRua.setGrauParentescoFamiliarFrequentado(cad.getGrauParentescoFamiliarFreq());
 		emSituacaoDeRua.setGrauParentescoFamiliarFrequentadoIsSet(true);
 		try {
 			emSituacaoDeRua.setHigienePessoalSituacaoRua(buscaHigiente(cad));
@@ -297,8 +278,7 @@ public class EsusCadastroIndividualService {
 	private List<Long> buscaHigiente(EsusCadastroIndividual cad) {
 		List<Long> lista = new ArrayList<Long>();
 
-		for (EsusCadastroIndividualHigienepessoalsituacaorua cid : dao
-				.findHigiene(cad.getId())) {
+		for (EsusCadastroIndividualHigienepessoalsituacaorua cid : dao.findHigiene(cad.getId())) {
 			lista.add(cid.getEsusAcessohigiene().getId());
 		}
 		return lista;
@@ -307,8 +287,7 @@ public class EsusCadastroIndividualService {
 	private List<Long> buscaDeficienciasCidadao(EsusCadastroIndividual cad) {
 		List<Long> lista = new ArrayList<Long>();
 
-		for (EsusCadastroIndividualDeficiencia cid : dao.findDeficiencias(cad
-				.getId())) {
+		for (EsusCadastroIndividualDeficiencia cid : dao.findDeficiencias(cad.getId())) {
 			lista.add(cid.getEsusDeficienciacidadao().getId());
 		}
 		return lista;
