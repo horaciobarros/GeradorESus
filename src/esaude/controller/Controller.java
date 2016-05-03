@@ -29,6 +29,7 @@ import esaude.service.EsusAtendimentoOdontologicoService;
 import esaude.service.EsusAtividadeColetivaService;
 import esaude.service.EsusCadastroDomiciliarService;
 import esaude.service.EsusCadastroIndividualService;
+import esaude.service.EsusConsumoAlimentarService;
 import esaude.service.EsusFichaProcedimentoService;
 import esaude.service.EsusVisitaDomiciliarService;
 import esaude.service.MasterService;
@@ -45,6 +46,7 @@ public class Controller {
 	private EsusAtendimentoIndividualService atendimentoIndividualService = new EsusAtendimentoIndividualService();
 	private EsusAtendimentoOdontologicoService atendimentoOdontologicoService = new EsusAtendimentoOdontologicoService();
 	private EsusFichaProcedimentoService fichaProcedimentoService = new EsusFichaProcedimentoService();
+	private EsusConsumoAlimentarService consumoAlimentarService = new EsusConsumoAlimentarService();
 	private GeradorZip geradorZip = new GeradorZip();
 
 	String userHome = System.getProperty("user.dir");
@@ -57,82 +59,57 @@ public class Controller {
 		try {
 			criaPastas();
 
-			TelaPrincipal
-					.enviaLog("Importando e Convertendo Cadastro Individual");
-			List<DadoTransporteThrift> dadosTransportCadastroIndividual = cadastroIndividualService
-					.buscaRegistros();
-			TelaPrincipal
-					.enviaLog("----> Total de registros:"
-							+ (dadosTransportCadastroIndividual != null ? dadosTransportCadastroIndividual
-									.size() : 0));
+			TelaPrincipal.enviaLog("Importando e Convertendo Cadastro Individual");
+			List<DadoTransporteThrift> dadosTransportCadastroIndividual = cadastroIndividualService.buscaRegistros();
+			TelaPrincipal.enviaLog("----> Total de registros:"
+					+ (dadosTransportCadastroIndividual != null ? dadosTransportCadastroIndividual.size() : 0));
 
-			TelaPrincipal
-					.enviaLog("Importando e Convertendo Cadastro Domiciliar");
-			List<DadoTransporteThrift> dadosTransportCadastroDomiciliar = cadastroDomiciliarService
-					.buscaRegistros();
-			TelaPrincipal
-					.enviaLog("----> Total de registros:"
-							+ (dadosTransportCadastroDomiciliar != null ? dadosTransportCadastroDomiciliar
-									.size() : 0));
+			TelaPrincipal.enviaLog("Importando e Convertendo Cadastro Domiciliar");
+			List<DadoTransporteThrift> dadosTransportCadastroDomiciliar = cadastroDomiciliarService.buscaRegistros();
+			TelaPrincipal.enviaLog("----> Total de registros:"
+					+ (dadosTransportCadastroDomiciliar != null ? dadosTransportCadastroDomiciliar.size() : 0));
 
-			TelaPrincipal
-					.enviaLog("Importando e Convertendo Atendimento Individual");
+			TelaPrincipal.enviaLog("Importando e Convertendo Atendimento Individual");
 			List<DadoTransporteThrift> dadosTransportAtendimentoIndividual = atendimentoIndividualService
 					.buscaRegistros();
-			TelaPrincipal
-					.enviaLog("----> Total de registros:"
-							+ (dadosTransportAtendimentoIndividual != null ? dadosTransportAtendimentoIndividual
-									.size() : 0));
+			TelaPrincipal.enviaLog("----> Total de registros:"
+					+ (dadosTransportAtendimentoIndividual != null ? dadosTransportAtendimentoIndividual.size() : 0));
 
-			TelaPrincipal
-					.enviaLog("Importando e Convertendo Atendimento Odontologico");
+			TelaPrincipal.enviaLog("Importando e Convertendo Atendimento Odontologico");
 			List<DadoTransporteThrift> dadosTransportAtendimentoOdontologico = atendimentoOdontologicoService
 					.buscaRegistros();
-			TelaPrincipal
-					.enviaLog("----> Total de registros:"
-							+ (dadosTransportAtendimentoOdontologico != null ? dadosTransportAtendimentoOdontologico
-									.size() : 0));
+			TelaPrincipal.enviaLog("----> Total de registros:" + (dadosTransportAtendimentoOdontologico != null
+					? dadosTransportAtendimentoOdontologico.size() : 0));
 
-			TelaPrincipal
-					.enviaLog("Importando e Convertendo Atividade Coletiva");
-			List<DadoTransporteThrift> dadosTransportAtividadeColetiva = atividadeColetivaService
-					.buscaRegistros();
-			TelaPrincipal
-					.enviaLog("----> Total de registros:"
-							+ (dadosTransportAtividadeColetiva != null ? dadosTransportAtividadeColetiva
-									.size() : 0));
+			TelaPrincipal.enviaLog("Importando e Convertendo Atividade Coletiva");
+			List<DadoTransporteThrift> dadosTransportAtividadeColetiva = atividadeColetivaService.buscaRegistros();
+			TelaPrincipal.enviaLog("----> Total de registros:"
+					+ (dadosTransportAtividadeColetiva != null ? dadosTransportAtividadeColetiva.size() : 0));
 
-			TelaPrincipal
-					.enviaLog("Importando e Convertendo Ficha Procedimento");
-			List<DadoTransporteThrift> dadosTransportProcedimento = fichaProcedimentoService
-					.buscaRegistros();
-			TelaPrincipal
-					.enviaLog("----> Total de registros:"
-							+ (dadosTransportProcedimento != null ? dadosTransportProcedimento
-									.size() : 0));
+			TelaPrincipal.enviaLog("Importando e Convertendo Ficha Procedimento");
+			List<DadoTransporteThrift> dadosTransportProcedimento = fichaProcedimentoService.buscaRegistros();
+			TelaPrincipal.enviaLog("----> Total de registros:"
+					+ (dadosTransportProcedimento != null ? dadosTransportProcedimento.size() : 0));
 
-			TelaPrincipal
-					.enviaLog("Importando e Convertendo Visita Domiciliar");
-			List<DadoTransporteThrift> dadosTransportVisitaDomiciliar = visitaDomiciliarService
-					.buscaRegistros();
-			TelaPrincipal
-					.enviaLog("----> Total de registros:"
-							+ (dadosTransportVisitaDomiciliar != null ? dadosTransportVisitaDomiciliar
-									.size() : 0));
+			TelaPrincipal.enviaLog("Importando e Convertendo Visita Domiciliar");
+			List<DadoTransporteThrift> dadosTransportVisitaDomiciliar = visitaDomiciliarService.buscaRegistros();
+			TelaPrincipal.enviaLog("----> Total de registros:"
+					+ (dadosTransportVisitaDomiciliar != null ? dadosTransportVisitaDomiciliar.size() : 0));
+
+			TelaPrincipal.enviaLog("Importando e Convertendo Consumo alimentar");
+			List<DadoTransporteThrift> dadosTransportConsumoAlimentar = consumoAlimentarService.buscaRegistros();
+			TelaPrincipal.enviaLog("----> Total de registros:"
+					+ (dadosTransportConsumoAlimentar != null ? dadosTransportConsumoAlimentar.size() : 0));
 
 			TelaPrincipal.enviaLog("Criando Arquivo Serializado");
-			geradorZip.empacotaZip(dadosTransportCadastroDomiciliar,
-					dadosTransportAtividadeColetiva,
-					dadosTransportCadastroIndividual,
-					dadosTransportVisitaDomiciliar,
-					dadosTransportAtendimentoIndividual,
-					dadosTransportAtendimentoOdontologico,
-					dadosTransportProcedimento, pathPadrao);
+			geradorZip.empacotaZip(dadosTransportCadastroDomiciliar, dadosTransportAtividadeColetiva,
+					dadosTransportCadastroIndividual, dadosTransportVisitaDomiciliar,
+					dadosTransportAtendimentoIndividual, dadosTransportAtendimentoOdontologico,
+					dadosTransportProcedimento, dadosTransportConsumoAlimentar, pathPadrao);
 			TelaPrincipal.enviaLog("Processo Finalizado");
 		} catch (Exception e) {
 			log.error(new Date() + " " + e.getStackTrace());
-			JOptionPane.showMessageDialog(null,
-					"Erro grave: " + e.getStackTrace());
+			JOptionPane.showMessageDialog(null, "Erro grave: " + e.getStackTrace());
 			TelaPrincipal.enviaLog(new Date() + " - " + e.getStackTrace());
 			e.printStackTrace();
 		}
@@ -155,9 +132,9 @@ public class Controller {
 		nomes.add("EsusAtendimentoIndividual");
 		nomes.add("EsusFichaProcedimento");
 		nomes.add("EsusVisitaDomiciliar");
+		nomes.add("EsusConsumoAlimentar");
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		TelaPrincipal.enviaLog("Cancelamento de geração do dia: "
-				+ sdf.format(dataGeracao));
+		TelaPrincipal.enviaLog("Cancelamento de geração do dia: " + sdf.format(dataGeracao));
 		for (String nomeEntidade : nomes) {
 			masterService.cancelaEnvio(nomeEntidade, dataGeracao);
 			TelaPrincipal.enviaLog("cancelando -->" + nomeEntidade);
@@ -167,8 +144,8 @@ public class Controller {
 			File folder = new File(pathPadrao);
 			Calendar c = Calendar.getInstance();
 			c.setTime(dataGeracao);
-			String data = "_" + c.get(Calendar.DAY_OF_MONTH) + "_"
-					+ (c.get(Calendar.MONTH) + 1) + "_" + c.get(Calendar.YEAR);
+			String data = "_" + c.get(Calendar.DAY_OF_MONTH) + "_" + (c.get(Calendar.MONTH) + 1) + "_"
+					+ c.get(Calendar.YEAR);
 			String arquivoSerExcluido = "esaude_exportacao" + data;
 			if (folder.isDirectory()) {
 				File[] sun = folder.listFiles();

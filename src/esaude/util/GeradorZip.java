@@ -24,7 +24,7 @@ public class GeradorZip {
 			List<DadoTransporteThrift> dadosTransportCadastroIndividual, List<DadoTransporteThrift> dadosTransportVisitaDomiciliar,
 			List<DadoTransporteThrift> dadosTransportAtendimentoIndividual, List<DadoTransporteThrift> dadosTransportAtendimentoOdontologico, 
 			List<DadoTransporteThrift> dadosTransportProcedimento, 
-			String pathPadrao) {
+			List<DadoTransporteThrift> dadosTransportConsumoAlimentar, String pathPadrao) {
 
 		final File f = new File(pathPadrao + "\\esaude_exportacao" + getInstante() + ".zip");
 		ZipOutputStream out = null;
@@ -42,6 +42,7 @@ public class GeradorZip {
 			geraEntradaEmArquivoZip(out, dadosTransportAtividadeColetiva, "atividade_coletiva");
 			geraEntradaEmArquivoZip(out, dadosTransportProcedimento, "ficha_procedimento");
 			geraEntradaEmArquivoZip(out, dadosTransportVisitaDomiciliar, "visita_domiciliar");	
+			geraEntradaEmArquivoZip(out, dadosTransportConsumoAlimentar, "consumo_alimentar");
 			log.warn("Total Geral de fichas enviadas: " + totalGeralFichas);
 			try {
 				out.closeEntry();

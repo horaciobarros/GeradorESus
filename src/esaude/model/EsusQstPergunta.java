@@ -20,6 +20,7 @@ public class EsusQstPergunta implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
 	@Column(name="co_qst_pergunta")
 	private Long coQstPergunta;
 
