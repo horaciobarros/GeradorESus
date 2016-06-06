@@ -31,8 +31,8 @@ public class EsusConsumoAlimentarRespostasDao extends Dao {
 				.openSession()
 				.createQuery(
 						"from EsusConsumoAlimentarRespostas car inner join car.esusConsumoAlimentar a "
-						+ " inner join car.esusQstPergunta p inner join car.esusQstRespostas r where a.id = " 
-								+ id);
+						+ " inner join car.esusQstPergunta p inner join car.esusQstRespostas r where a.id =" 
+								+ id+" and car.esusQstRespostas is not null");
 		List<EsusConsumoAlimentarRespostas> lista = query.list();
 		tx.commit();
 

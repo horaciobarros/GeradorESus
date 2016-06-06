@@ -154,7 +154,7 @@ public class EsusVisitaDomiciliarService {
 		child.setDesfechoIsSet(true);
 		try {
 			if (cad.getPProntuario().getDtNascimento().getTime() < 0) {
-				log.info("Dt nascimento negativa: " + cad.getId());
+				//log.info("Dt nascimento negativa: " + cad.getId());
 			}
 			child.setDtNascimento(cad.getPProntuario().getDtNascimento()
 					.getTime());
