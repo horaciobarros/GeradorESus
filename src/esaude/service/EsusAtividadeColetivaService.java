@@ -131,6 +131,7 @@ public class EsusAtividadeColetivaService {
 			log.error(e.getMessage());
 			e.printStackTrace();
 		}
+		log.info(new Date() + " -- Atividade coletiva - fichas geradas ----" + dados.size());
 		return dados;
 	}
 

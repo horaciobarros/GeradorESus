@@ -1,9 +1,7 @@
 package esaude.service;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -112,6 +110,9 @@ public class EsusConsumoAlimentarService extends MasterService {
 				e.printStackTrace();
 			}
 		}
+		
+		log.info(new Date() + " -- Consumo alimentar - fichas geradas ----" + dados.size());
+		
 		return dados;
 	}
 

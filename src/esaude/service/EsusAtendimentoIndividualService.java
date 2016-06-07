@@ -129,6 +129,9 @@ public class EsusAtendimentoIndividualService extends MasterService {
 			log.error(e.getMessage());
 			e.printStackTrace();
 		}
+		
+		log.info(new Date() + " -- Atendimento individual - fichas geradas ----" + dados.size());
+		
 		return dados;
 	}
 

@@ -111,6 +111,8 @@ public class EsusVisitaDomiciliarService {
 					TelaPrincipal.enviaLog(new Date() + " - " + e.getMessage());
 				}
 			}
+			
+			log.info(new Date() + " -- Visita Domiciliar - fichas geradas ----" + dados.size());
 
 		} catch (JDBCConnectionException e) {
 			log.error(new Date() + e.getMessage());
@@ -134,12 +136,16 @@ public class EsusVisitaDomiciliarService {
 
 		UnicaLotacaoHeaderThrift ulht = new UnicaLotacaoHeaderThrift();
 		ulht.setProfissionalCNS(cad.getCnsProfissional());
-		ulht.setProfissionalCNSIsSet(true);
+		ulht.setProfissionalCNSIsSet(true); 
 		ulht.setCnes(cad.getCnesUnidade());
 		ulht.setCnesIsSet(true);
 		ulht.setCodigoIbgeMunicipio(sisRegistro.getCidadeIbge());
 		ulht.setCodigoIbgeMunicipioIsSet(true);
-		ulht.setDataAtendimento(cad.getDtAtendimento().getTime());
+		try {
+			ulht.setDataAtendimento(cad.getDtAtendimento().getTime());
+		} catch (NullPointerException e) {
+			
+		}
 		ulht.setDataAtendimentoIsSet(true);
 		ulht.setIne(cad.getIneEquipe());
 		ulht.setIneIsSet(true);
@@ -153,9 +159,6 @@ public class EsusVisitaDomiciliarService {
 		child.setDesfecho(cad.getEsusDesfecho().getId());
 		child.setDesfechoIsSet(true);
 		try {
-			if (cad.getPProntuario().getDtNascimento().getTime() < 0) {
-				//log.info("Dt nascimento negativa: " + cad.getId());
-			}
 			child.setDtNascimento(cad.getPProntuario().getDtNascimento()
 					.getTime());
 			if (child.getDtNascimento() == 0) {

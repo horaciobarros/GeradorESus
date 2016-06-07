@@ -44,71 +44,71 @@ public class EsusCadastroIndividual implements Serializable {
    private Long microarea;
 
    @Column(name="frequenta_escola")
-   private boolean frequentaEscola;
+   private Boolean frequentaEscola;
 
    @Column(name="tem_alguma_deficiencia")
-   private boolean temAlgumaDeficiencia;
+   private Boolean temAlgumaDeficiencia;
 
    @Column(name="em_situacao_rua")
-   private boolean emSituacaoRua;
+   private Boolean emSituacaoRua;
 
    @ManyToOne
    @JoinColumn(name = "tempo_situacao_rua")
    private EsusTemposituacaoderua esusTemposituacaoderua;
 
    @Column(name="recebe_beneficio")
-   private boolean recebeBeneficio;
+   private Boolean recebeBeneficio;
 
    @Column(name="possui_referencia_familiar")
-   private boolean possuiReferenciaFamiliar;
+   private Boolean possuiReferenciaFamiliar;
 
    @Column(name="acompanhado_outra_inst")
-   private boolean acompanhadoOutraInst;
+   private Boolean acompanhadoOutraInst;
 
    @Column(name="outra_inst_que_acompanha")
    private String outraInstQueAcompanha;
 
    @Column(name="visita_familiar_frequentemente")
-   private boolean visitaFamiliarFrequentemente;
+   private Boolean visitaFamiliarFrequentemente;
 
    @Column(name="grau_parentesco_familiar_freq")
    private String grauParentescoFamiliarFreq;
 
    @Column(name="esta_fumante")
-   private boolean estaFumante;
+   private Boolean estaFumante;
 
    @Column(name="dependente_alcool")
-   private boolean dependenteAlcool;
+   private Boolean dependenteAlcool;
 
    @Column(name="dependente_droga")
-   private boolean dependenteDroga;
+   private Boolean dependenteDroga;
 
    @Column(name="hipertenso")
-   private boolean hipertenso;
+   private Boolean hipertenso;
 
    @Column(name="diabete")
-   private boolean diabete;
+   private Boolean diabete;
 
    @Column(name="avc_derrame")
-   private boolean avcDerrame;
+   private Boolean avcDerrame;
 
    @Column(name="infarto")
-   private boolean infarto;
+   private Boolean infarto;
 
    @Column(name="hanseniase")
-   private boolean hanseniase;
+   private Boolean hanseniase;
 
    @Column(name="tuberculose")
-   private boolean tuberculose;
+   private Boolean tuberculose;
 
    @Column(name="cancer")
-   private boolean cancer;
+   private Boolean cancer;
 
    @Column(name="st_recusa_cadastro")
-   private boolean stRecusaCadastro;
+   private Boolean stRecusaCadastro;
 
    @Column(name="esta_gestante")
-   private boolean estaGestante;
+   private Boolean estaGestante;
 
    @Column(name="st_envio")
    private Long stEnvio;
@@ -117,7 +117,7 @@ public class EsusCadastroIndividual implements Serializable {
    private Date dtEnvio;
 
    @Column(name="ficha_atualizada")
-   private boolean fichaAtualizada;
+   private Boolean fichaAtualizada;
 
    @Column(name="uuid")
    private String uuid;
@@ -180,24 +180,24 @@ public class EsusCadastroIndividual implements Serializable {
       this.microarea = microarea;
    }
 
-   public boolean getFrequentaEscola() { 
+   public Boolean getFrequentaEscola() { 
       return frequentaEscola;
    }
-   public void  setFrequentaEscola(boolean frequentaEscola) { 
+   public void  setFrequentaEscola(Boolean frequentaEscola) { 
       this.frequentaEscola = frequentaEscola;
    }
 
-   public boolean getTemAlgumaDeficiencia() { 
+   public Boolean getTemAlgumaDeficiencia() { 
       return temAlgumaDeficiencia;
    }
-   public void  setTemAlgumaDeficiencia(boolean temAlgumaDeficiencia) { 
+   public void  setTemAlgumaDeficiencia(Boolean temAlgumaDeficiencia) { 
       this.temAlgumaDeficiencia = temAlgumaDeficiencia;
    }
 
-   public boolean getEmSituacaoRua() { 
+   public Boolean getEmSituacaoRua() { 
       return emSituacaoRua;
    }
-   public void  setEmSituacaoRua(boolean emSituacaoRua) { 
+   public void  setEmSituacaoRua(Boolean emSituacaoRua) { 
       this.emSituacaoRua = emSituacaoRua;
    }
 
@@ -209,24 +209,24 @@ public class EsusCadastroIndividual implements Serializable {
       this.esusTemposituacaoderua = esusTemposituacaoderua;
    }
 
-   public boolean getRecebeBeneficio() { 
+   public Boolean getRecebeBeneficio() { 
       return recebeBeneficio;
    }
-   public void  setRecebeBeneficio(boolean recebeBeneficio) { 
+   public void  setRecebeBeneficio(Boolean recebeBeneficio) { 
       this.recebeBeneficio = recebeBeneficio;
    }
 
-   public boolean getPossuiReferenciaFamiliar() { 
+   public Boolean getPossuiReferenciaFamiliar() { 
       return possuiReferenciaFamiliar;
    }
-   public void  setPossuiReferenciaFamiliar(boolean possuiReferenciaFamiliar) { 
+   public void  setPossuiReferenciaFamiliar(Boolean possuiReferenciaFamiliar) { 
       this.possuiReferenciaFamiliar = possuiReferenciaFamiliar;
    }
 
-   public boolean getAcompanhadoOutraInst() { 
+   public Boolean getAcompanhadoOutraInst() { 
       return acompanhadoOutraInst;
    }
-   public void  setAcompanhadoOutraInst(boolean acompanhadoOutraInst) { 
+   public void  setAcompanhadoOutraInst(Boolean acompanhadoOutraInst) { 
       this.acompanhadoOutraInst = acompanhadoOutraInst;
    }
 
@@ -237,10 +237,10 @@ public class EsusCadastroIndividual implements Serializable {
       this.outraInstQueAcompanha = outraInstQueAcompanha;
    }
 
-   public boolean getVisitaFamiliarFrequentemente() { 
+   public Boolean getVisitaFamiliarFrequentemente() { 
       return visitaFamiliarFrequentemente;
    }
-   public void  setVisitaFamiliarFrequentemente(boolean visitaFamiliarFrequentemente) { 
+   public void  setVisitaFamiliarFrequentemente(Boolean visitaFamiliarFrequentemente) { 
       this.visitaFamiliarFrequentemente = visitaFamiliarFrequentemente;
    }
 
@@ -251,87 +251,87 @@ public class EsusCadastroIndividual implements Serializable {
       this.grauParentescoFamiliarFreq = grauParentescoFamiliarFreq;
    }
 
-   public boolean getEstaFumante() { 
+   public Boolean getEstaFumante() { 
       return estaFumante;
    }
-   public void  setEstaFumante(boolean estaFumante) { 
+   public void  setEstaFumante(Boolean estaFumante) { 
       this.estaFumante = estaFumante;
    }
 
-   public boolean getDependenteAlcool() { 
+   public Boolean getDependenteAlcool() { 
       return dependenteAlcool;
    }
-   public void  setDependenteAlcool(boolean dependenteAlcool) { 
+   public void  setDependenteAlcool(Boolean dependenteAlcool) { 
       this.dependenteAlcool = dependenteAlcool;
    }
 
-   public boolean getDependenteDroga() { 
+   public Boolean getDependenteDroga() { 
       return dependenteDroga;
    }
-   public void  setDependenteDroga(boolean dependenteDroga) { 
+   public void  setDependenteDroga(Boolean dependenteDroga) { 
       this.dependenteDroga = dependenteDroga;
    }
 
-   public boolean getHipertenso() { 
+   public Boolean getHipertenso() { 
       return hipertenso;
    }
-   public void  setHipertenso(boolean hipertenso) { 
+   public void  setHipertenso(Boolean hipertenso) { 
       this.hipertenso = hipertenso;
    }
 
-   public boolean getDiabete() { 
+   public Boolean getDiabete() { 
       return diabete;
    }
-   public void  setDiabete(boolean diabete) { 
+   public void  setDiabete(Boolean diabete) { 
       this.diabete = diabete;
    }
 
-   public boolean getAvcDerrame() { 
+   public Boolean getAvcDerrame() { 
       return avcDerrame;
    }
-   public void  setAvcDerrame(boolean avcDerrame) { 
+   public void  setAvcDerrame(Boolean avcDerrame) { 
       this.avcDerrame = avcDerrame;
    }
 
-   public boolean getInfarto() { 
+   public Boolean getInfarto() { 
       return infarto;
    }
-   public void  setInfarto(boolean infarto) { 
+   public void  setInfarto(Boolean infarto) { 
       this.infarto = infarto;
    }
 
-   public boolean getHanseniase() { 
+   public Boolean getHanseniase() { 
       return hanseniase;
    }
-   public void  setHanseniase(boolean hanseniase) { 
+   public void  setHanseniase(Boolean hanseniase) { 
       this.hanseniase = hanseniase;
    }
 
-   public boolean getTuberculose() { 
+   public Boolean getTuberculose() { 
       return tuberculose;
    }
-   public void  setTuberculose(boolean tuberculose) { 
+   public void  setTuberculose(Boolean tuberculose) { 
       this.tuberculose = tuberculose;
    }
 
-   public boolean getCancer() { 
+   public Boolean getCancer() { 
       return cancer;
    }
-   public void  setCancer(boolean cancer) { 
+   public void  setCancer(Boolean cancer) { 
       this.cancer = cancer;
    }
 
-   public boolean getStRecusaCadastro() { 
+   public Boolean getStRecusaCadastro() { 
       return stRecusaCadastro;
    }
-   public void  setStRecusaCadastro(boolean stRecusaCadastro) { 
+   public void  setStRecusaCadastro(Boolean stRecusaCadastro) { 
       this.stRecusaCadastro = stRecusaCadastro;
    }
 
-   public boolean getEstaGestante() { 
+   public Boolean getEstaGestante() { 
       return estaGestante;
    }
-   public void  setEstaGestante(boolean estaGestante) { 
+   public void  setEstaGestante(Boolean estaGestante) { 
       this.estaGestante = estaGestante;
    }
 
@@ -349,10 +349,10 @@ public class EsusCadastroIndividual implements Serializable {
       this.dtEnvio = dtEnvio;
    }
 
-   public boolean getFichaAtualizada() { 
+   public Boolean getFichaAtualizada() { 
       return fichaAtualizada;
    }
-   public void  setFichaAtualizada(boolean fichaAtualizada) { 
+   public void  setFichaAtualizada(Boolean fichaAtualizada) { 
       this.fichaAtualizada = fichaAtualizada;
    }
 

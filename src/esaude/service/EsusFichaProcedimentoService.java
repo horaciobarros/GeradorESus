@@ -120,6 +120,7 @@ public class EsusFichaProcedimentoService extends MasterService{
 			log.error(e.getMessage());
 			e.printStackTrace();
 		}
+		log.info(new Date() + " -- Ficha procedimento - fichas geradas ----" + dados.size());
 		return dados;
 	}
 

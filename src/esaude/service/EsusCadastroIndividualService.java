@@ -107,6 +107,7 @@ public class EsusCadastroIndividualService {
 					TelaPrincipal.enviaLog(new Date() + " - " + e.getMessage());
 				}
 			}
+			log.info(new Date() + " -- Cadastro individual - fichas geradas ----" + dados.size());
 
 		} catch (JDBCConnectionException e) {
 			log.error(new Date() + e.getMessage());
@@ -142,7 +143,8 @@ public class EsusCadastroIndividualService {
 		condicoesDeSaude.setStatusEhDependenteOutrasDrogasIsSet(true);
 		condicoesDeSaude.setStatusEhFumante(cad.getEstaFumante());
 		condicoesDeSaude.setStatusEhFumanteIsSet(true);
-		if (!cad.getPProntuario().getCoSexo().equals("M") && cad.getEstaGestante()) {
+		if (cad.getPProntuario() != null && cad.getPProntuario().getCoSexo() != null
+				&& !cad.getPProntuario().getCoSexo().equals("M") && cad.getEstaGestante()) {
 			condicoesDeSaude.setStatusEhGestante(true);
 			condicoesDeSaude.setStatusEhGestanteIsSet(true);
 		} else {
@@ -177,7 +179,11 @@ public class EsusCadastroIndividualService {
 		c.setDadosGeraisIsSet(true);
 
 		IdentificacaoUsuarioCidadaoThrift identificacao = new IdentificacaoUsuarioCidadaoThrift();
-		identificacao.setCodigoIbgeMunicipioNascimento(cad.getPProntuario().getCoMunicipioNasc());
+		try {
+			identificacao.setCodigoIbgeMunicipioNascimento(cad.getPProntuario().getCoMunicipioNasc());
+		} catch (NullPointerException e) {
+			System.out.println("Erro em pProntuario");
+		}
 		identificacao.setCodigoIbgeMunicipioNascimentoIsSet(true);
 		identificacao.setDataNascimentoCidadao(cad.getPProntuario().getDtNascimento().getTime());
 		identificacao.setDataNascimentoCidadaoIsSet(true);

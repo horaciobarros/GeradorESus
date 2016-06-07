@@ -127,6 +127,8 @@ public class EsusAtendimentoOdontologicoService {
 			log.error(e.getMessage());
 			e.printStackTrace();
 		}
+		log.info(new Date() + " -- Cadastro odontológico - fichas geradas ----" + dados.size());
+		
 		return dados;
 	}
 

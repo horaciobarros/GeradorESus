@@ -124,6 +124,7 @@ public class EsusCadastroDomiciliarService {
 							+ e.getStackTrace());
 				}
 			}
+			log.info(new Date() + " -- Cadastro domiciliar - fichas geradas ----" + dados.size());
 
 		} catch (JDBCConnectionException e) {
 			log.error(new Date() + e.getMessage());
