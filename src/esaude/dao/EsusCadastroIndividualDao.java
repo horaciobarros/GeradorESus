@@ -30,7 +30,7 @@ public class EsusCadastroIndividualDao extends Dao {
 		Query query = sessionFactory
 				.openSession()
 				.createQuery(
-						"from EsusCadastroIndividual ci  left outer join fetch ci.pProntuario pp "
+						"from EsusCadastroIndividual ci JOIN fetch ci.pProntuario pp "
 						+ " left outer join fetch pp.pNacionalidade pn "
 						+ " left outer join fetch pp.pMunicipio pm "
 						+ " left outer join fetch ci.esusMotivosaida "
