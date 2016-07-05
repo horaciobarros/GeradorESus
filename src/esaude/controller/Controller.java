@@ -54,55 +54,82 @@ public class Controller {
 
 	private MasterService masterService = new MasterService();
 
-	public void geraArquivos(boolean geraCadastroIndividual, boolean geraCadastroDomiciliar, boolean geraAtendimentoIndividual, 
-			boolean geraAtendimentoOdontologico, boolean geraAtividadeColetiva, boolean geraFichaProcedimento, boolean geraVisitaDomiciliar,
-			boolean geraConsumoAlimentar) {
+	public void geraArquivos(boolean geraCadastroIndividual, boolean geraCadastroDomiciliar,
+			boolean geraAtendimentoIndividual, boolean geraAtendimentoOdontologico, boolean geraAtividadeColetiva,
+			boolean geraFichaProcedimento, boolean geraVisitaDomiciliar, boolean geraConsumoAlimentar) {
 
 		try {
 			criaPastas();
 
-			TelaPrincipal.enviaLog("Importando e Convertendo Cadastro Individual");
-			List<DadoTransporteThrift> dadosTransportCadastroIndividual = cadastroIndividualService.buscaRegistros();
-			TelaPrincipal.enviaLog("----> Total de registros:"
-					+ (dadosTransportCadastroIndividual != null ? dadosTransportCadastroIndividual.size() : 0));
+			List<DadoTransporteThrift> dadosTransportCadastroIndividual       = null;
+			List<DadoTransporteThrift> dadosTransportCadastroDomiciliar		= null;
+			List<DadoTransporteThrift> dadosTransportAtendimentoIndividual  = null;
+			List<DadoTransporteThrift> dadosTransportAtendimentoOdontologico = null;
+			List<DadoTransporteThrift> dadosTransportAtividadeColetiva = null;
+			List<DadoTransporteThrift> dadosTransportProcedimento = null;
+			List<DadoTransporteThrift> dadosTransportVisitaDomiciliar = null;
+			List<DadoTransporteThrift> dadosTransportConsumoAlimentar = null;
+			
+			if (geraCadastroIndividual) { 
+				TelaPrincipal.enviaLog("Importando e Convertendo Cadastro Individual");
+				dadosTransportCadastroIndividual = cadastroIndividualService
+						.buscaRegistros();
+				TelaPrincipal.enviaLog("----> Total de registros:"
+						+ (dadosTransportCadastroIndividual != null ? dadosTransportCadastroIndividual.size() : 0));
+			}
 
-			TelaPrincipal.enviaLog("Importando e Convertendo Cadastro Domiciliar");
-			List<DadoTransporteThrift> dadosTransportCadastroDomiciliar = cadastroDomiciliarService.buscaRegistros();
-			TelaPrincipal.enviaLog("----> Total de registros:"
-					+ (dadosTransportCadastroDomiciliar != null ? dadosTransportCadastroDomiciliar.size() : 0));
+			if (geraCadastroDomiciliar) {
+				TelaPrincipal.enviaLog("Importando e Convertendo Cadastro Domiciliar");
+				dadosTransportCadastroDomiciliar = cadastroDomiciliarService
+						.buscaRegistros();
+				TelaPrincipal.enviaLog("----> Total de registros:"
+						+ (dadosTransportCadastroDomiciliar != null ? dadosTransportCadastroDomiciliar.size() : 0));
+			}
 
-			TelaPrincipal.enviaLog("Importando e Convertendo Atendimento Individual");
-			List<DadoTransporteThrift> dadosTransportAtendimentoIndividual = atendimentoIndividualService
-					.buscaRegistros();
-			TelaPrincipal.enviaLog("----> Total de registros:"
-					+ (dadosTransportAtendimentoIndividual != null ? dadosTransportAtendimentoIndividual.size() : 0));
+			if (geraAtendimentoIndividual) {
+				TelaPrincipal.enviaLog("Importando e Convertendo Atendimento Individual");
+				dadosTransportAtendimentoIndividual = atendimentoIndividualService
+						.buscaRegistros();
+				TelaPrincipal.enviaLog("----> Total de registros:" + (dadosTransportAtendimentoIndividual != null
+						? dadosTransportAtendimentoIndividual.size() : 0));
+			}
 
-			TelaPrincipal.enviaLog("Importando e Convertendo Atendimento Odontologico");
-			List<DadoTransporteThrift> dadosTransportAtendimentoOdontologico = atendimentoOdontologicoService
-					.buscaRegistros();
-			TelaPrincipal.enviaLog("----> Total de registros:" + (dadosTransportAtendimentoOdontologico != null
-					? dadosTransportAtendimentoOdontologico.size() : 0));
+			if (geraAtendimentoOdontologico) {
+				TelaPrincipal.enviaLog("Importando e Convertendo Atendimento Odontologico");
+				dadosTransportAtendimentoOdontologico = atendimentoOdontologicoService
+						.buscaRegistros();
+				TelaPrincipal.enviaLog("----> Total de registros:" + (dadosTransportAtendimentoOdontologico != null
+						? dadosTransportAtendimentoOdontologico.size() : 0));
+			}
 
-			TelaPrincipal.enviaLog("Importando e Convertendo Atividade Coletiva");
-			List<DadoTransporteThrift> dadosTransportAtividadeColetiva = atividadeColetivaService.buscaRegistros();
-			TelaPrincipal.enviaLog("----> Total de registros:"
-					+ (dadosTransportAtividadeColetiva != null ? dadosTransportAtividadeColetiva.size() : 0));
+			if (geraAtividadeColetiva) {
+				TelaPrincipal.enviaLog("Importando e Convertendo Atividade Coletiva");
+				dadosTransportAtividadeColetiva = atividadeColetivaService.buscaRegistros();
+				TelaPrincipal.enviaLog("----> Total de registros:"
+						+ (dadosTransportAtividadeColetiva != null ? dadosTransportAtividadeColetiva.size() : 0));
+			}
 
-			TelaPrincipal.enviaLog("Importando e Convertendo Ficha Procedimento");
-			List<DadoTransporteThrift> dadosTransportProcedimento = fichaProcedimentoService.buscaRegistros();
-			TelaPrincipal.enviaLog("----> Total de registros:"
-					+ (dadosTransportProcedimento != null ? dadosTransportProcedimento.size() : 0));
+			if (geraFichaProcedimento) {
+				TelaPrincipal.enviaLog("Importando e Convertendo Ficha Procedimento");
+				dadosTransportProcedimento = fichaProcedimentoService.buscaRegistros();
+				TelaPrincipal.enviaLog("----> Total de registros:"
+						+ (dadosTransportProcedimento != null ? dadosTransportProcedimento.size() : 0));
+			}
 
-			TelaPrincipal.enviaLog("Importando e Convertendo Visita Domiciliar");
-			List<DadoTransporteThrift> dadosTransportVisitaDomiciliar = visitaDomiciliarService.buscaRegistros();
-			TelaPrincipal.enviaLog("----> Total de registros:"
-					+ (dadosTransportVisitaDomiciliar != null ? dadosTransportVisitaDomiciliar.size() : 0));
+			if (geraVisitaDomiciliar) {
+				TelaPrincipal.enviaLog("Importando e Convertendo Visita Domiciliar");
+				dadosTransportVisitaDomiciliar = visitaDomiciliarService.buscaRegistros();
+				TelaPrincipal.enviaLog("----> Total de registros:"
+						+ (dadosTransportVisitaDomiciliar != null ? dadosTransportVisitaDomiciliar.size() : 0));
+			}
 
-			TelaPrincipal.enviaLog("Importando e Convertendo Consumo alimentar");
-			List<DadoTransporteThrift> dadosTransportConsumoAlimentar = consumoAlimentarService.buscaRegistros();
-			TelaPrincipal.enviaLog("----> Total de registros:"
-					+ (dadosTransportConsumoAlimentar != null ? dadosTransportConsumoAlimentar.size() : 0));
-
+			if (geraConsumoAlimentar) {
+				TelaPrincipal.enviaLog("Importando e Convertendo Consumo alimentar");
+				dadosTransportConsumoAlimentar = consumoAlimentarService.buscaRegistros();
+				TelaPrincipal.enviaLog("----> Total de registros:"
+						+ (dadosTransportConsumoAlimentar != null ? dadosTransportConsumoAlimentar.size() : 0));
+			}
+			
 			TelaPrincipal.enviaLog("Criando Arquivo Serializado");
 			geradorZip.empacotaZip(dadosTransportCadastroDomiciliar, dadosTransportAtividadeColetiva,
 					dadosTransportCadastroIndividual, dadosTransportVisitaDomiciliar,
@@ -125,21 +152,25 @@ public class Controller {
 
 	}
 
-	public void cancelaEnvio(Date dataGeracao) throws Exception {
+	public void cancelaEnvio(Date dataGeracao, boolean geraCadastroIndividual, boolean geraCadastroDomiciliar,
+			boolean geraAtendimentoIndividual, boolean geraAtendimentoOdontologico, boolean geraAtividadeColetiva,
+			boolean geraFichaProcedimento, boolean geraVisitaDomiciliar, boolean geraConsumoAlimentar) throws Exception {
 		List<String> nomes = new ArrayList<String>();
-		nomes.add("EsusCadastroDomiciliar");
-		nomes.add("EsusCadastroIndividual");
-		nomes.add("EsusAtividadeColetiva");
-		nomes.add("EsusAtendimentoOdontologico");
-		nomes.add("EsusAtendimentoIndividual");
-		nomes.add("EsusFichaProcedimento");
-		nomes.add("EsusVisitaDomiciliar");
-		nomes.add("EsusConsumoAlimentar");
+		if (geraCadastroDomiciliar) nomes.add("EsusCadastroDomiciliar");
+		if (geraCadastroIndividual) nomes.add("EsusCadastroIndividual");
+		if (geraAtividadeColetiva) nomes.add("EsusAtividadeColetiva");
+		if (geraAtendimentoOdontologico) nomes.add("EsusAtendimentoOdontologico");
+		if (geraAtendimentoIndividual) nomes.add("EsusAtendimentoIndividual");
+		if (geraFichaProcedimento) nomes.add("EsusFichaProcedimento");
+		if (geraVisitaDomiciliar) nomes.add("EsusVisitaDomiciliar");
+		if (geraConsumoAlimentar) nomes.add("EsusConsumoAlimentar");
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		TelaPrincipal.enviaLog("Cancelamento de geração do dia: " + sdf.format(dataGeracao));
+		int entidadesCanceladas = 0;
 		for (String nomeEntidade : nomes) {
 			masterService.cancelaEnvio(nomeEntidade, dataGeracao);
 			TelaPrincipal.enviaLog("cancelando -->" + nomeEntidade);
+			entidadesCanceladas++;
 		}
 		try {
 			pathPadrao = userHome + "\\gerador_esus";
@@ -157,7 +188,11 @@ public class Controller {
 					}
 				}
 			}
+			if (entidadesCanceladas > 0) {
 			TelaPrincipal.enviaLog("--- Cancelamento finalizado --");
+			} else {
+				TelaPrincipal.enviaLog("--- Nenhum registro cancelado --");
+			}
 		} catch (Exception e) {
 			TelaPrincipal.enviaLog("--- Erro no cancelamento --");
 			e.printStackTrace();

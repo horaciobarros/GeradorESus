@@ -137,20 +137,29 @@ public class TelaPrincipal extends JFrame {
 		);
 		
 		chbCadastroIndividual = new JCheckBox("Gerar Cadastro Individual");
+		chbCadastroIndividual.setSelected(true);
 		
 		chbCadastroDomiciliar = new JCheckBox("Gerar Cadastro Domiciliar");
+		chbCadastroDomiciliar.setSelected(true);
 		
 		chbAtendimentoIndividual = new JCheckBox("Gerar Atendimento Individual");
+		chbAtendimentoIndividual.setSelected(true);
 		
 		chbAtendimentoOdontologico = new JCheckBox("Gerar Atendimento Odontologico");
+		chbAtendimentoOdontologico.setSelected(true);
 		
 		chbAtividadeColetiva = new JCheckBox("Gerar Atividade Coletiva");
+		chbAtividadeColetiva.setSelected(true);
 		
 		chbFichaProcedimento = new JCheckBox("Gerar Ficha Procedimento");
+		chbFichaProcedimento.setSelected(true);
 		
 		chbVisitaDomiciliar = new JCheckBox("Gerar Visita Domiciliar");
+		chbVisitaDomiciliar.setSelected(true);
 		
 		chbConsumoAlimentar = new JCheckBox("Gerar Consumo Alimentar");
+		chbConsumoAlimentar.setSelected(true);
+		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -214,7 +223,7 @@ public class TelaPrincipal extends JFrame {
 		Date dataGeracao;
 		try {
 			dataGeracao = sdf.parse(this.dataGeracao.getText());
-			controller.cancelaEnvio(dataGeracao);
+			controller.cancelaEnvio(dataGeracao, chbCadastroIndividual.isSelected(), chbCadastroDomiciliar.isSelected(), chbAtendimentoIndividual.isSelected(), chbAtendimentoOdontologico.isSelected(), chbAtividadeColetiva.isSelected(), chbFichaProcedimento.isSelected(), chbVisitaDomiciliar.isSelected(), chbConsumoAlimentar.isSelected());
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Erro no cancelamento");
 		}
