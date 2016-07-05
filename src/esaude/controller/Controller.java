@@ -54,7 +54,9 @@ public class Controller {
 
 	private MasterService masterService = new MasterService();
 
-	public void geraArquivos() {
+	public void geraArquivos(boolean geraCadastroIndividual, boolean geraCadastroDomiciliar, boolean geraAtendimentoIndividual, 
+			boolean geraAtendimentoOdontologico, boolean geraAtividadeColetiva, boolean geraFichaProcedimento, boolean geraVisitaDomiciliar,
+			boolean geraConsumoAlimentar) {
 
 		try {
 			criaPastas();
