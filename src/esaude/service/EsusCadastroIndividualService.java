@@ -261,6 +261,8 @@ public class EsusCadastroIndividualService {
 		} else {
 			informacoesSocioDemograficas.setMotivoSaidaCidadaoIsSet(false);
 		}
+		c.setInformacoesSocioDemograficas(informacoesSocioDemograficas);
+		c.setInformacoesSocioDemograficasIsSet(true);
 
 		EmSituacaoDeRuaThrift emSituacaoDeRua = new EmSituacaoDeRuaThrift();
 		emSituacaoDeRua.setStatusSituacaoRua(cad.getEmSituacaoRua());
@@ -274,6 +276,7 @@ public class EsusCadastroIndividualService {
 
 		}
 		c.setEmSituacaoDeRua(emSituacaoDeRua);
+		c.setEmSituacaoDeRuaIsSet(true);
 
 		c.setTpCdsOrigem(3);
 		c.setTpCdsOrigemIsSet(true);
