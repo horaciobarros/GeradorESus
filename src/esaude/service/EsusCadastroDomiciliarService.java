@@ -146,14 +146,17 @@ public class EsusCadastroDomiciliarService {
 
 		if (cad.getDtEnvio() != null) {
 			cadastroDomiciliarThrift.setFichaAtualizada(true);
-			cadastroDomiciliarThrift.setUuidFichaOriginadora(cad.getUuid());
 
 		} else {
 			cadastroDomiciliarThrift.setFichaAtualizada(false);
-			cadastroDomiciliarThrift
-					.setUuidFichaOriginadora(cadastroDomiciliarThrift.getUuid());
 			cad.setUuid(cadastroDomiciliarThrift.getUuid());
-			
+		}
+		
+		List<EsusCadastroDomiciliar> listaAux = dao.findAnterioresMesmoProntuario(cad.getIdProntuarioResponsavel(), cad.getId());
+		if (listaAux != null && listaAux.size() > 0) {
+			cadastroDomiciliarThrift.setUuidFichaOriginadora(listaAux.get(listaAux.size() - 1).getUuid());
+		} else {
+			cadastroDomiciliarThrift.setUuidFichaOriginadora(cad.getUuid());
 		}
 
 		cadastroDomiciliarThrift.setFichaAtualizadaIsSet(true);

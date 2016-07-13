@@ -44,5 +44,17 @@ public class EsusCadastroDomiciliarDao extends Dao {
 		
 		
 	}
+	
+	public List<EsusCadastroDomiciliar> findAnterioresMesmoProntuario(Long coProntuario, Long idAtual) {
+		Transaction tx = session
+				.beginTransaction();
+		Query query = sessionFactory.openSession().createQuery(
+				"from EsusCadastroDomiciliar cd  "
+				+ " where cd.idProntuarioResponsavel = " + coProntuario + " and id != " + idAtual);
+		List<EsusCadastroDomiciliar> lista = query.list();
+		tx.commit();
+
+		return lista;
+	}
 
 }

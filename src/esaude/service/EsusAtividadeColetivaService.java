@@ -294,6 +294,7 @@ public class EsusAtividadeColetivaService {
 		List<ProfissionalCboRowItemThrift> lista = new ArrayList<ProfissionalCboRowItemThrift>();
 		for (EsusAtividadeColetivaProfissional prof : profissionais) {
 			ProfissionalCboRowItemThrift item = new ProfissionalCboRowItemThrift();
+			if (item.getCns() == null || item.getCns().isEmpty()) continue;
 			item.setCns(prof.getCnsProfissional());
 			if (item.getCns() == null || item.getCns().isEmpty()) {
 				log.error("id:" + prof.getEsusAtividadeColetiva().getId()

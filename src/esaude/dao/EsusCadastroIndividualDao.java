@@ -77,6 +77,18 @@ public class EsusCadastroIndividualDao extends Dao {
 		return lista;
 	}
 
-
+	public List<EsusCadastroIndividual> findAnterioresMesmoProntuario(Long coProntuario, Long idAtual) {
+		Transaction tx = session.beginTransaction();
+		Query query = sessionFactory
+				.openSession()
+				.createQuery(
+						"from EsusCadastroIndividual ci JOIN fetch ci.pProntuario pp "
+								+ "where pp.coProntuario = " + coProntuario + " and ci.id != " + idAtual);
+		//query.setMaxResults(1);
+		List<EsusCadastroIndividual> lista = query.list();
+		tx.commit();
+		
+		return (List<EsusCadastroIndividual>) lista;
+	}
 
 }

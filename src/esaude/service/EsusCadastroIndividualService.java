@@ -126,15 +126,23 @@ public class EsusCadastroIndividualService {
 		c.setUuidIsSet(true);
 		if (cad.getDtEnvio() != null) {
 			c.setFichaAtualizada(true);
-			c.setUuidFichaOriginadora(cad.getUuid());
 		} else {
-			c.setUuidFichaOriginadora(c.getUuid());
 			c.setFichaAtualizada(false);
+
+		}
+
+		// -- ficha originadora
+		cad.setUuid(c.getUuid());
+		List<EsusCadastroIndividual> listaAux = dao
+				.findAnterioresMesmoProntuario(cad.getPProntuario().getCoProntuario(), cad.getId());
+		if (listaAux != null && listaAux.size() > 0) {
+			c.setUuidFichaOriginadora(listaAux.get(listaAux.size() - 1).getUuid());
+		} else {
+			c.setUuidFichaOriginadora(cad.getUuid());
 		}
 		c.setUuidFichaOriginadoraIsSet(true);
 		c.setFichaAtualizadaIsSet(true);
-
-		cad.setUuid(c.getUuid());
+		// ----------------------
 
 		CondicoesDeSaudeThrift condicoesDeSaude = new CondicoesDeSaudeThrift();
 		condicoesDeSaude.setStatusEhDependenteAlcool(cad.getDependenteAlcool());
