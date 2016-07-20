@@ -140,6 +140,9 @@ public class EsusCadastroIndividualService {
 		} else {
 			c.setUuidFichaOriginadora(cad.getUuid());
 		}
+		if (c.getUuidFichaOriginadora() == null || c.getUuidFichaOriginadora().isEmpty()) {
+			c.setUuidFichaOriginadora(cad.getUuid());
+		}
 		c.setUuidFichaOriginadoraIsSet(true);
 		c.setFichaAtualizadaIsSet(true);
 		// ----------------------
@@ -199,8 +202,15 @@ public class EsusCadastroIndividualService {
 			identificacao.setNomeCidadao(cad.getPProntuario().getNoUsuario());
 			identificacao.setNomeCidadaoIsSet(true);
 		} catch (Exception e) {
+			e.printStackTrace();
 			identificacao.setNomeCidadaoIsSet(false);
 		}
+		
+		
+		if (cad.getPProntuario().getNoMae() == null) {
+			cad.getPProntuario().setDesconheceMae(true);
+		}
+		
 		if (!cad.getPProntuario().isDesconheceMae()) {
 			identificacao.setDesconheceNomeMae(false);
 			identificacao.setDesconheceNomeMaeIsSet(true);

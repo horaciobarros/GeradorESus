@@ -78,22 +78,11 @@ public class EsusAtividadeColetivaService {
 							.serialize(thriftAtividadeColetiva);
 
 					// Passo 3: coletar as informações do envio
-					informacoesEnvioDto.setTipoDadoSerializado(6L); // importante,
-																	// aqui
-																	// identifica
-																	// qual tipo
-																	// de ficha
-																	// est�
-																	// sendo
-																	// enviado
+					informacoesEnvioDto.setTipoDadoSerializado(6L); 
 					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
-					informacoesEnvioDto
-							.setUuidDadoSerializado(thriftAtividadeColetiva
-									.getUuidFicha());
-					informacoesEnvioDto.setIneDadoSerializado(cad
-							.getIneEquipe());
-					informacoesEnvioDto.setCnesDadoSerializado(cad
-							.getCnesUnidade());
+					informacoesEnvioDto.setUuidDadoSerializado(thriftAtividadeColetiva.getUuidFicha());
+					informacoesEnvioDto.setIneDadoSerializado(cad.getIneEquipe());
+					informacoesEnvioDto.setCnesDadoSerializado(cad.getCnesUnidade());
 					informacoesEnvioDto.setCodIbge(sisRegistro.getCidadeIbge());
 
 					DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio
@@ -294,7 +283,6 @@ public class EsusAtividadeColetivaService {
 		List<ProfissionalCboRowItemThrift> lista = new ArrayList<ProfissionalCboRowItemThrift>();
 		for (EsusAtividadeColetivaProfissional prof : profissionais) {
 			ProfissionalCboRowItemThrift item = new ProfissionalCboRowItemThrift();
-			if (item.getCns() == null || item.getCns().isEmpty()) continue;
 			item.setCns(prof.getCnsProfissional());
 			if (item.getCns() == null || item.getCns().isEmpty()) {
 				log.error("id:" + prof.getEsusAtividadeColetiva().getId()
@@ -303,6 +291,7 @@ public class EsusAtividadeColetivaService {
 			} else {
 				item.setCnsIsSet(true);
 			}
+			if (item.getCns() == null || item.getCns().isEmpty()) continue;
 			item.setCodigoCbo2002(prof.getCbo());
 			item.setCodigoCbo2002IsSet(true);
 			lista.add(item);

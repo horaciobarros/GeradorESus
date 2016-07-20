@@ -80,16 +80,10 @@ public class EsusAtendimentoIndividualService extends MasterService {
 					// Passo 3: coletar as informações do envio
 					informacoesEnvioDto.setTipoDadoSerializado(4l);
 					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
-					informacoesEnvioDto
-							.setUuidDadoSerializado(thriftAtendimentoIndividual
-									.getUuidFicha());
-					informacoesEnvioDto.setCnesDadoSerializado(cad
-							.getCnesUnidade());
+					informacoesEnvioDto.setUuidDadoSerializado(thriftAtendimentoIndividual.getUuidFicha());
+					informacoesEnvioDto.setCnesDadoSerializado(cad.getCnesUnidade());
 					informacoesEnvioDto.setCodIbge(sisRegistro.getCidadeIbge());
 
-					// Passo 4: preencher o thrift de transporte com as
-					// informadosçõeso
-					// coletadas;
 					DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio
 							.getInfoInstalacao(informacoesEnvioDto,
 									esusRegistro);
