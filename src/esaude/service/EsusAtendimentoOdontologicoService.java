@@ -96,16 +96,16 @@ public class EsusAtendimentoOdontologicoService {
 					dados.add(dadoTransporteThrift);
 
 					log.info(new Date()
-							+ " -- Gerando cadastro Odontologico --> "
+							+ " -- Gerando atendimento Odontologico --> "
 							+ cad.getId() + " - " + thriftAtendimentoOdontologico.getUuidFicha());
-					System.out.println("Gerando cadastro Odontologico --> "
+					System.out.println("Gerando atendimento Odontologico --> "
 							+ cad.getId());
 
 					cad.setDtEnvio(new Date());
 					cad.setStEnvio(Long.valueOf(1));
 					dao.atualiza(cad);
 
-					System.out.println("Cadastro odontologico:" + cad.getId());
+					System.out.println("Cadastro atendimento odontologico:" + cad.getId());
 
 				} catch (JDBCConnectionException e) {
 					log.info(e.getStackTrace());
@@ -141,7 +141,7 @@ public class EsusAtendimentoOdontologicoService {
 			cad.setUuid(c.getUuidFicha());
 			c.setUuidFichaIsSet(true);
 		} catch (Exception e) {
-			log.error("Erro no envio do UuidFicha");
+			log.error("Aviso: sem dados para envio  do UuidFicha");
 		}
 
 		c.setTpCdsOrigem(3);
@@ -163,7 +163,7 @@ public class EsusAtendimentoOdontologicoService {
 			vl.setLotacaoForm(unicaLotacao);
 			c.setHeaderTransport(vl);
 		} catch (Exception e) {
-			log.error("Erro no envio do HeaderTransport. id:" + cad.getId());
+			log.error("Aviso: sem dados para envio  do HeaderTransport. id:" + cad.getId());
 
 		}
 
@@ -172,7 +172,7 @@ public class EsusAtendimentoOdontologicoService {
 			c.setAtendimentosOdontologicos(atendimentosOdontologicos);
 			c.setAtendimentosOdontologicosIsSet(true);
 		} catch (Exception e) {
-			log.error("Erro no envio das child fichas. id:" + cad.getId());
+			log.error("Aviso: sem dados para envio  das child fichas. id:" + cad.getId());
 		}
 
 		return c;
@@ -187,7 +187,7 @@ public class EsusAtendimentoOdontologicoService {
 					.getTime());
 			ficha.setDtNascimentoIsSet(true);
 		} catch (Exception e) {
-			log.error("Erro no envio da data de nascimento. id:" + cad.getId());
+			log.error("Aviso: sem dados para envio  da data de nascimento. id:" + cad.getId());
 		}
 
 		try {
@@ -195,21 +195,21 @@ public class EsusAtendimentoOdontologicoService {
 					.toString());
 			ficha.setNumProntuarioIsSet(true);
 		} catch (Exception e) {
-			log.error("Erro no envio do prontuario. id:" + cad.getId());
+			log.error("Aviso: sem dados para envio  do prontuario. id:" + cad.getId());
 		}
 
 		try {
 			ficha.setGestante(cad.getGestante());
 			ficha.setGestanteIsSet(true);
 		} catch (Exception e) {
-			log.error("Erro no envio da situação gestante. id:" + cad.getId());
+			log.error("Aviso: sem dados para envio  da situação gestante. id:" + cad.getId());
 		}
 
 		try {
 			ficha.setLocalAtendimento(cad.getEsusLocaldeatendimento().getId());
 			ficha.setLocalAtendimentoIsSet(true);
 		} catch (Exception e) {
-			log.error("Erro no envio do local de atendimento. id:" + cad.getId());
+			log.error("Aviso: sem dados para envio  do local de atendimento. id:" + cad.getId());
 
 		}
 
@@ -220,7 +220,7 @@ public class EsusAtendimentoOdontologicoService {
 			}
 			ficha.setTipoAtendimentoIsSet(true);
 		} catch (Exception e) {
-			log.error("Erro no envio do tipo de atendimento. id:" + cad.getId());
+			log.error("Aviso: sem dados para envio  do tipo de atendimento. id:" + cad.getId());
 			ficha.setTipoAtendimento(11l);
 			ficha.setTipoAtendimentoIsSet(true);
 		}
@@ -229,7 +229,7 @@ public class EsusAtendimentoOdontologicoService {
 			ficha.setNecessidadesEspeciais(cad.getNecessidadesespeciais());
 			ficha.setNecessidadesEspeciaisIsSet(true);
 		} catch (Exception e) {
-			log.error("Erro no envio das necessidades especiais. id:" + cad.getId());
+			log.error("Aviso: sem dados para envio  das necessidades especiais. id:" + cad.getId());
 
 		}
 
@@ -242,7 +242,7 @@ public class EsusAtendimentoOdontologicoService {
 			ficha.setTiposEncamOdonto(tiposEncamOdonto);
 			ficha.setTiposEncamOdontoIsSet(true);
 		} catch (Exception e) {
-			log.error("Erro no envio dos tipos de encam odonto. id:" + cad.getId());
+			log.error("Aviso: sem dados para envio  dos tipos de encam odonto. id:" + cad.getId());
 
 		}
 
@@ -250,7 +250,7 @@ public class EsusAtendimentoOdontologicoService {
 			ficha.setTiposFornecimOdonto(buscaTiposFornecimOdonto(cad));
 			ficha.setTiposFornecimOdontoIsSet(true);
 		} catch (Exception e) {
-			log.error("Erro no envio dos tipos de fornec odonto. id:" + cad.getId());
+			log.error("Aviso: sem dados para envio  dos tipos de fornec odonto. id:" + cad.getId());
 
 		}
 		
@@ -267,7 +267,7 @@ public class EsusAtendimentoOdontologicoService {
 				ficha.setTiposVigilanciaSaudeBucalIsSet(true);
 			}
 		} catch (Exception e) {
-			log.error("Erro no envio dos tipos vigil saude bucal. id:" + cad.getId() + " " + e.getMessage());
+			log.error("Aviso: sem dados para envio  dos tipos vigil saude bucal. id:" + cad.getId() + " " + e.getMessage());
 			tiposVigilanciaSaudeBucal.add(99l);
 			ficha.setTiposVigilanciaSaudeBucal(tiposVigilanciaSaudeBucal);
 			ficha.setTiposVigilanciaSaudeBucalIsSet(true);
@@ -277,7 +277,7 @@ public class EsusAtendimentoOdontologicoService {
 			ficha.setTiposConsultaOdonto(buscaTiposConsultaOdonto(cad));
 			ficha.setTiposConsultaOdontoIsSet(true);
 		} catch (Exception e) {
-			log.error("Erro no envio dos tipos consulta odonto. id:" + cad.getId());
+			log.error("Aviso: sem dados para envio  dos tipos consulta odonto. id:" + cad.getId());
 
 		}
 		
@@ -285,7 +285,7 @@ public class EsusAtendimentoOdontologicoService {
 			ficha.setProcedimentosRealizados(buscaProcedimentosRealizados(cad));
 			ficha.setProcedimentosRealizadosIsSet(false);
 		} catch (Exception e) {
-			log.error("Erro no envio dos procedimentos. id:" + cad.getId() + e.getMessage());
+			log.error("Aviso: sem dados para envio  dos procedimentos. id:" + cad.getId() + e.getMessage());
 
 		}
 
@@ -293,7 +293,7 @@ public class EsusAtendimentoOdontologicoService {
 			ficha.setOutrosSiaProcedimentos(buscaOutrosSiaProcedimentos(cad));
 			ficha.setOutrosSiaProcedimentosIsSet(false);
 		} catch (Exception e) {
-			log.error("Erro no envio de outros sia procedimentos. id:" + cad.getId());
+			log.error("Aviso: sem dados para envio  de outros sia procedimentos. id:" + cad.getId());
 
 		}
 		
@@ -307,7 +307,7 @@ public class EsusAtendimentoOdontologicoService {
 			ficha.setSexo(sexo);
 			ficha.setSexoIsSet(true);
 		} catch (Exception e) {
-			log.error("Erro no envio do sexo. id:" + cad.getId());
+			log.error("Aviso: sem dados para envio  do sexo. id:" + cad.getId());
 
 		}
 
@@ -315,7 +315,7 @@ public class EsusAtendimentoOdontologicoService {
 			ficha.setTurno(cad.getEsusTurno().getId());
 			ficha.setTurnoIsSet(true);
 		} catch (Exception e) {
-			log.error("Erro no envio do turno. id:" + cad.getId());
+			log.error("Aviso: sem dados para envio  do turno. id:" + cad.getId());
 
 		}
 
