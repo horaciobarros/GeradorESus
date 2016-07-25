@@ -78,7 +78,7 @@ public class EsusAtividadeColetivaService {
 							.serialize(thriftAtividadeColetiva);
 
 					// Passo 3: coletar as informações do envio
-					informacoesEnvioDto.setTipoDadoSerializado(6L); 
+					informacoesEnvioDto.setTipoDadoSerializado(6L);
 					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
 					informacoesEnvioDto.setUuidDadoSerializado(thriftAtividadeColetiva.getUuidFicha());
 					informacoesEnvioDto.setIneDadoSerializado(cad.getIneEquipe());
@@ -137,6 +137,9 @@ public class EsusAtividadeColetivaService {
 					.findParticipantes(cad.getId());
 			List<ParticipanteRowItemThrift> participantesThrift = converteParticipantes(participantes);
 			ficha.setParticipantes(participantesThrift);
+			if (participantesThrift!=null && participantesThrift.size()>0){
+				ficha.setParticipantesIsSet(true);
+			}
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
@@ -146,6 +149,9 @@ public class EsusAtividadeColetivaService {
 					.findProfissionais(cad.getId());
 			List<ProfissionalCboRowItemThrift> profissionaisThrift = converteProfissionais(profissionais);
 			ficha.setProfissionais(profissionaisThrift);
+			if (profissionaisThrift!=null && profissionaisThrift.size()>0){
+				ficha.setProfissionaisIsSet(true);
+			}
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
@@ -190,12 +196,14 @@ public class EsusAtividadeColetivaService {
 		try {
 			ficha.setNumParticipantesProgramados(Integer.parseInt(cad
 					.getNumParticipantesProgramados().toString()));
+			ficha.setNumParticipantesProgramadosIsSet(true);
 		} catch (Exception e) {
 
 		}
 		try {
 			ficha.setNumAvaliacoesAlteradas(Integer.parseInt(cad
 					.getNumAvaliacoes().toString()));
+			ficha.setNumAvaliacoesAlteradasIsSet(true);
 		} catch (Exception e) {
 
 		}
@@ -203,8 +211,8 @@ public class EsusAtividadeColetivaService {
 		try {
 			ficha.setResponsavelCnesUnidade(cad.getCnesUnidade());
 			ficha.setResponsavelCnesUnidadeIsSet(true);
-			ficha.setCodigoIbgeMunicipioIsSet(true);
 			ficha.setCodigoIbgeMunicipio(sisRegistro.getCidadeIbge());
+			ficha.setCodigoIbgeMunicipioIsSet(true);
 			ficha.setDtAtividadeColetiva(cad.getDtAtividade().getTime());
 			ficha.setDtAtividadeColetivaIsSet(true);
 			try {
@@ -226,7 +234,6 @@ public class EsusAtividadeColetivaService {
 				ficha.setResponsavelCnsIsSet(true);
 			}
 
-			ficha.setResponsavelCnsIsSet(true);
 			ficha.setResponsavelNumIne(cad.getIneEquipe());
 			ficha.setResponsavelNumIneIsSet(true);
 
