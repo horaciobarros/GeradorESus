@@ -174,13 +174,9 @@ public class EsusAtividadeColetivaService {
 				ficha.setTemasParaReuniao(temasParaReuniao);
 				ficha.setTemasParaReuniaoIsSet(temasParaReuniao != null
 						&& temasParaReuniao.size() > 0);
-				ficha.setTemasParaReuniao(temasParaReuniao);
-				ficha.setTemasParaReuniaoIsSet(true);
 			} catch (Exception e) {
 				log.error(e.getMessage());
 			}
-		} else {
-			ficha.setTemasParaReuniaoIsSet(false);
 		}
 
 		try {
@@ -229,7 +225,7 @@ public class EsusAtividadeColetivaService {
 			if (ficha.getResponsavelCns() == null
 					|| ficha.getResponsavelCns().isEmpty()) {
 				log.error("id:" + cad.getId() + "Sem cns do profissional");
-				ficha.setResponsavelCnsIsSet(false);
+				//ficha.setResponsavelCnsIsSet(false);
 			} else {
 				ficha.setResponsavelCnsIsSet(true);
 			}
@@ -247,10 +243,8 @@ public class EsusAtividadeColetivaService {
 		if (praticaTemasParaSaude != null && praticaTemasParaSaude.size() > 0) {
 			ficha.setPraticasTemasParaSaude(praticaTemasParaSaude);
 			ficha.setPraticasTemasParaSaudeIsSet(true);
-		} else {
-			ficha.setPraticasTemasParaSaudeIsSet(false);
-		}
-
+		} 
+		
 		return ficha;
 	}
 
@@ -294,7 +288,7 @@ public class EsusAtividadeColetivaService {
 			if (item.getCns() == null || item.getCns().isEmpty()) {
 				log.error("id:" + prof.getEsusAtividadeColetiva().getId()
 						+ "Sem cns do profissional");
-				item.setCnsIsSet(false);
+				//item.setCnsIsSet(false);
 			} else {
 				item.setCnsIsSet(true);
 			}
