@@ -80,9 +80,13 @@ public class EsusAtividadeColetivaService {
 					// Passo 3: coletar as informações do envio
 					informacoesEnvioDto.setTipoDadoSerializado(6L);
 					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
-					informacoesEnvioDto.setUuidDadoSerializado(thriftAtividadeColetiva.getUuidFicha());
-					informacoesEnvioDto.setIneDadoSerializado(cad.getIneEquipe());
-					informacoesEnvioDto.setCnesDadoSerializado(cad.getCnesUnidade());
+					informacoesEnvioDto
+							.setUuidDadoSerializado(thriftAtividadeColetiva
+									.getUuidFicha());
+					informacoesEnvioDto.setIneDadoSerializado(cad
+							.getIneEquipe());
+					informacoesEnvioDto.setCnesDadoSerializado(cad
+							.getCnesUnidade());
 					informacoesEnvioDto.setCodIbge(sisRegistro.getCidadeIbge());
 
 					DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio
