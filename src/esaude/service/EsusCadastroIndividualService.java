@@ -124,25 +124,21 @@ public class EsusCadastroIndividualService {
 
 		c.setUuid(masterService.gerarUuid(cad.getCnesUnidade()));
 		c.setUuidIsSet(true);
-		if (cad.getDtEnvio() != null) {
-			c.setFichaAtualizada(true);
-		} else {
+		
+		if (cad.getIdOrigem() == null) {
 			c.setFichaAtualizada(false);
-
-		}
-
-		// -- ficha originadora
-		cad.setUuid(c.getUuid());
-		List<EsusCadastroIndividual> listaAux = dao
-				.findAnterioresMesmoProntuario(cad.getPProntuario().getCoProntuario(), cad.getId());
-		if (listaAux != null && listaAux.size() > 0) {
-			c.setUuidFichaOriginadora(listaAux.get(listaAux.size() - 1).getUuid());
 		} else {
-			c.setUuidFichaOriginadora(cad.getUuid());
+			EsusCadastroIndividual cadAuxOrigem;
+			try {
+				cadAuxOrigem = dao.findById(cad.getIdOrigem());
+				c.setUuidFichaOriginadora(cadAuxOrigem.getUuid());
+				c.setFichaAtualizada(true);
+			} catch (Exception e) {
+				c.setFichaAtualizada(false);
+			}
 		}
-		if (c.getUuidFichaOriginadora() == null || c.getUuidFichaOriginadora().isEmpty()) {
-			c.setUuidFichaOriginadora(cad.getUuid());
-		}
+
+		cad.setUuid(c.getUuid());
 		c.setUuidFichaOriginadoraIsSet(true);
 		c.setFichaAtualizadaIsSet(true);
 		// ----------------------

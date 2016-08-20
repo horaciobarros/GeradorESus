@@ -146,6 +146,11 @@ public class EsusCadastroDomiciliar implements Serializable {
 	@Column(name = "ficha_atualizada")
 	private Boolean fichaAtualizada;
 
+	@Column(name = "uuid")
+	private String uuid;
+
+	@Column(name = "id_origem")
+	private Long idOrigem;
 	
 
 	public Boolean getFichaAtualizada() {
@@ -155,9 +160,6 @@ public class EsusCadastroDomiciliar implements Serializable {
 	public void setFichaAtulizada(Boolean fichaAtualizada) {
 		this.fichaAtualizada = fichaAtualizada;
 	}
-
-	@Column(name = "uuid")
-	private String uuid;
 
 	public String getUuid() {
 		return uuid;
@@ -486,5 +488,15 @@ public class EsusCadastroDomiciliar implements Serializable {
 			return fichaAtualizada;
 		}
 	}
+
+	public Long getIdOrigem() {
+		return idOrigem;
+	}
+
+	public void setIdOrigem(Long idOrigem) {
+		this.idOrigem = idOrigem;
+	}
+	
+	
 
 }

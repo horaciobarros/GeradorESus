@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import esaude.model.EsusAtividadeColetivaPublico;
+import esaude.model.EsusCadastroDomiciliar;
 import esaude.model.EsusCadastroIndividual;
 import esaude.model.EsusCadastroIndividualDeficiencia;
 import esaude.model.EsusCadastroIndividualHigienepessoalsituacaorua;
@@ -89,6 +90,18 @@ public class EsusCadastroIndividualDao extends Dao {
 		tx.commit();
 		
 		return (List<EsusCadastroIndividual>) lista;
+	}
+	
+	public EsusCadastroIndividual findById(Long id) {
+		Transaction tx = session
+				.beginTransaction();
+		Query query = sessionFactory.openSession().createQuery(
+				"from EsusCadastroIndividual ci  "
+				+ " where ci.id = " + id);
+		List<EsusCadastroIndividual> lista = query.list();
+		tx.commit();
+
+		return lista.get(0);
 	}
 
 }

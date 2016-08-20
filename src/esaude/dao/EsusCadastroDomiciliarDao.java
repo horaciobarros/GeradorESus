@@ -56,5 +56,18 @@ public class EsusCadastroDomiciliarDao extends Dao {
 
 		return lista;
 	}
+	
+	public EsusCadastroDomiciliar findById(Long id) {
+		Transaction tx = session
+				.beginTransaction();
+		Query query = sessionFactory.openSession().createQuery(
+				"from EsusCadastroDomiciliar cd  "
+				+ " where cd.id = " + id);
+		List<EsusCadastroDomiciliar> lista = query.list();
+		tx.commit();
+
+		return lista.get(0);
+	}
+	
 
 }

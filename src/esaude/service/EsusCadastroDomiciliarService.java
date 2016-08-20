@@ -144,25 +144,21 @@ public class EsusCadastroDomiciliarService {
 				.getCnesUnidade()));
 		cadastroDomiciliarThrift.setUuidIsSet(true);
 
-		if (cad.getDtEnvio() != null) {
-			cadastroDomiciliarThrift.setFichaAtualizada(true);
-
-		} else {
+		if (cad.getIdOrigem() == null) {
 			cadastroDomiciliarThrift.setFichaAtualizada(false);
-			cad.setUuid(cadastroDomiciliarThrift.getUuid());
-		}
-		
-		List<EsusCadastroDomiciliar> listaAux = dao.findAnterioresMesmoProntuario(cad.getIdProntuarioResponsavel(), cad.getId());
-		if (listaAux != null && listaAux.size() > 0) {
-			cadastroDomiciliarThrift.setUuidFichaOriginadora(listaAux.get(listaAux.size() - 1).getUuid());
-		} else {
-			cadastroDomiciliarThrift.setUuidFichaOriginadora(cad.getUuid());
-		}
 
-		cadastroDomiciliarThrift.setFichaAtualizadaIsSet(true);
-		cadastroDomiciliarThrift.setUuidFichaOriginadoraIsSet(true);
+		} else {
+			EsusCadastroDomiciliar cadFichaOrigem;
+			try {
+				cadFichaOrigem = dao.findById(cad.getIdOrigem());
+				cadastroDomiciliarThrift.setUuidFichaOriginadora(cadFichaOrigem.getUuid());
+				cadastroDomiciliarThrift.setFichaAtualizada(true);
+			} catch (Exception e) {
+				cadastroDomiciliarThrift.setFichaAtualizada(false);
+			}
+		}
 		
-		
+		cad.setUuid(cadastroDomiciliarThrift.getUuid());
 
 		cadastroDomiciliarThrift.setAnimaisNoDomicilio(null);
 		cadastroDomiciliarThrift.setAnimaisNoDomicilioIsSet(true);
