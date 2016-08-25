@@ -76,7 +76,7 @@ public class EsusConsumoAlimentarService extends MasterService {
 				dadoSerializado = ThriftSerializer.serialize(thriftConsumoAlimentar);
 
 				// Passo 3: coletar as informações do envio
-				informacoesEnvioDto.setTipoDadoSerializado(6L); // importante,
+				informacoesEnvioDto.setTipoDadoSerializado(12L); // importante,
 																// aqui
 																// identifica
 																// qual tipo
