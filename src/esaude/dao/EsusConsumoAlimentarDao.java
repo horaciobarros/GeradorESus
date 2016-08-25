@@ -34,7 +34,7 @@ public class EsusConsumoAlimentarDao extends Dao {
 			Query query = sessionFactory
 					.openSession()
 					.createQuery(
-							"select ca from EsusConsumoAlimentar ca  "
+							"select ca from EsusConsumoAlimentar ca left outer join fetch ai.pProntuario pp"
 									+ " where ca.stEnvio is null or ca.stEnvio=0");
 			List<EsusConsumoAlimentar> lista = query.list();
 			tx.commit();
