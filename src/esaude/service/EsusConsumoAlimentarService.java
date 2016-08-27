@@ -77,13 +77,13 @@ public class EsusConsumoAlimentarService extends MasterService {
 
 				// Passo 3: coletar as informaÃ§Ãµes do envio
 				informacoesEnvioDto.setTipoDadoSerializado(12L); // importante,
-																// aqui
-																// identifica
-																// qual tipo
-																// de ficha
-																// está
-																// sendo
-																// enviado
+																	// aqui
+																	// identifica
+																	// qual tipo
+																	// de ficha
+																	// está
+																	// sendo
+																	// enviado
 				informacoesEnvioDto.setDadoSerializado(dadoSerializado);
 				informacoesEnvioDto.setUuidDadoSerializado(thriftConsumoAlimentar.getUuidFicha());
 				informacoesEnvioDto.setIneDadoSerializado(cad.getIneEquipe());
@@ -110,9 +110,9 @@ public class EsusConsumoAlimentarService extends MasterService {
 				e.printStackTrace();
 			}
 		}
-		
+
 		log.info(new Date() + " -- Consumo alimentar - fichas geradas ----" + dados.size());
-		
+
 		return dados;
 	}
 
@@ -159,7 +159,7 @@ public class EsusConsumoAlimentarService extends MasterService {
 		}
 
 		try {
-			c.setIdentificacaoUsuario(cad.getPProntuario().getNomeSocial());
+			c.setIdentificacaoUsuario(cad.getPProntuario().getNoUsuario());
 			c.setIdentificacaoUsuarioIsSet(true);
 
 		} catch (Exception e) {
@@ -188,25 +188,39 @@ public class EsusConsumoAlimentarService extends MasterService {
 		}
 
 		try {
-			
+
 			int meses = getQtdeMeses(cad.getDtAtendimento(), cad.getDtNascimento());
 
 			if (meses < 6) {
 				List<PerguntaQuestionarioCriancasMenoresSeisMesesThrift> perguntas1 = buscaPerguntaQuestionarioCriancas1(
 						cad);
-				c.setPerguntasQuestionarioCriancasMenoresSeisMeses(perguntas1);
-				c.setPerguntasQuestionarioCriancasMenoresSeisMesesIsSet(true);
-				
+				if (perguntas1 != null && perguntas1.size() > 0) {
+					c.setPerguntasQuestionarioCriancasMenoresSeisMeses(perguntas1);
+					c.setPerguntasQuestionarioCriancasMenoresSeisMesesIsSet(true);
+				} else {
+					c.setPerguntasQuestionarioCriancasMenoresSeisMesesIsSet(false);
+				}
+
 			} else if (meses <= 23) {
-				List<PerguntaQuestionarioCriancasDeSeisVinteTresMesesThrift> perguntas2 = buscaPerguntaQuestionarioCriancas6a23(cad);
-				c.setPerguntasQuestionarioCriancasDeSeisVinteTresMeses(perguntas2);
-				c.setPerguntasQuestionarioCriancasDeSeisVinteTresMesesIsSet(true);
-				
+				List<PerguntaQuestionarioCriancasDeSeisVinteTresMesesThrift> perguntas2 = buscaPerguntaQuestionarioCriancas6a23(
+						cad);
+				if (perguntas2 != null && perguntas2.size() > 0) {
+					c.setPerguntasQuestionarioCriancasDeSeisVinteTresMeses(perguntas2);
+					c.setPerguntasQuestionarioCriancasDeSeisVinteTresMesesIsSet(true);
+				} else {
+					c.setPerguntasQuestionarioCriancasDeSeisVinteTresMesesIsSet(false);
+				}
+
 			} else if (meses >= 24) {
-				List<PerguntaQuestionarioCriancasComMaisDoisAnosThrift> perguntas3 = buscaPerguntaQuestionarioCriancas2Anos(cad);
-				c.setPerguntasQuestionarioCriancasComMaisDoisAnos(perguntas3);
-				c.setPerguntasQuestionarioCriancasComMaisDoisAnosIsSet(true);
-				
+				List<PerguntaQuestionarioCriancasComMaisDoisAnosThrift> perguntas3 = buscaPerguntaQuestionarioCriancas2Anos(
+						cad);
+				if (perguntas3 != null && perguntas3.size() > 0) {
+					c.setPerguntasQuestionarioCriancasComMaisDoisAnos(perguntas3);
+					c.setPerguntasQuestionarioCriancasComMaisDoisAnosIsSet(true);
+				} else {
+					c.setPerguntasQuestionarioCriancasComMaisDoisAnosIsSet(false);
+				}
+
 			}
 
 		} catch (Exception e) {
@@ -220,18 +234,30 @@ public class EsusConsumoAlimentarService extends MasterService {
 
 		}
 
+		try {
+			Long sexo = new Long(0);
+			if (cad.getPProntuario().getCoSexo().equals("M")) {
+				sexo = Long.valueOf(0);
+			} else {
+				sexo = Long.valueOf(1);
+			}
+			c.setSexo(sexo);
+			c.setSexoIsSet(true);
+		} catch (Exception e) {
+			c.setSexoIsSet(false);
+		}
+
 		return c;
 	}
 
-
-	
 	private int getQtdeMeses(Date dtAtendimento, Date dtNascimento) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		
+
 		// vamos obter a diferença de meses
 		long segundos = (dtAtendimento.getTime() - dtNascimento.getTime()) / 1000;
 		int meses = (int) Math.floor(segundos / 2592000);
-		System.out.println("Datas:" + dateFormat.format(dtAtendimento) + " - " + dateFormat.format(dtNascimento) + " = " + meses);
+		System.out.println(
+				"Datas:" + dateFormat.format(dtAtendimento) + " - " + dateFormat.format(dtNascimento) + " = " + meses);
 		return meses;
 	}
 
@@ -255,7 +281,7 @@ public class EsusConsumoAlimentarService extends MasterService {
 
 		return lista;
 	}
-	
+
 	private List<PerguntaQuestionarioCriancasDeSeisVinteTresMesesThrift> buscaPerguntaQuestionarioCriancas6a23(
 			EsusConsumoAlimentar cad) {
 
@@ -276,7 +302,7 @@ public class EsusConsumoAlimentarService extends MasterService {
 
 		return lista;
 	}
-	
+
 	private List<PerguntaQuestionarioCriancasComMaisDoisAnosThrift> buscaPerguntaQuestionarioCriancas2Anos(
 			EsusConsumoAlimentar cad) {
 		List<PerguntaQuestionarioCriancasComMaisDoisAnosThrift> lista = new ArrayList<PerguntaQuestionarioCriancasComMaisDoisAnosThrift>();
@@ -296,6 +322,5 @@ public class EsusConsumoAlimentarService extends MasterService {
 
 		return lista;
 	}
-
 
 }
