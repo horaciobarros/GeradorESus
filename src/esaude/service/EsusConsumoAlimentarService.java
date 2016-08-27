@@ -3,7 +3,12 @@ package esaude.service;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
 
@@ -18,12 +23,14 @@ import br.gov.saude.esus.cds.transport.generated.thrift.consumoalimentar.Pergunt
 import br.gov.saude.esus.cds.transport.generated.thrift.consumoalimentar.PerguntaQuestionarioCriancasComMaisDoisAnosThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.consumoalimentar.PerguntaQuestionarioCriancasDeSeisVinteTresMesesThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.consumoalimentar.PerguntaQuestionarioCriancasMenoresSeisMesesThrift;
+import br.gov.saude.esus.cds.transport.generated.thrift.consumoalimentar.RespostaMultiplaEscolhaEnumThrift;
 import br.gov.saude.esus.cds.transport.generated.thrift.consumoalimentar.RespostaUnicaEscolhaEnumThrift;
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 import esaude.dao.EsusConsumoAlimentarDao;
 import esaude.dao.EsusConsumoAlimentarRespostasDao;
 import esaude.model.EsusConsumoAlimentar;
 import esaude.model.EsusConsumoAlimentarRespostas;
+import esaude.model.EsusQstPergunta;
 import esaude.model.EsusRegistro;
 import esaude.model.SisRegistro;
 import esaude.util.InformacoesEnvio;
@@ -265,18 +272,24 @@ public class EsusConsumoAlimentarService extends MasterService {
 			EsusConsumoAlimentar cad) {
 
 		List<PerguntaQuestionarioCriancasMenoresSeisMesesThrift> lista = new ArrayList<PerguntaQuestionarioCriancasMenoresSeisMesesThrift>();
+		try {
 
-		for (EsusConsumoAlimentarRespostas resposta : esusConsumoAlimentarRespostasDaodao.findRespostas(cad.getId())) {
+			for (EsusConsumoAlimentarRespostas resposta : esusConsumoAlimentarRespostasDaodao
+					.findRespostas(cad.getId())) {
 
-			PerguntaQuestionarioCriancasMenoresSeisMesesThrift respostaThrift = new PerguntaQuestionarioCriancasMenoresSeisMesesThrift();
-			respostaThrift.setPergunta(PerguntaCriancasMenoresSeisMesesEnumThrift
-					.findByValue(resposta.getEsusQstPergunta().getCoQstPergunta().intValue()));
-			respostaThrift.setPerguntaIsSet(true);
-			respostaThrift.setRespostaUnicaEscolha(
-					RespostaUnicaEscolhaEnumThrift.findByValue(resposta.getEsusQstRespostas().getId().intValue()));
-			respostaThrift.setRespostaUnicaEscolhaIsSet(true);
-			lista.add(respostaThrift);
+				PerguntaQuestionarioCriancasMenoresSeisMesesThrift respostaThrift = new PerguntaQuestionarioCriancasMenoresSeisMesesThrift();
+				respostaThrift.setPergunta(PerguntaCriancasMenoresSeisMesesEnumThrift
+						.findByValue(resposta.getEsusQstPergunta().getCoQstPergunta().intValue()));
+				respostaThrift.setPerguntaIsSet(true);
+				respostaThrift.setRespostaUnicaEscolha(
+						RespostaUnicaEscolhaEnumThrift.findByValue(resposta.getEsusQstRespostas().getId().intValue()));
+				respostaThrift.setRespostaUnicaEscolhaIsSet(true);
 
+				lista.add(respostaThrift);
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return lista;
@@ -286,18 +299,25 @@ public class EsusConsumoAlimentarService extends MasterService {
 			EsusConsumoAlimentar cad) {
 
 		List<PerguntaQuestionarioCriancasDeSeisVinteTresMesesThrift> lista = new ArrayList<PerguntaQuestionarioCriancasDeSeisVinteTresMesesThrift>();
+		try {
 
-		for (EsusConsumoAlimentarRespostas resposta : esusConsumoAlimentarRespostasDaodao.findRespostas(cad.getId())) {
+			for (EsusConsumoAlimentarRespostas resposta : esusConsumoAlimentarRespostasDaodao
+					.findRespostas(cad.getId())) {
 
-			PerguntaQuestionarioCriancasDeSeisVinteTresMesesThrift respostaThrift = new PerguntaQuestionarioCriancasDeSeisVinteTresMesesThrift();
-			respostaThrift.setPergunta(PerguntaCriancasDeSeisVinteTresMesesEnumThrift
-					.findByValue(resposta.getEsusQstPergunta().getCoQstPergunta().intValue()));
-			respostaThrift.setPerguntaIsSet(true);
-			respostaThrift.setRespostaUnicaEscolha(
-					RespostaUnicaEscolhaEnumThrift.findByValue(resposta.getEsusQstRespostas().getId().intValue()));
-			respostaThrift.setRespostaUnicaEscolhaIsSet(true);
-			lista.add(respostaThrift);
+				PerguntaQuestionarioCriancasDeSeisVinteTresMesesThrift respostaThrift = new PerguntaQuestionarioCriancasDeSeisVinteTresMesesThrift();
+				respostaThrift.setPergunta(PerguntaCriancasDeSeisVinteTresMesesEnumThrift
+						.findByValue(resposta.getEsusQstPergunta().getCoQstPergunta().intValue()));
+				respostaThrift.setPerguntaIsSet(true);
 
+				respostaThrift.setRespostaUnicaEscolha(
+						RespostaUnicaEscolhaEnumThrift.findByValue(resposta.getEsusQstRespostas().getId().intValue()));
+				respostaThrift.setRespostaUnicaEscolhaIsSet(true);
+
+				lista.add(respostaThrift);
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return lista;
@@ -305,21 +325,95 @@ public class EsusConsumoAlimentarService extends MasterService {
 
 	private List<PerguntaQuestionarioCriancasComMaisDoisAnosThrift> buscaPerguntaQuestionarioCriancas2Anos(
 			EsusConsumoAlimentar cad) {
+
 		List<PerguntaQuestionarioCriancasComMaisDoisAnosThrift> lista = new ArrayList<PerguntaQuestionarioCriancasComMaisDoisAnosThrift>();
 
-		for (EsusConsumoAlimentarRespostas resposta : esusConsumoAlimentarRespostasDaodao.findRespostas(cad.getId())) {
+		try {
 
-			PerguntaQuestionarioCriancasComMaisDoisAnosThrift respostaThrift = new PerguntaQuestionarioCriancasComMaisDoisAnosThrift();
-			respostaThrift.setPergunta(PerguntaCriancasComMaisDoisAnosEnumThrift
-					.findByValue(resposta.getEsusQstPergunta().getCoQstPergunta().intValue()));
-			respostaThrift.setPerguntaIsSet(true);
-			respostaThrift.setRespostaUnicaEscolha(
-					RespostaUnicaEscolhaEnumThrift.findByValue(resposta.getEsusQstRespostas().getId().intValue()));
-			respostaThrift.setRespostaUnicaEscolhaIsSet(true);
-			lista.add(respostaThrift);
+			Map<EsusQstPergunta, List<EsusConsumoAlimentarRespostas>> respostasMap = new HashMap<EsusQstPergunta, List<EsusConsumoAlimentarRespostas>>();
+
+			List<EsusConsumoAlimentarRespostas> listaAux;
+
+			for (EsusConsumoAlimentarRespostas resposta : esusConsumoAlimentarRespostasDaodao
+					.findRespostas(cad.getId())) {
+
+				if (!respostasMap.containsKey(resposta.getEsusQstPergunta())) {
+					listaAux = new ArrayList<EsusConsumoAlimentarRespostas>();
+					listaAux.add(resposta);
+					respostasMap.put(resposta.getEsusQstPergunta(), listaAux);
+
+				} else {
+					listaAux = respostasMap.get(resposta.getEsusQstPergunta());
+					listaAux.add(resposta);
+					respostasMap.put(resposta.getEsusQstPergunta(), listaAux);
+				}
+
+			}
+
+			for (Map.Entry<EsusQstPergunta, List<EsusConsumoAlimentarRespostas>> entry : respostasMap.entrySet()) {
+
+				EsusQstPergunta key = entry.getKey();
+				List<EsusConsumoAlimentarRespostas> rValues = entry.getValue();
+
+				PerguntaQuestionarioCriancasComMaisDoisAnosThrift perguntaThrift = new PerguntaQuestionarioCriancasComMaisDoisAnosThrift();
+
+				perguntaThrift.setPergunta(
+						PerguntaCriancasComMaisDoisAnosEnumThrift.findByValue(key.getCoQstPergunta().intValue()));
+				perguntaThrift.setPerguntaIsSet(true);
+
+				// as respostas
+				
+				if (rValues.size() > 1) { // multipla escolha
+					List<RespostaMultiplaEscolhaEnumThrift> respostaMultipla = new ArrayList<RespostaMultiplaEscolhaEnumThrift>();
+					
+					for (EsusConsumoAlimentarRespostas resposta : rValues) {
+						if (resposta.getEsusQstRespostas() == null || resposta.getEsusQstRespostas().getId() == null) {
+							continue;
+						}
+						
+						RespostaMultiplaEscolhaEnumThrift th = RespostaMultiplaEscolhaEnumThrift
+								.findByValue(resposta.getEsusQstRespostas().getId().intValue());
+						
+						if (th == null || th.getValue() == 0) {
+							continue;
+						}
+						respostaMultipla.add(th);
+					}
+					
+					perguntaThrift.setRespostaMultiplaEscolha(respostaMultipla);
+					perguntaThrift.setRespostaMultiplaEscolhaIsSet(true);
+					
+					System.out.println("gravando respostas multiplas:" + respostaMultipla.size());
+
+				} else {
+					
+					perguntaThrift.setRespostaUnicaEscolha(RespostaUnicaEscolhaEnumThrift
+							.findByValue(rValues.get(0).getEsusQstRespostas().getId().intValue()));
+					perguntaThrift.setRespostaUnicaEscolhaIsSet(true);
+				}
+				
+				if ((perguntaThrift.getRespostaMultiplaEscolha() == null || perguntaThrift.getRespostaMultiplaEscolha().isEmpty())
+					&& perguntaThrift.getRespostaUnicaEscolha() == null) {
+					continue;
+				}
+				
+				
+				
+				lista.add(perguntaThrift);
+			}
+
+
+		} catch (
+
+		Exception e) {
+			e.printStackTrace();
+		}
+		
+		if (cad.getPProntuario().getCoProntuario() == 7063) {
+			System.out.println("gravando marlene" );
 
 		}
-
+		
 		return lista;
 	}
 
