@@ -19,6 +19,7 @@ import br.gov.saude.esus.cds.transport.generated.thrift.common.HeaderCdsCadastro
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 import esaude.dao.EsusCadastroDomiciliarDao;
 import esaude.model.EsusCadastroDomiciliar;
+import esaude.model.EsusCadastroDomiciliarFamilia;
 import esaude.model.EsusRegistro;
 import esaude.model.SisRegistro;
 import esaude.util.InformacoesEnvio;
@@ -27,8 +28,7 @@ import esaude.util.ThriftSerializer;
 import esaude.view.TelaPrincipal;
 
 public class EsusCadastroDomiciliarService {
-	static Logger log = Logger.getLogger(EsusCadastroDomiciliarService.class
-			.getName());
+	static Logger log = Logger.getLogger(EsusCadastroDomiciliarService.class.getName());
 	private EsusCadastroDomiciliarDao dao = new EsusCadastroDomiciliarDao();
 	private EsusRegistro esusRegistro = new EsusRegistro();
 	private SisRegistro sisRegistro = new SisRegistro();
@@ -56,8 +56,7 @@ public class EsusCadastroDomiciliarService {
 		}
 
 		log.info(new Date() + " -- Gerando Cadastro domiciliar -------");
-		TelaPrincipal.enviaLog(new Date()
-				+ " -- Gerando Cadastro domiciliar -------");
+		TelaPrincipal.enviaLog(new Date() + " -- Gerando Cadastro domiciliar -------");
 
 		List<DadoTransporteThrift> dados = new ArrayList<DadoTransporteThrift>();
 		mapeiaSituacaoMoradia();
@@ -72,40 +71,33 @@ public class EsusCadastroDomiciliarService {
 					byte[] dadoSerializado;
 
 					// Passo 2: serializar o thrift
-					dadoSerializado = ThriftSerializer
-							.serialize(thriftCadastroDomiciliar);
+					dadoSerializado = ThriftSerializer.serialize(thriftCadastroDomiciliar);
 
 					// Passo 3: coletar as informaÃ§Ãµes do envio
 					informacoesEnvioDto.setTipoDadoSerializado(3l);
 					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
 					informacoesEnvioDto.setUuidDadoSerializado(thriftCadastroDomiciliar.getUuid());
 					if (cad.getId() == null) {
-						log.info("UuidDadoSerializado inexistente para o endereço: "
-								+ cad.getDsComplemento());
+						log.info("UuidDadoSerializado inexistente para o endereço: " + cad.getDsComplemento());
 					}
-					informacoesEnvioDto.setIneDadoSerializado(cad
-							.getIneEquipe());
-					informacoesEnvioDto.setCnesDadoSerializado(cad
-							.getCnesUnidade());
+					informacoesEnvioDto.setIneDadoSerializado(cad.getIneEquipe());
+					informacoesEnvioDto.setCnesDadoSerializado(cad.getCnesUnidade());
 					informacoesEnvioDto.setCodIbge(sisRegistro.getCidadeIbge());
 
 					// Passo 4: preencher o thrift de transporte com as
 					// informadosÃ§Ãµeso
 					// coletadas;
-					DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio
-							.getInfoInstalacao(informacoesEnvioDto,
-									esusRegistro);
+					DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio.getInfoInstalacao(informacoesEnvioDto,
+							esusRegistro);
 					if (dadoTransporteThrift.getUuidDadoSerializado() == null) {
-						log.info("UuidDadoSerializado inexistente para o complemento: "
-								+ cad.getDsComplemento());
+						log.info("UuidDadoSerializado inexistente para o complemento: " + cad.getDsComplemento());
 					}
 
 					dados.add(dadoTransporteThrift);
-					log.info(new Date()
-							+ " -- Gerando cadastro Domiciliar --> "
-							+ cad.getId() + " --- " + thriftCadastroDomiciliar.getUuid());
-					System.out.println("Gerando cadastro Domiciliar --> "
-							+ cad.getId() + " - " + thriftCadastroDomiciliar.getUuid()+" - "+cad.getUuid());
+					log.info(new Date() + " -- Gerando cadastro Domiciliar --> " + cad.getId() + " --- "
+							+ thriftCadastroDomiciliar.getUuid());
+					System.out.println("Gerando cadastro Domiciliar --> " + cad.getId() + " - "
+							+ thriftCadastroDomiciliar.getUuid() + " - " + cad.getUuid());
 
 					cad.setDtEnvio(new Date());
 					cad.setStEnvio(Long.valueOf(1));
@@ -114,14 +106,11 @@ public class EsusCadastroDomiciliarService {
 				} catch (JDBCConnectionException e) {
 					log.info("Erro de conexão");
 					e.printStackTrace();
-					TelaPrincipal.enviaLog(new Date() + " - Erro de conexão"
-							+ e.getStackTrace());
+					TelaPrincipal.enviaLog(new Date() + " - Erro de conexão" + e.getStackTrace());
 				} catch (Exception e) {
-					log.info("Erro na gravação do registro - "
-							+ e.getStackTrace());
+					log.info("Erro na gravação do registro - " + e.getStackTrace());
 					e.printStackTrace();
-					TelaPrincipal.enviaLog(new Date() + " - "
-							+ e.getStackTrace());
+					TelaPrincipal.enviaLog(new Date() + " - " + e.getStackTrace());
 				}
 			}
 			log.info(new Date() + " -- Cadastro domiciliar - fichas geradas ----" + dados.size());
@@ -136,12 +125,10 @@ public class EsusCadastroDomiciliarService {
 		return dados;
 	}
 
-	private CadastroDomiciliarThrift converterParaThrift(
-			EsusCadastroDomiciliar cad) {
+	private CadastroDomiciliarThrift converterParaThrift(EsusCadastroDomiciliar cad) {
 		CadastroDomiciliarThrift cadastroDomiciliarThrift = new CadastroDomiciliarThrift();
 
-		cadastroDomiciliarThrift.setUuid(masterService.gerarUuid(cad
-				.getCnesUnidade()));
+		cadastroDomiciliarThrift.setUuid(masterService.gerarUuid(cad.getCnesUnidade()));
 		cadastroDomiciliarThrift.setUuidIsSet(true);
 
 		if (cad.getIdOrigem() == null) {
@@ -157,16 +144,15 @@ public class EsusCadastroDomiciliarService {
 				cadastroDomiciliarThrift.setFichaAtualizada(false);
 			}
 		}
-		
+
 		cad.setUuid(cadastroDomiciliarThrift.getUuid());
 
 		cadastroDomiciliarThrift.setAnimaisNoDomicilio(null);
 		cadastroDomiciliarThrift.setAnimaisNoDomicilioIsSet(true);
-		
+
 		CondicaoMoradiaThrift condicaoMoradia = new CondicaoMoradiaThrift();
 		try {
-			condicaoMoradia.setAbastecimentoAgua(cad
-					.getEsusAbastecimentodeagua().getId());
+			condicaoMoradia.setAbastecimentoAgua(cad.getEsusAbastecimentodeagua().getId());
 			condicaoMoradia.setAbastecimentoAguaIsSet(true);
 		} catch (Exception e) {
 			condicaoMoradia.setAbastecimentoAguaIsSet(false);
@@ -180,24 +166,22 @@ public class EsusCadastroDomiciliarService {
 
 		try {
 
-			condicaoMoradia.setLocalizacao(cad.getEsusLocalizacaodamoradia()
-					.getId());
+			condicaoMoradia.setLocalizacao(cad.getEsusLocalizacaodamoradia().getId());
 			condicaoMoradia.setLocalizacaoIsSet(true);
 		} catch (Exception e) {
 			condicaoMoradia.setLocalizacaoIsSet(false);
 		}
 
 		try {
-			condicaoMoradia.setNuMoradores(cad.getQuantidadeMoradores()
-					.toString());
+			condicaoMoradia.setNuMoradores(cad.getQuantidadeMoradores().toString());
 			condicaoMoradia.setNuMoradoresIsSet(true);
 		} catch (Exception e) {
 			condicaoMoradia.setNuMoradoresIsSet(false);
 		}
 
 		try {
-			condicaoMoradia.setSituacaoMoradiaPosseTerra(situacaoMoradia.get(cad
-					.getEsusCondicaodeposseeusodaterra().getId()));
+			condicaoMoradia
+					.setSituacaoMoradiaPosseTerra(situacaoMoradia.get(cad.getEsusCondicaodeposseeusodaterra().getId()));
 			condicaoMoradia.setSituacaoMoradiaPosseTerraIsSet(true);
 
 		} catch (Exception e) {
@@ -205,8 +189,7 @@ public class EsusCadastroDomiciliarService {
 			condicaoMoradia.setSituacaoMoradiaPosseTerraIsSet(true);
 		}
 		try {
-			condicaoMoradia.setFormaEscoamentoBanheiro(cad
-					.getEsusFormadeescoamentodobanheiroousanitario().getId());
+			condicaoMoradia.setFormaEscoamentoBanheiro(cad.getEsusFormadeescoamentodobanheiroousanitario().getId());
 			condicaoMoradia.setFormaEscoamentoBanheiroIsSet(true);
 
 		} catch (Exception e) {
@@ -264,70 +247,72 @@ public class EsusCadastroDomiciliarService {
 			endereco.setTipoLogradouroNumeroDne("081");
 			endereco.setTipoLogradouroNumeroDneIsSet(true);
 		}
-		endereco.setNumeroDneUf(cad.getCoUf()+"");
+		endereco.setNumeroDneUf(cad.getCoUf() + "");
 		endereco.setNumeroDneUfIsSet(true);
 		cadastroDomiciliarThrift.setEnderecoLocalPermanencia(endereco);
 
-		FamiliaRowThrift familia = new FamiliaRowThrift();
-		if (cad.getQtMembrosFamilia() != null) {
-			familia.setNumeroMembrosFamilia(Integer.parseInt(Long.toString(cad
-					.getQtMembrosFamilia())));
-			familia.setNumeroMembrosFamiliaIsSet(true);
-		}
-		familia.setNumeroCnsResponsavel(cad.getCnsProfissional());
-		familia.setNumeroCnsResponsavelIsSet(true);
-		if (cad.getIdProntuarioResponsavel() != null) {
-			familia.setNumeroProntuario(Long.toString(cad
-					.getIdProntuarioResponsavel()));
-			familia.setNumeroProntuarioIsSet(true);
-		}
-		try {
-			familia.setRendaFamiliar(cad.getCoCdsRendaFamiliar());
-			familia.setRendaFamiliarIsSet(true);
-		} catch (Exception e) {
-
-		}
-		if (cad.getDtMudanca() != null) {
-			familia.setResideDesde(cad.getDtMudanca().getTime());
-			familia.setResideDesdeIsSet(true);
-		}
-		List<FamiliaRowThrift> familias = new ArrayList<FamiliaRowThrift>();
-		familias.add(familia);
+		List<FamiliaRowThrift> familias = buscaFamilias(cad);
 		cadastroDomiciliarThrift.setFamilias(familias);
+		cadastroDomiciliarThrift.setFamiliasIsSet(true);
 
 		if (cad.getQuantidadeAnimais() != null) {
-			cadastroDomiciliarThrift.setQuantosAnimaisNoDomicilio(Long
-					.toString(cad.getQuantidadeAnimais()));
+			cadastroDomiciliarThrift.setQuantosAnimaisNoDomicilio(Long.toString(cad.getQuantidadeAnimais()));
 			cadastroDomiciliarThrift.setQuantosAnimaisNoDomicilioIsSet(true);
-			
-			if (cad.getQuantidadeAnimais()>0){
+
+			if (cad.getQuantidadeAnimais() > 0) {
 				cadastroDomiciliarThrift.setStAnimaisNoDomicilio(true);
-			}
-			else{
+			} else {
 				cadastroDomiciliarThrift.setStAnimaisNoDomicilio(false);
 			}
-			cadastroDomiciliarThrift.setStAnimaisNoDomicilioIsSet(true);// ?? TODO
-		}
-		else{
+			cadastroDomiciliarThrift.setStAnimaisNoDomicilioIsSet(true);// ??
+																		// TODO
+		} else {
 			cadastroDomiciliarThrift.setQuantosAnimaisNoDomicilioIsSet(false);
-			cadastroDomiciliarThrift.setStAnimaisNoDomicilioIsSet(false);// ?? TODO
+			cadastroDomiciliarThrift.setStAnimaisNoDomicilioIsSet(false);// ??
+																			// TODO
 		}
 
-		
-		cadastroDomiciliarThrift
-				.setStatusTermoRecusaCadastroDomiciliarAtencaoBasicaIsSet(false);
-		cadastroDomiciliarThrift
-				.setStatusTermoRecusaCadastroDomiciliarAtencaoBasica(cad
-						.getStRecusaCadastro());
+		cadastroDomiciliarThrift.setStatusTermoRecusaCadastroDomiciliarAtencaoBasicaIsSet(false);
+		cadastroDomiciliarThrift.setStatusTermoRecusaCadastroDomiciliarAtencaoBasica(cad.getStRecusaCadastro());
 		cadastroDomiciliarThrift.setTpCdsOrigemIsSet(true);
 		cadastroDomiciliarThrift.setTpCdsOrigem(3);
 
 		return cadastroDomiciliarThrift;
 	}
 
-	Map<Long,Long> situacaoMoradia;
-	public void mapeiaSituacaoMoradia(){
-		situacaoMoradia = new HashMap<Long,Long>();
+	private List<FamiliaRowThrift> buscaFamilias(EsusCadastroDomiciliar cad) {
+		List<FamiliaRowThrift> lista = new ArrayList<FamiliaRowThrift>();
+
+		for (EsusCadastroDomiciliarFamilia familiaAux : dao.findFamilias(cad.getId())) {
+			FamiliaRowThrift familia = new FamiliaRowThrift();
+			if (cad.getQtMembrosFamilia() != null) {
+				familia.setNumeroMembrosFamilia(Integer.parseInt(Long.toString(cad.getQtMembrosFamilia())));
+				familia.setNumeroMembrosFamiliaIsSet(true);
+			}
+			familia.setNumeroCnsResponsavel(cad.getCnsProfissional());
+			familia.setNumeroCnsResponsavelIsSet(true);
+			try {
+				familia.setRendaFamiliar(cad.getCoCdsRendaFamiliar());
+				familia.setRendaFamiliarIsSet(true);
+			} catch (Exception e) {
+
+			}
+			if (cad.getDtMudanca() != null) {
+				familia.setResideDesde(cad.getDtMudanca().getTime());
+				familia.setResideDesdeIsSet(true);
+			}
+			familia.setNumeroProntuario(familiaAux.getNumProntuarioFamiliar());
+			familia.setNumeroProntuarioIsSet(true);
+			lista.add(familia);
+		}
+		return lista;
+
+	}
+
+	Map<Long, Long> situacaoMoradia;
+
+	public void mapeiaSituacaoMoradia() {
+		situacaoMoradia = new HashMap<Long, Long>();
 		situacaoMoradia.put(Long.valueOf("101"), Long.valueOf("75"));
 		situacaoMoradia.put(Long.valueOf("102"), Long.valueOf("76"));
 		situacaoMoradia.put(Long.valueOf("103"), Long.valueOf("77"));

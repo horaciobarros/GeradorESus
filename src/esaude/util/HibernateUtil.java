@@ -234,6 +234,19 @@ public class HibernateUtil {
 				configuration
 				.addAnnotatedClass(esaude.model.EsusQstPergunta.class);
 				
+				configuration
+				.addAnnotatedClass(esaude.model.EsusQstPergunta.class);
+				
+				configuration
+				.addAnnotatedClass(esaude.model.EsusCadastroDomiciliarFamilia.class);
+				
+				configuration
+				.addAnnotatedClass(esaude.model.EsusRendafamiliar.class);
+				
+				configuration
+				.addAnnotatedClass(esaude.model.EsusRelacaoparentesco.class);
+				
+				
 				SessionFactory sessionFactory = configuration.configure(file)
 						.buildSessionFactory();
 				return sessionFactory;

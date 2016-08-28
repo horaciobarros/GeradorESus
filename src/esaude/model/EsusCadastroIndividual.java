@@ -28,6 +28,30 @@ public class EsusCadastroIndividual implements Serializable {
 	@JoinColumn(name = "id_prontuario")
 	private PProntuario pProntuario;
 
+	public Boolean getResponsavelFamiliar() {
+		return responsavelFamiliar;
+	}
+
+	public void setResponsavelFamiliar(Boolean responsavelFamiliar) {
+		this.responsavelFamiliar = responsavelFamiliar;
+	}
+
+	public PProntuario getpProntuarioResponsavel() {
+		return pProntuarioResponsavel;
+	}
+
+	public void setpProntuarioResponsavel(PProntuario pProntuarioResponsavel) {
+		this.pProntuarioResponsavel = pProntuarioResponsavel;
+	}
+
+	public EsusRelacaoparentesco getEsusRelacaoparentesco() {
+		return esusRelacaoparentesco;
+	}
+
+	public void setEsusRelacaoparentesco(EsusRelacaoparentesco esusRelacaoparentesco) {
+		this.esusRelacaoparentesco = esusRelacaoparentesco;
+	}
+
 	@Column(name = "cns_profissional")
 	private String cnsProfissional;
 
@@ -132,7 +156,19 @@ public class EsusCadastroIndividual implements Serializable {
 
 	@Column(name = "id_origem")
 	private Long idOrigem;
+	
+	@Column(name = "responsavel_familiar")
+	private Boolean responsavelFamiliar;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_prontuario_responsavel")
+	private PProntuario pProntuarioResponsavel;
 
+	@ManyToOne
+    @JoinColumn(name = "id_parentesco_responsavel")
+    private EsusRelacaoparentesco esusRelacaoparentesco;
+
+	
 	public PProntuario getpProntuario() {
 		return pProntuario;
 	}

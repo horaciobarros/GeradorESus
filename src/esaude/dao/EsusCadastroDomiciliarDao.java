@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import esaude.model.EsusCadastroDomiciliar;
+import esaude.model.EsusCadastroDomiciliarFamilia;
 import esaude.util.HibernateUtil;
 
 
@@ -67,6 +68,18 @@ public class EsusCadastroDomiciliarDao extends Dao {
 		tx.commit();
 
 		return lista.get(0);
+	}
+
+	public List<EsusCadastroDomiciliarFamilia> findFamilias(Long id) {
+		Transaction tx = session
+				.beginTransaction();
+		Query query = sessionFactory.openSession().createQuery(
+				"from EsusCadastroDomiciliarFamilia f  join fetch f.esusCadastroDomiciliar "
+				+ " where f.esusCadastroDomiciliar.id = " + id );
+		List<EsusCadastroDomiciliarFamilia> lista = query.list();
+		tx.commit();
+
+		return lista;
 	}
 	
 

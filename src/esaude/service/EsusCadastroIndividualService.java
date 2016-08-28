@@ -124,7 +124,7 @@ public class EsusCadastroIndividualService {
 
 		c.setUuid(masterService.gerarUuid(cad.getCnesUnidade()));
 		c.setUuidIsSet(true);
-		
+
 		if (cad.getIdOrigem() == null) {
 			c.setFichaAtualizada(false);
 		} else {
@@ -186,6 +186,19 @@ public class EsusCadastroIndividualService {
 		c.setDadosGeraisIsSet(true);
 
 		IdentificacaoUsuarioCidadaoThrift identificacao = new IdentificacaoUsuarioCidadaoThrift();
+
+		// testar se não é o responsável familiar
+		if (cad.getResponsavelFamiliar() != true && (cad.getpProntuarioResponsavel() != null
+				&& cad.getpProntuarioResponsavel().getCoProntuario() != cad.getPProntuario().getCoProntuario())) {
+			identificacao.setDataNascimentoResponsavel(cad.getpProntuarioResponsavel().getDtNascimento().getTime());
+			identificacao.setDataNascimentoResponsavelIsSet(true);
+			identificacao.setNumeroCartaoSusResponsavel(cad.getpProntuarioResponsavel().getCoNumeroCartao());
+			identificacao.setNumeroCartaoSusResponsavelIsSet(true);
+			identificacao.setStatusEhResponsavel(false);
+			identificacao.setStatusEhResponsavelIsSet(true);
+
+		}
+
 		try {
 			identificacao.setCodigoIbgeMunicipioNascimento(cad.getPProntuario().getCoMunicipioNasc());
 		} catch (NullPointerException e) {
@@ -201,12 +214,11 @@ public class EsusCadastroIndividualService {
 			e.printStackTrace();
 			identificacao.setNomeCidadaoIsSet(false);
 		}
-		
-		
+
 		if (cad.getPProntuario().getNoMae() == null) {
 			cad.getPProntuario().setDesconheceMae(true);
 		}
-		
+
 		if (!cad.getPProntuario().isDesconheceMae()) {
 			identificacao.setDesconheceNomeMae(false);
 			identificacao.setDesconheceNomeMaeIsSet(true);
@@ -274,6 +286,15 @@ public class EsusCadastroIndividualService {
 			informacoesSocioDemograficas.setMotivoSaidaCidadaoIsSet(true);
 		} else {
 			informacoesSocioDemograficas.setMotivoSaidaCidadaoIsSet(false);
+		}
+
+		if (cad.getResponsavelFamiliar() != true && (cad.getpProntuarioResponsavel() != null
+				&& cad.getpProntuarioResponsavel().getCoProntuario() != cad.getPProntuario().getCoProntuario())) {
+			if (cad.getEsusRelacaoparentesco() != null && cad.getEsusRelacaoparentesco().getId() != null) {
+				informacoesSocioDemograficas.setRelacaoParentescoCidadao(cad.getEsusRelacaoparentesco().getId());
+				informacoesSocioDemograficas.setRelacaoParentescoCidadaoIsSet(true);
+			}
+
 		}
 		c.setInformacoesSocioDemograficas(informacoesSocioDemograficas);
 		c.setInformacoesSocioDemograficasIsSet(true);
