@@ -132,15 +132,15 @@ public class EsusCadastroIndividualService {
 			try {
 				cadAuxOrigem = dao.findById(cad.getIdOrigem());
 				c.setUuidFichaOriginadora(cadAuxOrigem.getUuid());
+				c.setUuidFichaOriginadoraIsSet(true);
 				c.setFichaAtualizada(true);
+				c.setFichaAtualizadaIsSet(true);
 			} catch (Exception e) {
 				c.setFichaAtualizada(false);
 			}
 		}
 
 		cad.setUuid(c.getUuid());
-		c.setUuidFichaOriginadoraIsSet(true);
-		c.setFichaAtualizadaIsSet(true);
 		// ----------------------
 
 		CondicoesDeSaudeThrift condicoesDeSaude = new CondicoesDeSaudeThrift();

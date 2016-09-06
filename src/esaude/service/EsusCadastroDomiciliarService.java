@@ -141,13 +141,12 @@ public class EsusCadastroDomiciliarService {
 				cadastroDomiciliarThrift.setUuidFichaOriginadora(cadFichaOrigem.getUuid());
 				cadastroDomiciliarThrift.setUuidFichaOriginadoraIsSet(true);
 				cadastroDomiciliarThrift.setFichaAtualizada(true);
+				cadastroDomiciliarThrift.setFichaAtualizadaIsSet(true);
 			} catch (Exception e) {
 				cadastroDomiciliarThrift.setFichaAtualizada(false);
 			}
 		}
 		
-		cadastroDomiciliarThrift.setFichaAtualizadaIsSet(true);
-
 		cad.setUuid(cadastroDomiciliarThrift.getUuid());
 
 		cadastroDomiciliarThrift.setAnimaisNoDomicilio(null);
