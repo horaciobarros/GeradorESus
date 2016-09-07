@@ -124,9 +124,11 @@ public class EsusCadastroIndividualService {
 
 		c.setUuid(masterService.gerarUuid(cad.getCnesUnidade()));
 		c.setUuidIsSet(true);
-
-		if (cad.getIdOrigem() == null) {
+		
+		if (cad.getIdOrigem() == null || !cad.getFichaAtualizada()) {
 			c.setFichaAtualizada(false);
+			c.setFichaAtualizadaIsSet(true);
+			c.setUuidFichaOriginadoraIsSet(false);
 		} else {
 			EsusCadastroIndividual cadAuxOrigem;
 			try {
@@ -136,7 +138,9 @@ public class EsusCadastroIndividualService {
 				c.setFichaAtualizada(true);
 				c.setFichaAtualizadaIsSet(true);
 			} catch (Exception e) {
+				c.setUuidFichaOriginadoraIsSet(false);
 				c.setFichaAtualizada(false);
+				c.setFichaAtualizadaIsSet(true);
 			}
 		}
 

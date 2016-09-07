@@ -131,8 +131,10 @@ public class EsusCadastroDomiciliarService {
 		cadastroDomiciliarThrift.setUuid(masterService.gerarUuid(cad.getCnesUnidade()));
 		cadastroDomiciliarThrift.setUuidIsSet(true);
 
-		if (cad.getIdOrigem() == null) {
+		if (cad.getIdOrigem() == null || !cad.isFichaAtualizada()) {
 			cadastroDomiciliarThrift.setFichaAtualizada(false);
+			cadastroDomiciliarThrift.setFichaAtualizadaIsSet(true);
+			cadastroDomiciliarThrift.setUuidFichaOriginadoraIsSet(false);
 
 		} else {
 			EsusCadastroDomiciliar cadFichaOrigem;
@@ -144,6 +146,8 @@ public class EsusCadastroDomiciliarService {
 				cadastroDomiciliarThrift.setFichaAtualizadaIsSet(true);
 			} catch (Exception e) {
 				cadastroDomiciliarThrift.setFichaAtualizada(false);
+				cadastroDomiciliarThrift.setUuidFichaOriginadoraIsSet(false);
+				cadastroDomiciliarThrift.setFichaAtualizadaIsSet(true);
 			}
 		}
 		
