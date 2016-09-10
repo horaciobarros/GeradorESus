@@ -17,6 +17,7 @@ import br.gov.saude.esus.cds.transport.generated.thrift.cadastroindividual.Infor
 import br.gov.saude.esus.cds.transport.generated.thrift.common.HeaderCdsCadastroThrift;
 import br.gov.saude.esus.transport.common.generated.thrift.DadoTransporteThrift;
 import esaude.dao.EsusCadastroIndividualDao;
+import esaude.model.EsusCadastroDomiciliar;
 import esaude.model.EsusCadastroIndividual;
 import esaude.model.EsusCadastroIndividualDeficiencia;
 import esaude.model.EsusCadastroIndividualHigienepessoalsituacaorua;
@@ -125,25 +126,29 @@ public class EsusCadastroIndividualService {
 		c.setUuid(masterService.gerarUuid(cad.getCnesUnidade()));
 		c.setUuidIsSet(true);
 		
-		if (cad.getIdOrigem() == null || !cad.getFichaAtualizada()) {
-			c.setFichaAtualizada(false);
-			c.setFichaAtualizadaIsSet(true);
-			c.setUuidFichaOriginadoraIsSet(false);
-		} else {
-			EsusCadastroIndividual cadAuxOrigem;
+		if (cad.getIdOrigem() != null && cad.isFichaAtualizada()) {
+			EsusCadastroIndividual cadFichaOrigem;
 			try {
-				cadAuxOrigem = dao.findById(cad.getIdOrigem());
-				c.setUuidFichaOriginadora(cadAuxOrigem.getUuid());
+				cadFichaOrigem = dao.findById(cad.getIdOrigem());
+				c.setUuidFichaOriginadora(cadFichaOrigem.getUuid());
 				c.setUuidFichaOriginadoraIsSet(true);
 				c.setFichaAtualizada(true);
 				c.setFichaAtualizadaIsSet(true);
 			} catch (Exception e) {
-				c.setUuidFichaOriginadoraIsSet(false);
+				c.setUuidFichaOriginadora(c.getUuid());
+				c.setUuidFichaOriginadoraIsSet(true);
 				c.setFichaAtualizada(false);
-				c.setFichaAtualizadaIsSet(true);
+				c.setFichaAtualizadaIsSet(false);
 			}
+			
+		} else {
+			c.setUuidFichaOriginadora(c.getUuid());
+			c.setUuidFichaOriginadoraIsSet(true);
+			c.setFichaAtualizada(false);
+			c.setFichaAtualizadaIsSet(false);
+			
 		}
-
+		
 		cad.setUuid(c.getUuid());
 		// ----------------------
 

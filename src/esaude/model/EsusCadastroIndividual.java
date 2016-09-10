@@ -464,4 +464,13 @@ public class EsusCadastroIndividual implements Serializable {
 	public void setEsusMotivosaida(EsusMotivosaida esusMotivosaida) {
 		this.esusMotivosaida = esusMotivosaida;
 	}
+	
+	public boolean isFichaAtualizada() {
+		if (this.fichaAtualizada == null) {
+			return false; 
+		} else {
+			return fichaAtualizada;
+		}
+	}
+
 }

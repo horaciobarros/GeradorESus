@@ -130,13 +130,13 @@ public class EsusCadastroDomiciliarService {
 
 		cadastroDomiciliarThrift.setUuid(masterService.gerarUuid(cad.getCnesUnidade()));
 		cadastroDomiciliarThrift.setUuidIsSet(true);
-
-		if (cad.getIdOrigem() == null || !cad.isFichaAtualizada()) {
-			cadastroDomiciliarThrift.setFichaAtualizada(false);
-			cadastroDomiciliarThrift.setFichaAtualizadaIsSet(true);
-			cadastroDomiciliarThrift.setUuidFichaOriginadoraIsSet(false);
-
-		} else {
+		
+		if (cad.getId() == 4534) {
+			System.out.print("ok");
+		}
+		
+		
+		if (cad.getIdOrigem() != null && cad.isFichaAtualizada()) {
 			EsusCadastroDomiciliar cadFichaOrigem;
 			try {
 				cadFichaOrigem = dao.findById(cad.getIdOrigem());
@@ -145,10 +145,18 @@ public class EsusCadastroDomiciliarService {
 				cadastroDomiciliarThrift.setFichaAtualizada(true);
 				cadastroDomiciliarThrift.setFichaAtualizadaIsSet(true);
 			} catch (Exception e) {
+				cadastroDomiciliarThrift.setUuidFichaOriginadora(cadastroDomiciliarThrift.getUuid());
+				cadastroDomiciliarThrift.setUuidFichaOriginadoraIsSet(true);
 				cadastroDomiciliarThrift.setFichaAtualizada(false);
-				cadastroDomiciliarThrift.setUuidFichaOriginadoraIsSet(false);
-				cadastroDomiciliarThrift.setFichaAtualizadaIsSet(true);
+				cadastroDomiciliarThrift.setFichaAtualizadaIsSet(false);
 			}
+			
+		} else {
+			cadastroDomiciliarThrift.setUuidFichaOriginadora(cadastroDomiciliarThrift.getUuid());
+			cadastroDomiciliarThrift.setUuidFichaOriginadoraIsSet(true);
+			cadastroDomiciliarThrift.setFichaAtualizada(false);
+			cadastroDomiciliarThrift.setFichaAtualizadaIsSet(false);
+			
 		}
 		
 		cad.setUuid(cadastroDomiciliarThrift.getUuid());
@@ -283,6 +291,8 @@ public class EsusCadastroDomiciliarService {
 		cadastroDomiciliarThrift.setTpCdsOrigemIsSet(true);
 		cadastroDomiciliarThrift.setTpCdsOrigem(3);
 
+		
+		
 		return cadastroDomiciliarThrift;
 	}
 

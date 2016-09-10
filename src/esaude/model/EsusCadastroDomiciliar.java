@@ -157,7 +157,7 @@ public class EsusCadastroDomiciliar implements Serializable {
 		return fichaAtualizada;
 	}
 
-	public void setFichaAtulizada(Boolean fichaAtualizada) {
+	public void setFichaAtualizada(Boolean fichaAtualizada) {
 		this.fichaAtualizada = fichaAtualizada;
 	}
 
