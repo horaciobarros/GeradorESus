@@ -81,6 +81,18 @@ public class EsusCadastroDomiciliarDao extends Dao {
 
 		return lista;
 	}
+
+	public List<EsusCadastroDomiciliar>  findNaoEnviadosSemIdOrigem() {
+		Transaction tx = session
+				.beginTransaction();
+		Query query = sessionFactory.openSession().createQuery(
+				"from EsusCadastroDomiciliar cd left join fetch cd.esusSituacaodemoradia "
+				+ "left join fetch cd.esusAbastecimentodeagua where (cd.stEnvio is null or cd.stEnvio=0) and cd.idOrigem is null ");
+		List<EsusCadastroDomiciliar> lista = query.list();
+		tx.commit();
+
+		return lista;
+	}
 	
 
 }

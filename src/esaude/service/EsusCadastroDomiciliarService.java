@@ -62,56 +62,14 @@ public class EsusCadastroDomiciliarService {
 		mapeiaSituacaoMoradia();
 		try {
 
+			for (EsusCadastroDomiciliar cad : dao.findNaoEnviadosSemIdOrigem()) {
+
+				processaDados(dados, cad);
+			}
+
 			for (EsusCadastroDomiciliar cad : dao.findNaoEnviados()) {
-				try {
-					CadastroDomiciliarThrift thriftCadastroDomiciliar = converterParaThrift(cad);
 
-					InformacoesEnvioDto informacoesEnvioDto = new InformacoesEnvioDto();
-
-					byte[] dadoSerializado;
-
-					// Passo 2: serializar o thrift
-					dadoSerializado = ThriftSerializer.serialize(thriftCadastroDomiciliar);
-
-					// Passo 3: coletar as informaÃ§Ãµes do envio
-					informacoesEnvioDto.setTipoDadoSerializado(3l);
-					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
-					informacoesEnvioDto.setUuidDadoSerializado(thriftCadastroDomiciliar.getUuid());
-					if (cad.getId() == null) {
-						log.info("UuidDadoSerializado inexistente para o endereço: " + cad.getDsComplemento());
-					}
-					informacoesEnvioDto.setIneDadoSerializado(cad.getIneEquipe());
-					informacoesEnvioDto.setCnesDadoSerializado(cad.getCnesUnidade());
-					informacoesEnvioDto.setCodIbge(sisRegistro.getCidadeIbge());
-
-					// Passo 4: preencher o thrift de transporte com as
-					// informadosÃ§Ãµeso
-					// coletadas;
-					DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio.getInfoInstalacao(informacoesEnvioDto,
-							esusRegistro);
-					if (dadoTransporteThrift.getUuidDadoSerializado() == null) {
-						log.info("UuidDadoSerializado inexistente para o complemento: " + cad.getDsComplemento());
-					}
-
-					dados.add(dadoTransporteThrift);
-					log.info(new Date() + " -- Gerando cadastro Domiciliar --> " + cad.getId() + " --- "
-							+ thriftCadastroDomiciliar.getUuid());
-					System.out.println("Gerando cadastro Domiciliar --> " + cad.getId() + " - "
-							+ thriftCadastroDomiciliar.getUuid() + " - " + cad.getUuid());
-
-					cad.setDtEnvio(new Date());
-					cad.setStEnvio(Long.valueOf(1));
-					dao.atualiza(cad);
-
-				} catch (JDBCConnectionException e) {
-					log.info("Erro de conexão");
-					e.printStackTrace();
-					TelaPrincipal.enviaLog(new Date() + " - Erro de conexão" + e.getStackTrace());
-				} catch (Exception e) {
-					log.info("Erro na gravação do registro - " + e.getStackTrace());
-					e.printStackTrace();
-					TelaPrincipal.enviaLog(new Date() + " - " + e.getStackTrace());
-				}
+				processaDados(dados, cad);
 			}
 			log.info(new Date() + " -- Cadastro domiciliar - fichas geradas ----" + dados.size());
 
@@ -125,17 +83,70 @@ public class EsusCadastroDomiciliarService {
 		return dados;
 	}
 
+	private void processaDados(List<DadoTransporteThrift> dados, EsusCadastroDomiciliar cad) {
+
+		try {
+			CadastroDomiciliarThrift thriftCadastroDomiciliar = converterParaThrift(cad);
+
+			InformacoesEnvioDto informacoesEnvioDto = new InformacoesEnvioDto();
+
+			byte[] dadoSerializado;
+
+			// Passo 2: serializar o thrift
+			dadoSerializado = ThriftSerializer.serialize(thriftCadastroDomiciliar);
+
+			// Passo 3: coletar as informaÃ§Ãµes do envio
+			informacoesEnvioDto.setTipoDadoSerializado(3l);
+			informacoesEnvioDto.setDadoSerializado(dadoSerializado);
+			informacoesEnvioDto.setUuidDadoSerializado(thriftCadastroDomiciliar.getUuid());
+			if (cad.getId() == null) {
+				log.info("UuidDadoSerializado inexistente para o endereço: " + cad.getDsComplemento());
+			}
+			informacoesEnvioDto.setIneDadoSerializado(cad.getIneEquipe());
+			informacoesEnvioDto.setCnesDadoSerializado(cad.getCnesUnidade());
+			informacoesEnvioDto.setCodIbge(sisRegistro.getCidadeIbge());
+
+			// Passo 4: preencher o thrift de transporte com as
+			// informadosÃ§Ãµeso
+			// coletadas;
+			DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio.getInfoInstalacao(informacoesEnvioDto,
+					esusRegistro);
+			if (dadoTransporteThrift.getUuidDadoSerializado() == null) {
+				log.info("UuidDadoSerializado inexistente para o complemento: " + cad.getDsComplemento());
+			}
+
+			dados.add(dadoTransporteThrift);
+			log.info(new Date() + " -- Gerando cadastro Domiciliar --> " + cad.getId() + " --- "
+					+ thriftCadastroDomiciliar.getUuid());
+			System.out.println("Gerando cadastro Domiciliar --> " + cad.getId() + " - "
+					+ thriftCadastroDomiciliar.getUuid() + " - " + cad.getUuid());
+
+			cad.setDtEnvio(new Date());
+			cad.setStEnvio(Long.valueOf(1));
+			dao.atualiza(cad);
+
+		} catch (JDBCConnectionException e) {
+			log.info("Erro de conexão");
+			e.printStackTrace();
+			TelaPrincipal.enviaLog(new Date() + " - Erro de conexão" + e.getStackTrace());
+		} catch (Exception e) {
+			log.info("Erro na gravação do registro - " + e.getStackTrace());
+			e.printStackTrace();
+			TelaPrincipal.enviaLog(new Date() + " - " + e.getStackTrace());
+		}
+
+	}
+
 	private CadastroDomiciliarThrift converterParaThrift(EsusCadastroDomiciliar cad) {
 		CadastroDomiciliarThrift cadastroDomiciliarThrift = new CadastroDomiciliarThrift();
 
 		cadastroDomiciliarThrift.setUuid(masterService.gerarUuid(cad.getCnesUnidade()));
 		cadastroDomiciliarThrift.setUuidIsSet(true);
-		
+
 		if (cad.getId() == 4534) {
 			System.out.print("ok");
 		}
-		
-		
+
 		if (cad.getIdOrigem() != null && cad.isFichaAtualizada()) {
 			EsusCadastroDomiciliar cadFichaOrigem;
 			try {
@@ -150,15 +161,15 @@ public class EsusCadastroDomiciliarService {
 				cadastroDomiciliarThrift.setFichaAtualizada(false);
 				cadastroDomiciliarThrift.setFichaAtualizadaIsSet(false);
 			}
-			
+
 		} else {
 			cadastroDomiciliarThrift.setUuidFichaOriginadora(cadastroDomiciliarThrift.getUuid());
 			cadastroDomiciliarThrift.setUuidFichaOriginadoraIsSet(true);
 			cadastroDomiciliarThrift.setFichaAtualizada(false);
 			cadastroDomiciliarThrift.setFichaAtualizadaIsSet(false);
-			
+
 		}
-		
+
 		cad.setUuid(cadastroDomiciliarThrift.getUuid());
 
 		cadastroDomiciliarThrift.setAnimaisNoDomicilio(null);
@@ -291,8 +302,6 @@ public class EsusCadastroDomiciliarService {
 		cadastroDomiciliarThrift.setTpCdsOrigemIsSet(true);
 		cadastroDomiciliarThrift.setTpCdsOrigem(3);
 
-		
-		
 		return cadastroDomiciliarThrift;
 	}
 

@@ -62,52 +62,14 @@ public class EsusCadastroIndividualService {
 		List<DadoTransporteThrift> dados = new ArrayList<DadoTransporteThrift>();
 		try {
 
-			for (EsusCadastroIndividual cad : dao.findNaoEnviados()) {
-				try {
-					CadastroIndividualThrift thriftCadastroIndividual = converterParaThrift(cad);
-
-					InformacoesEnvioDto informacoesEnvioDto = new InformacoesEnvioDto();
-
-					byte[] dadoSerializado;
-
-					// Passo 2: serializar o thrift
-					dadoSerializado = ThriftSerializer.serialize(thriftCadastroIndividual);
-
-					// Passo 3: coletar as informações do envio
-					informacoesEnvioDto.setTipoDadoSerializado(2l);
-					informacoesEnvioDto.setDadoSerializado(dadoSerializado);
-					informacoesEnvioDto.setUuidDadoSerializado(thriftCadastroIndividual.getUuid());
-					informacoesEnvioDto.setIneDadoSerializado(cad.getIneEquipe());
-					informacoesEnvioDto.setCnesDadoSerializado(cad.getCnesUnidade());
-					informacoesEnvioDto.setCodIbge(sisRegistro.getCidadeIbge());
-
-					// Passo 4: preencher o thrift de transporte com as
-					// informadosçõeso
-					// coletadas;
-					DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio.getInfoInstalacao(informacoesEnvioDto,
-							esusRegistro);
-
-					dados.add(dadoTransporteThrift);
-
-					log.info(new Date() + " -- Gerando cadastro Individual --> " + cad.getId() + " - " + cad.getUuid());
-					System.out.println("Gerando cadastro Individual --> " + cad.getId());
-
-					cad.setDtEnvio(new Date());
-					cad.setStEnvio(Long.valueOf(1));
-					dao.atualiza(cad);
-
-					System.out.println("Cadastro individual:" + cad.getId());
-
-				} catch (JDBCConnectionException e) {
-					log.info(e.getMessage());
-					e.printStackTrace();
-					TelaPrincipal.enviaLog(new Date() + " - " + e.getMessage());
-				} catch (Exception e) {
-					log.info(e.getMessage());
-					e.printStackTrace();
-					TelaPrincipal.enviaLog(new Date() + " - " + e.getMessage());
-				}
+			for (EsusCadastroIndividual cad : dao.findNaoEnviadosSemIdOrigem()) {
+				processaDados(dados, cad);
 			}
+			
+			for (EsusCadastroIndividual cad : dao.findNaoEnviados()) {
+				processaDados(dados, cad);
+			}
+			
 			log.info(new Date() + " -- Cadastro individual - fichas geradas ----" + dados.size());
 
 		} catch (JDBCConnectionException e) {
@@ -118,6 +80,54 @@ public class EsusCadastroIndividualService {
 			e.printStackTrace();
 		}
 		return dados;
+	}
+	
+	private void processaDados(List<DadoTransporteThrift> dados, EsusCadastroIndividual cad) {
+		
+		try {
+			CadastroIndividualThrift thriftCadastroIndividual = converterParaThrift(cad);
+
+			InformacoesEnvioDto informacoesEnvioDto = new InformacoesEnvioDto();
+
+			byte[] dadoSerializado;
+
+			// Passo 2: serializar o thrift
+			dadoSerializado = ThriftSerializer.serialize(thriftCadastroIndividual);
+
+			// Passo 3: coletar as informações do envio
+			informacoesEnvioDto.setTipoDadoSerializado(2l);
+			informacoesEnvioDto.setDadoSerializado(dadoSerializado);
+			informacoesEnvioDto.setUuidDadoSerializado(thriftCadastroIndividual.getUuid());
+			informacoesEnvioDto.setIneDadoSerializado(cad.getIneEquipe());
+			informacoesEnvioDto.setCnesDadoSerializado(cad.getCnesUnidade());
+			informacoesEnvioDto.setCodIbge(sisRegistro.getCidadeIbge());
+
+			// Passo 4: preencher o thrift de transporte com as
+			// informadosçõeso
+			// coletadas;
+			DadoTransporteThrift dadoTransporteThrift = InformacoesEnvio.getInfoInstalacao(informacoesEnvioDto,
+					esusRegistro);
+
+			dados.add(dadoTransporteThrift);
+
+			log.info(new Date() + " -- Gerando cadastro Individual --> " + cad.getId() + " - " + cad.getUuid());
+			System.out.println("Gerando cadastro Individual --> " + cad.getId());
+
+			cad.setDtEnvio(new Date());
+			cad.setStEnvio(Long.valueOf(1));
+			dao.atualiza(cad);
+
+			System.out.println("Cadastro individual:" + cad.getId());
+
+		} catch (JDBCConnectionException e) {
+			log.info(e.getMessage());
+			e.printStackTrace();
+			TelaPrincipal.enviaLog(new Date() + " - " + e.getMessage());
+		} catch (Exception e) {
+			log.info(e.getMessage());
+			e.printStackTrace();
+			TelaPrincipal.enviaLog(new Date() + " - " + e.getMessage());
+		}
 	}
 
 	private CadastroIndividualThrift converterParaThrift(EsusCadastroIndividual cad) {

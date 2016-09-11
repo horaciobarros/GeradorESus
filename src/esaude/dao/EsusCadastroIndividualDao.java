@@ -106,4 +106,23 @@ public class EsusCadastroIndividualDao extends Dao {
 		return lista.get(0);
 	}
 
+	public List<EsusCadastroIndividual> findNaoEnviadosSemIdOrigem() {
+		Transaction tx = session.beginTransaction();
+		Query query = sessionFactory
+				.openSession()
+				.createQuery(
+						"from EsusCadastroIndividual ci JOIN fetch ci.pProntuario pp "
+						+ " left outer join fetch pp.pNacionalidade pn "
+						+ " left outer join fetch pp.pMunicipio pm "
+						+ " left outer join fetch ci.esusMotivosaida "
+						+ " left outer join fetch ci.pProntuarioResponsavel pr "
+						+ " left outer join fetch ci.esusRelacaoparentesco rp "
+								+ "where (ci.stEnvio is null or ci.stEnvio=0) and ci.idOrigem is null ");
+		//query.setMaxResults(1);
+		List<EsusCadastroIndividual> lista = query.list();
+		tx.commit();
+		
+		return (List<EsusCadastroIndividual>) lista;
+	}
+
 }
