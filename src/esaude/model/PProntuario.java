@@ -114,8 +114,6 @@ public class PProntuario implements Serializable {
 	@Column(name = "tp_sanguineo")
 	private String tpSanguineo;
 
-	@Column(name = "dt_obito")
-	private Date dtObito;
 
 	@Column(name = "doc_cpf")
 	private String docCpf;
@@ -440,14 +438,6 @@ public class PProntuario implements Serializable {
 
 	public void setTpSanguineo(String tpSanguineo) {
 		this.tpSanguineo = tpSanguineo;
-	}
-
-	public Date getDtObito() {
-		return dtObito;
-	}
-
-	public void setDtObito(Date dtObito) {
-		this.dtObito = dtObito;
 	}
 
 	public String getDocCpf() {
