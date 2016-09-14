@@ -62,11 +62,22 @@ public class EsusCadastroDomiciliarService {
 		mapeiaSituacaoMoradia();
 		try {
 
+			// mandar todas as fichas que forem principais (primeira) 
+			// que não tiverem sido processadas.
+			for (EsusCadastroDomiciliar cadFilho : dao.findRegistrosComIdOrigem()) {
+				EsusCadastroDomiciliar cadPai = dao.findById(cadFilho.getIdOrigem());
+				if (cadPai != null && cadPai.getUuid() == null) {
+					processaDados(dados, cadPai);
+				}
+			}
+
+			// agora todas as fichas que não tem id-origem e que ainda não foram enviadas
 			for (EsusCadastroDomiciliar cad : dao.findNaoEnviadosSemIdOrigem()) {
 
 				processaDados(dados, cad);
 			}
 
+			// agora, o processo normal, todas que não foram enviadas nas situações anteriores
 			for (EsusCadastroDomiciliar cad : dao.findNaoEnviados()) {
 
 				processaDados(dados, cad);
@@ -142,10 +153,6 @@ public class EsusCadastroDomiciliarService {
 
 		cadastroDomiciliarThrift.setUuid(masterService.gerarUuid(cad.getCnesUnidade()));
 		cadastroDomiciliarThrift.setUuidIsSet(true);
-
-		if (cad.getId() == 4534) {
-			System.out.print("ok");
-		}
 
 		if (cad.getIdOrigem() != null && cad.isFichaAtualizada()) {
 			EsusCadastroDomiciliar cadFichaOrigem;

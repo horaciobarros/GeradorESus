@@ -28,28 +28,26 @@ public class EsusCadastroIndividualDao extends Dao {
 
 	public List<EsusCadastroIndividual> findNaoEnviados() {
 		Transaction tx = session.beginTransaction();
-		Query query = sessionFactory
-				.openSession()
-				.createQuery(
-						"from EsusCadastroIndividual ci JOIN fetch ci.pProntuario pp "
-						+ " left outer join fetch pp.pNacionalidade pn "
-						+ " left outer join fetch pp.pMunicipio pm "
+		Query query = sessionFactory.openSession()
+				.createQuery("from EsusCadastroIndividual ci JOIN fetch ci.pProntuario pp "
+						+ " left outer join fetch pp.pNacionalidade pn " + " left outer join fetch pp.pMunicipio pm "
 						+ " left outer join fetch ci.esusMotivosaida "
 						+ " left outer join fetch ci.pProntuarioResponsavel pr "
 						+ " left outer join fetch ci.esusRelacaoparentesco rp "
-								+ "where ci.stEnvio is null or ci.stEnvio=0");
-		//query.setMaxResults(1);
+						+ "where ci.stEnvio is null or ci.stEnvio=0");
+		// query.setMaxResults(1);
 		List<EsusCadastroIndividual> lista = query.list();
 		tx.commit();
-		
+
 		return (List<EsusCadastroIndividual>) lista;
 	}
 
 	public void atualiza(EsusCadastroIndividual entity) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		
-		Query query = session.createQuery("update EsusCadastroIndividual set stEnvio=:stEnvio, dtEnvio=:dtEnvio, uuid=:uuid where id = :id");
+
+		Query query = session.createQuery(
+				"update EsusCadastroIndividual set stEnvio=:stEnvio, dtEnvio=:dtEnvio, uuid=:uuid where id = :id");
 		query.setInteger("stEnvio", 1);
 		query.setLong("id", entity.getId());
 		query.setDate("dtEnvio", entity.getDtEnvio());
@@ -58,7 +56,7 @@ public class EsusCadastroIndividualDao extends Dao {
 		session.beginTransaction().commit();
 		session.close();
 	}
-	
+
 	public List<EsusCadastroIndividualDeficiencia> findDeficiencias(Long id) {
 		Transaction tx = session.beginTransaction();
 		Query query = sessionFactory.openSession().createQuery(
@@ -68,7 +66,7 @@ public class EsusCadastroIndividualDao extends Dao {
 		tx.commit();
 		return lista;
 	}
-	
+
 	public List<EsusCadastroIndividualHigienepessoalsituacaorua> findHigiene(Long id) {
 		Transaction tx = session.beginTransaction();
 		Query query = sessionFactory.openSession().createQuery(
@@ -82,24 +80,20 @@ public class EsusCadastroIndividualDao extends Dao {
 
 	public List<EsusCadastroIndividual> findAnterioresMesmoProntuario(Long coProntuario, Long idAtual) {
 		Transaction tx = session.beginTransaction();
-		Query query = sessionFactory
-				.openSession()
-				.createQuery(
-						"from EsusCadastroIndividual ci JOIN fetch ci.pProntuario pp "
-								+ "where pp.coProntuario = " + coProntuario + " and ci.id != " + idAtual);
-		//query.setMaxResults(1);
+		Query query = sessionFactory.openSession()
+				.createQuery("from EsusCadastroIndividual ci JOIN fetch ci.pProntuario pp " + "where pp.coProntuario = "
+						+ coProntuario + " and ci.id != " + idAtual);
+		// query.setMaxResults(1);
 		List<EsusCadastroIndividual> lista = query.list();
 		tx.commit();
-		
+
 		return (List<EsusCadastroIndividual>) lista;
 	}
-	
+
 	public EsusCadastroIndividual findById(Long id) {
-		Transaction tx = session
-				.beginTransaction();
-		Query query = sessionFactory.openSession().createQuery(
-				"from EsusCadastroIndividual ci  "
-				+ " where ci.id = " + id);
+		Transaction tx = session.beginTransaction();
+		Query query = sessionFactory.openSession()
+				.createQuery("from EsusCadastroIndividual ci  " + " where ci.id = " + id);
 		List<EsusCadastroIndividual> lista = query.list();
 		tx.commit();
 
@@ -108,21 +102,41 @@ public class EsusCadastroIndividualDao extends Dao {
 
 	public List<EsusCadastroIndividual> findNaoEnviadosSemIdOrigem() {
 		Transaction tx = session.beginTransaction();
-		Query query = sessionFactory
-				.openSession()
-				.createQuery(
-						"from EsusCadastroIndividual ci JOIN fetch ci.pProntuario pp "
-						+ " left outer join fetch pp.pNacionalidade pn "
-						+ " left outer join fetch pp.pMunicipio pm "
+		Query query = sessionFactory.openSession()
+				.createQuery("from EsusCadastroIndividual ci JOIN fetch ci.pProntuario pp "
+						+ " left outer join fetch pp.pNacionalidade pn " + " left outer join fetch pp.pMunicipio pm "
 						+ " left outer join fetch ci.esusMotivosaida "
 						+ " left outer join fetch ci.pProntuarioResponsavel pr "
 						+ " left outer join fetch ci.esusRelacaoparentesco rp "
-								+ "where (ci.stEnvio is null or ci.stEnvio=0) and ci.idOrigem is null ");
-		//query.setMaxResults(1);
+						+ "where (ci.stEnvio is null or ci.stEnvio=0) and ci.idOrigem is null ");
+		// query.setMaxResults(1);
 		List<EsusCadastroIndividual> lista = query.list();
 		tx.commit();
-		
+
 		return (List<EsusCadastroIndividual>) lista;
+	}
+
+	public List<EsusCadastroIndividual> findRegistrosComIdOrigem() {
+		Transaction tx = session.beginTransaction();
+		Query query = sessionFactory.openSession()
+				.createQuery("from EsusCadastroIndividual ci left outer JOIN fetch ci.pProntuario pp "
+						+ " left outer join fetch pp.pNacionalidade pn " + " left outer join fetch pp.pMunicipio pm "
+						+ " left outer join fetch ci.esusMotivosaida "
+						+ " left outer join fetch ci.pProntuarioResponsavel pr "
+						+ " left outer join fetch ci.esusRelacaoparentesco rp " +  " where ci.idOrigem is not null ");
+		// query.setMaxResults(1);
+		List<EsusCadastroIndividual> lista;
+		try {
+			lista = query.list();
+			tx.commit();
+			return (List<EsusCadastroIndividual>) lista;
+		} catch (Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+		}
+		
+		return null;
+
 	}
 
 }

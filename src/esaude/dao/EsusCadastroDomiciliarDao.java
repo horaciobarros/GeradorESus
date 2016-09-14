@@ -94,5 +94,17 @@ public class EsusCadastroDomiciliarDao extends Dao {
 		return lista;
 	}
 	
+	public List<EsusCadastroDomiciliar>  findRegistrosComIdOrigem() {
+		Transaction tx = session
+				.beginTransaction();
+		Query query = sessionFactory.openSession().createQuery(
+				"from EsusCadastroDomiciliar cd left join fetch cd.esusSituacaodemoradia "
+				+ "left join fetch cd.esusAbastecimentodeagua where cd.idOrigem is not null ");
+		List<EsusCadastroDomiciliar> lista = query.list();
+		tx.commit();
+
+		return lista;
+	}
+	
 
 }

@@ -35,10 +35,6 @@ public class EsusCadastroIndividualService {
 	private SisRegistro sisRegistro = new SisRegistro();
 	private MasterService masterService = new MasterService();
 
-	public List<EsusCadastroIndividual> findNaoEnvidados() {
-		return dao.findNaoEnviados();
-	}
-
 	public List<DadoTransporteThrift> buscaRegistros() {
 
 		EsusRegistroServiceImpl esusRegistroService = new EsusRegistroServiceImpl();
@@ -62,14 +58,27 @@ public class EsusCadastroIndividualService {
 		List<DadoTransporteThrift> dados = new ArrayList<DadoTransporteThrift>();
 		try {
 
+			// mandar todas as fichas que forem principais (primeira)
+			// que não tiverem sido processadas.
+			try {
+				for (EsusCadastroIndividual cadFilho : dao.findRegistrosComIdOrigem()) {
+					EsusCadastroIndividual cadPai = dao.findById(cadFilho.getIdOrigem());
+					if (cadPai != null && cadPai.getUuid() == null) {
+						processaDados(dados, cadPai);
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 			for (EsusCadastroIndividual cad : dao.findNaoEnviadosSemIdOrigem()) {
 				processaDados(dados, cad);
 			}
-			
+
 			for (EsusCadastroIndividual cad : dao.findNaoEnviados()) {
 				processaDados(dados, cad);
 			}
-			
+
 			log.info(new Date() + " -- Cadastro individual - fichas geradas ----" + dados.size());
 
 		} catch (JDBCConnectionException e) {
@@ -81,9 +90,9 @@ public class EsusCadastroIndividualService {
 		}
 		return dados;
 	}
-	
+
 	private void processaDados(List<DadoTransporteThrift> dados, EsusCadastroIndividual cad) {
-		
+
 		try {
 			CadastroIndividualThrift thriftCadastroIndividual = converterParaThrift(cad);
 
@@ -135,7 +144,7 @@ public class EsusCadastroIndividualService {
 
 		c.setUuid(masterService.gerarUuid(cad.getCnesUnidade()));
 		c.setUuidIsSet(true);
-		
+
 		if (cad.getIdOrigem() != null && cad.isFichaAtualizada()) {
 			EsusCadastroIndividual cadFichaOrigem;
 			try {
@@ -150,15 +159,15 @@ public class EsusCadastroIndividualService {
 				c.setFichaAtualizada(false);
 				c.setFichaAtualizadaIsSet(false);
 			}
-			
+
 		} else {
 			c.setUuidFichaOriginadora(c.getUuid());
 			c.setUuidFichaOriginadoraIsSet(true);
 			c.setFichaAtualizada(false);
 			c.setFichaAtualizadaIsSet(false);
-			
+
 		}
-		
+
 		cad.setUuid(c.getUuid());
 		// ----------------------
 
