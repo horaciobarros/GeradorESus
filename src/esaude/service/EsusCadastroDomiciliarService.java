@@ -62,7 +62,7 @@ public class EsusCadastroDomiciliarService {
 		mapeiaSituacaoMoradia();
 		try {
 
-			// mandar todas as fichas que forem principais (primeira) 
+			// mandar todas as fichas que forem principais (primeira)
 			// que não tiverem sido processadas.
 			for (EsusCadastroDomiciliar cadFilho : dao.findRegistrosComIdOrigem()) {
 				EsusCadastroDomiciliar cadPai = dao.findById(cadFilho.getIdOrigem());
@@ -71,13 +71,15 @@ public class EsusCadastroDomiciliarService {
 				}
 			}
 
-			// agora todas as fichas que não tem id-origem e que ainda não foram enviadas
+			// agora todas as fichas que não tem id-origem e que ainda não foram
+			// enviadas
 			for (EsusCadastroDomiciliar cad : dao.findNaoEnviadosSemIdOrigem()) {
 
 				processaDados(dados, cad);
 			}
 
-			// agora, o processo normal, todas que não foram enviadas nas situações anteriores
+			// agora, o processo normal, todas que não foram enviadas nas
+			// situações anteriores
 			for (EsusCadastroDomiciliar cad : dao.findNaoEnviados()) {
 
 				processaDados(dados, cad);
@@ -211,14 +213,18 @@ public class EsusCadastroDomiciliarService {
 			condicaoMoradia.setNuMoradoresIsSet(false);
 		}
 
-		try {
-			condicaoMoradia
-					.setSituacaoMoradiaPosseTerra(situacaoMoradia.get(cad.getEsusCondicaodeposseeusodaterra().getId()));
-			condicaoMoradia.setSituacaoMoradiaPosseTerraIsSet(true);
+		if (cad.getStRecusaCadastro()) {
+			condicaoMoradia.setSituacaoMoradiaPosseTerraIsSet(false);
+		} else {
+			try {
+				condicaoMoradia.setSituacaoMoradiaPosseTerra(
+						situacaoMoradia.get(cad.getEsusCondicaodeposseeusodaterra().getId()));
+				condicaoMoradia.setSituacaoMoradiaPosseTerraIsSet(true);
 
-		} catch (Exception e) {
-			condicaoMoradia.setSituacaoMoradiaPosseTerra(82);
-			condicaoMoradia.setSituacaoMoradiaPosseTerraIsSet(true);
+			} catch (Exception e) {
+				condicaoMoradia.setSituacaoMoradiaPosseTerra(82);
+				condicaoMoradia.setSituacaoMoradiaPosseTerraIsSet(true);
+			}
 		}
 		try {
 			condicaoMoradia.setFormaEscoamentoBanheiro(cad.getEsusFormadeescoamentodobanheiroousanitario().getId());
