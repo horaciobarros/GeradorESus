@@ -65,9 +65,13 @@ public class EsusCadastroDomiciliarService {
 			// mandar todas as fichas que forem principais (primeira)
 			// que não tiverem sido processadas.
 			for (EsusCadastroDomiciliar cadFilho : dao.findRegistrosComIdOrigem()) {
-				EsusCadastroDomiciliar cadPai = dao.findById(cadFilho.getIdOrigem());
-				if (cadPai != null && cadPai.getUuid() == null) {
-					processaDados(dados, cadPai);
+				try {
+					EsusCadastroDomiciliar cadPai = dao.findById(cadFilho.getIdOrigem());
+					if (cadPai != null && cadPai.getUuid() == null) {
+						processaDados(dados, cadPai);
+					}
+				} catch (Exception e) {
+
 				}
 			}
 

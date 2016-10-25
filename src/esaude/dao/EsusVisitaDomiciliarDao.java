@@ -29,7 +29,7 @@ public class EsusVisitaDomiciliarDao extends Dao {
 		Query query = sessionFactory
 				.openSession()
 				.createQuery(
-						"select vd from EsusVisitaDomiciliar vd  "
+						"select vd from EsusVisitaDomiciliar vd JOIN fetch vd.pProntuario pp "
 						+ " left join vd.esusSexo "
 						+ " left join vd.pProntuario "
 						+ " left join vd.esusDesfecho "
